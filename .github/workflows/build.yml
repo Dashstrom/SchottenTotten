@@ -71,7 +71,7 @@ jobs:
       run: cmake --build build --config Release
 
     - uses: actions/upload-artifact@v3
-      if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+      if: startsWith(github.ref, 'refs/tags/v')
       with:
         name: ${{matrix.name}}
         path: build\Release\${{matrix.executable}}
