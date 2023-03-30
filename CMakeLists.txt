@@ -64,7 +64,7 @@ target_include_directories(${TARGET_NAME} PRIVATE ${SOURCE_DIR})
 #===================== LINKING LIBRARIES =======================#
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-set_target_properties(helloworld PROPERTIES
+set_target_properties(${TARGET_NAME} PROPERTIES
     WIN32_EXECUTABLE ON
     MACOSX_BUNDLE ON
 )
