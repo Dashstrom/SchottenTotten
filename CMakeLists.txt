@@ -18,6 +18,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+# Set MACOSX variable
+if(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+    set_target_properties(tst_manual_ios_assets PROPERTIES MACOSX_BUNDLE TRUE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13")
+endif()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 17)
@@ -56,5 +63,10 @@ target_include_directories(${TARGET_NAME} PRIVATE ${SOURCE_DIR})
 
 #===================== LINKING LIBRARIES =======================#
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+set_target_properties(helloworld PROPERTIES
+    WIN32_EXECUTABLE ON
+    MACOSX_BUNDLE ON
+)
 
 target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Widgets)
