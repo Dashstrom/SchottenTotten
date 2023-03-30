@@ -1,149 +1,89 @@
-name: CMake Builds
+name: build
 
 on:
   push:
     branches:
       - main
+    tags:
+      - "*"
   pull_request:
-    branches:
-      - main
-
-env:
-  BUILD_TYPE: Release
 
 jobs:
+  build-cmake:
 
-  # macOS Universal
+    name: ${{ matrix.toolchain }}
+    runs-on: ${{ matrix.os }}
 
-  macos-prepare:
-    runs-on: [self-hosted, macOS, ARM64]
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - linux-gcc
+          - macos-clang
+          - windows-msvc
 
-    steps:
-      - name: Clean workspace
-        run: rm -rf ${{runner.workspace}}/build
+        qt_version:
+          - "6.4.3"
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: "6.4.3"
+        include:
+          - toolchain: linux-gcc
+            os: ubuntu-20.04
+            compiler: gcc
+            artifact: build\SchottenTotten
+            name: SchottenTotten_linux_x64
 
-      - uses: actions/checkout@v3
+          - toolchain: macos-clang
+            os: macos-latest
+            compiler: clang
+            artifact: build\SchottenTotten.dmg
+            name: SchottenTotten_mac
 
-
-  macos-build-arm64:
-    needs: macos-prepare
-    runs-on: [self-hosted, macOS, ARM64]
-    env:
-      homebrew_prefix: /opt/homebrew
-
-    steps:
-      - name: Create build directory
-        run: mkdir -p ${{runner.workspace}}/build/arm64
-
-      - name: Configure
-        working-directory: ${{runner.workspace}}/build/arm64
-        run: arch -arm64 ${{env.homebrew_prefix}}/bin/cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPKG_CONFIG_EXECUTABLE=${{env.homebrew_prefix}}/bin/pkg-config -DMACOS_BUNDLE_LIBS=ON -DUSE_QT6=ON
-
-      - name: Make
-        working-directory: ${{runner.workspace}}/build/arm64
-        run: arch -arm64 make -j$(sysctl -n hw.logicalcpu)
-
-  macos-build-x86_64:
-    needs: macos-prepare
-    runs-on: [self-hosted, macOS, ARM64]
-    env:
-      homebrew_prefix: /usr/local
+          - toolchain: windows-msvc
+            os: windows-latest
+            compiler: msvc
+            artifact: build\Release\SchottenTotten.exe
+            name: SchottenTotten_win_x64
 
     steps:
-      - name: Create build directory
-        run: mkdir -p ${{runner.workspace}}/build/x86_64
-
-      - name: Configure
-        working-directory: ${{runner.workspace}}/build/x86_64
-        run: arch -x86_64 ${{env.homebrew_prefix}}/bin/cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}Release -DPKG_CONFIG_EXECUTABLE=${{env.homebrew_prefix}}/bin/pkg-config -DMACOS_BUNDLE_LIBS=ON -DUSE_QT6=ON
-
-      - name: Make
-        working-directory: ${{runner.workspace}}/build/x86_64
-        run: arch -x86_64 make -j$(sysctl -n hw.logicalcpu)
-
-  macos-universal-binary:
-    needs: [macos-build-arm64, macos-build-x86_64]
-    runs-on: [self-hosted, macOS, ARM64]
-
-    steps:
-      - name: Merge binaries
-        run: $GITHUB_WORKSPACE/tools/mac-universal.py ${{runner.workspace}}/build/arm64/SchottenTotten.app ${{runner.workspace}}/build/x86_64/SchottenTotten.app ${{runner.workspace}}/build/universal/SchottenTotten.app
-
-      - name: Create DMG
-        run: hdiutil create -fs HFS+ -volname SchottenTotten -srcfolder ${{runner.workspace}}/build/universal/SchottenTotten.app -ov -format UDBZ ${{runner.workspace}}/build/universal/SchottenTotten.dmg
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: SchottenTotten_mac_UB2
-          path: ${{runner.workspace}}/build/universal/SchottenTotten.dmg
-
-  # Ubuntu x86-64
-
-  ubuntu-build-x86-64:
-
-    runs-on: ubuntu-20.04
-
-    steps:
-
-    - uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: "6.4.3"
+        version: ${{ matrix.qt_version }}
+
+    - name: Setup (Linux)
+      if: startsWith (matrix.os, 'ubuntu')
+      run: sudo apt-get install libxkbcommon-dev
+
+    - name: Setup VS tools (Windows)
+      if: startsWith (matrix.os, 'windows')
+      uses: egor-tensin/vs-shell@v2
+      with:
+        arch: x64
 
     - name: Configure
-      working-directory: ${{github.workspace}}
-      run: cmake -B $RUNNER_WORKSPACE/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} .
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --config ${{env.BUILD_TYPE}}
+    - name: Make
+      run: cmake --build build --config Release
+
+    - name: Create DMG
+      if: startsWith (matrix.os, 'macos')
+      run: hdiutil create -fs HFS+ -volname SchottenTotten -srcfolder build/SchottenTotten.app -ov -format UDBZ build/SchottenTotten.dmg
+
+    - name: Display structure of compiled files
+      run: ls -R
 
     - uses: actions/upload-artifact@v3
       with:
-        name: SchottenTotten_linux_x86_64
-        path: ${{runner.workspace}}/build/SchottenTotten
-
-  # Windows x86-64
-
-  windows-build:
-
-    runs-on: windows-latest
-
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: "6.4.3"
-
-    - name: Configure
-      working-directory: ${{github.workspace}}
-      run: cmake -B "$env:RUNNER_WORKSPACE/build" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} .
-
-    - name: Build
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --config ${{env.BUILD_TYPE}}
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: SchottenTotten_win_x86_64
-        path: ${{runner.workspace}}\build\SchottenTotten.exe
+        name: ${{ matrix.name }}
+        path: ${{ matrix.artifact }}
 
   publish-release:
 
-    needs:
-      - macos-universal-binary
-      - ubuntu-build-x86-64
-      - windows-build
+    needs: build-cmake
     name: Publish Release
     runs-on: ubuntu-20.04
     steps:
@@ -154,9 +94,9 @@ jobs:
     - name: Zip executables
       run: |
         RELEASE_VERSION="${GITHUB_REF#refs/tags/v}"
-        cp "SchottenTotten_${RELEASE_VERSION}_macos_UB2/.dmg" artifacts/SchottenTotten_mac_UB2/SchottenTotten.dmg
-        zip "SchottenTotten_${RELEASE_VERSION}_win_x86_64" artifacts/SchottenTotten_win_x86_64/SchottenTotten.exe
-        zip "SchottenTotten_${RELEASE_VERSION}_linux_x86_64" artifacts/SchottenTotten_linux_x86_64/SchottenTotten
+        cp "SchottenTotten_${RELEASE_VERSION}_mac" artifacts/SchottenTotten_mac/SchottenTotten
+        zip "SchottenTotten_${RELEASE_VERSION}_linux_x64" artifacts/SchottenTotten_linux_x64/SchottenTotten
+        zip "SchottenTotten_${RELEASE_VERSION}_win_x64" artifacts/SchottenTotten_win_x64/SchottenTotten.exe
     - name: Display structure of downloaded files
       run: ls -R
       working-directory: artifacts
