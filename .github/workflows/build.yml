@@ -47,7 +47,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -65,15 +65,13 @@ jobs:
         arch: x64
 
     - name: Configure
-      working-directory: ${{runner.workspace}}
       run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Make
-      working-directory: ${{runner.workspace}}
       run: cmake --build build --config Release
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
       with:
         name: ${{matrix.name}}
-        path: ${{runner.workspace}}\build\Release\${{matrix.executable}}
+        path: build\Release\${{matrix.executable}}
