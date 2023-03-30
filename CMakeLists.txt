@@ -21,7 +21,6 @@ endif()
 # Set MACOSX variable
 if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
-    set_target_properties(tst_manual_ios_assets PROPERTIES MACOSX_BUNDLE TRUE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13")
 endif()
 
