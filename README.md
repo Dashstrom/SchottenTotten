@@ -50,3 +50,11 @@ git add .
 pre-commit run -a
 git commit -m "Hello !"
 ```
+
+## Generate a release with binaries
+
+```bash
+git tag v1.0.0
+git push origin --tags
+git push origin v1.0.0
+```

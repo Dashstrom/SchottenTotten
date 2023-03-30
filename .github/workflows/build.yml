@@ -31,19 +31,19 @@ jobs:
             os: ubuntu-20.04
             compiler: gcc
             executable: SchottenTotten
-            name: SchottenTotten-linux64
+            name: SchottenTotten-linux64.zip
 
           - toolchain: macos-clang
             os: macos-latest
             compiler: clang
             executable: SchottenTotten
-            name: SchottenTotten-macos
+            name: SchottenTotten-macos.zip
 
           - toolchain: windows-msvc
             os: windows-latest
             compiler: msvc
             executable: SchottenTotten.exe
-            name: SchottenTotten-win64
+            name: SchottenTotten-win64.zip
 
     steps:
     - name: Checkout Code
@@ -73,5 +73,22 @@ jobs:
     - uses: actions/upload-artifact@v3
       if: startsWith(github.ref, 'refs/tags/v')
       with:
-        name: ${{matrix.name}}
-        path: build\Release\${{matrix.executable}}
+        name: ${{ matrix.name }}
+        path: build\Release\${{ matrix.executable }}
+
+  publish-release:
+
+    needs:
+      - linux-gcc
+      - macos-clang
+      - windows-msvc
+    name: Publish Release
+    runs-on: ubuntu-20.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: artifacts
