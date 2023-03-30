@@ -78,10 +78,7 @@ jobs:
 
   publish-release:
 
-    needs:
-      - linux-gcc
-      - macos-clang
-      - windows-msvc
+    needs: build-cmake
     name: Publish Release
     runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags/v')
