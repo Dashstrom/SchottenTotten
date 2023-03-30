@@ -149,7 +149,6 @@ jobs:
     needs:
       - macos-universal-binary
       - ubuntu-build-x86-64
-      - ubuntu-build-aarch64
       - windows-build
     name: Publish Release
     runs-on: ubuntu-20.04
