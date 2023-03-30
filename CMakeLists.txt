@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(TARGET_NAME schotten-totten)
+set(TARGET_NAME SchottenTotten)
 
-project(${TARGET_NAME} VERSION 1.0.0 LANGUAGES CXX DESCRIPTION "Amazing game")
+project(
+    ${TARGET_NAME}
+    VERSION 1.0.0
+    LANGUAGES CXX
+    DESCRIPTION "In Schotten Totten, nine boundary stones lie between you and your opponent. In front of each, you build poker-like formations of three cards on a side."
+    HOMEPAGE_URL "https://github.com/Dashstrom/SchottenTotten"
+)
 
-set(CMAKE_BUILD_TYPE Release)
+# Ignore warning : Manually-specified variables were not used by the project
+set(IGNORE_ME "${CMAKE_BUILD_TYPE}")
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 17)

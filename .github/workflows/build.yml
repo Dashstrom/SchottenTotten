@@ -10,7 +10,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  build-cmake:
 
     name: ${{ matrix.toolchain }}
     runs-on: ${{ matrix.os }}
@@ -23,31 +23,31 @@ jobs:
           - macos-clang
           - windows-msvc
 
-        configuration:
-          - Release
+        qt_version:
+          - "6.4.3"
 
         include:
           - toolchain: linux-gcc
             os: ubuntu-20.04
             compiler: gcc
-            qt_version: "6.4.3"
+            executable: SchottenTotten
+            name: SchottenTotten-linux64
 
           - toolchain: macos-clang
             os: macos-latest
             compiler: clang
-            qt_version: "6.4.3"
-            modules: ""
+            executable: SchottenTotten
+            name: SchottenTotten-macos
 
           - toolchain: windows-msvc
             os: windows-latest
             compiler: msvc
-            qt_version: "6.4.3"
+            executable: SchottenTotten.exe
+            name: SchottenTotten-win64
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-      with:
-        submodules: true
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -64,8 +64,16 @@ jobs:
       with:
         arch: x64
 
-    - name: Configure Release
-      run: cmake -B build
+    - name: Configure
+      working-directory: ${{runner.workspace}}
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build with Release
+    - name: Make
+      working-directory: ${{runner.workspace}}
       run: cmake --build build --config Release
+
+    - uses: actions/upload-artifact@v1
+      if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+      with:
+        name: ${{matrix.name}}
+        path: ${{runner.workspace}}\build\Release\${{matrix.executable}}

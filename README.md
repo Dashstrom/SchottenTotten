@@ -1,4 +1,12 @@
-# schotten-totten
+# SchottenTotten
+
+[![Build result](https://github.com/Dashstrom/schotten-totten/actions/workflows/build.yml/badge.svg)](https://github.com/Dashstrom/schotten-totten/actions/workflows/build.yml)
+[![Linting result](https://github.com/Dashstrom/schotten-totten/actions/workflows/lint.yml/badge.svg)](https://github.com/Dashstrom/schotten-totten/actions/workflows/lint.yml)
+[![Repo size](https://img.shields.io/github/repo-size/Dashstrom/schotten-totten)](https://github.com/Dashstrom/schotten-totten)
+
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
+[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
+[![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 
 Gameplay in Schotten-Totten resembles simultaneous play of nine separate hands of poker, but where each hand has only three cards in it. There are nine "boundary" stones between players at the start of the game. Players vie to win five of the stones, or three adjacent ones, to win the game.
 
@@ -16,9 +24,9 @@ Download the Windows QT installer at [qt.io](https://www.qt.io/download)
 You can now build the project with :
 
 ```ps
-cmake -B build
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
-.\build\Release\schotten-totten.exe
+.\build\Release\SchottenTotten.exe
 ```
 
 ## Completion requirements
@@ -30,6 +38,7 @@ Just add `C:\Qt\6.4.3\msvc2019_64\include`, `C:\Qt\6.4.3\msvc2019_64\include\QtC
 For setup commits
 
 ```bash
+git clone https://github.com/Dashstrom/SchottenTotten.git
 pip install pre-commit
 pre-commit install
 ```
