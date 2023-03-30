@@ -30,19 +30,19 @@ jobs:
           - toolchain: linux-gcc
             os: ubuntu-20.04
             compiler: gcc
-            executable: SchottenTotten
+            executable: build\SchottenTotten
             name: SchottenTotten-linux-x64
 
           - toolchain: macos-clang
             os: macos-latest
             compiler: clang
-            executable: SchottenTotten.app\Contents\MacOS\SchottenTotten
+            executable: build\SchottenTotten.app\Contents\MacOS\SchottenTotten
             name: SchottenTotten-macos
 
           - toolchain: windows-msvc
             os: windows-latest
             compiler: msvc
-            executable: Release\SchottenTotten.exe
+            executable: build\Release\SchottenTotten.exe
             name: SchottenTotten-windows-x64
 
     steps:
@@ -93,7 +93,7 @@ jobs:
         path: artifacts
     - name: Zip executables
       run: |
-        RELEASE_VERSION="${GITHUB_REF#refs/tags/v}""
+        RELEASE_VERSION="${GITHUB_REF#refs/tags/v}"
         zip "SchottenTotten-${RELEASE_VERSION}-linux-x64" artifacts/SchottenTotten-linux64/SchottenTotten
         zip "SchottenTotten-${RELEASE_VERSION}-macos" artifacts/SchottenTotten-macos/SchottenTotten
         zip "SchottenTotten-${RELEASE_VERSION}-windows-x64" artifacts/SchottenTotten-win64/SchottenTotten.exe
