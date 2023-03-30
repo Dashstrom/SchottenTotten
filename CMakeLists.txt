@@ -13,6 +13,11 @@ project(
 # Ignore warning : Manually-specified variables were not used by the project
 set(IGNORE_ME "${CMAKE_BUILD_TYPE}")
 
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 17)
@@ -32,7 +37,6 @@ file(GLOB_RECURSE SOURCES
     "${INCLUDE_DIR}/*.hpp"
     "${SOURCE_DIR}/*.cpp"
 )
-
 #=================== SETUP EXECTUABLE ====================#
 if (WIN32)
     add_executable(${TARGET_NAME} WIN32 ${SOURCES})
@@ -52,10 +56,5 @@ target_include_directories(${TARGET_NAME} PRIVATE ${SOURCE_DIR})
 
 #===================== LINKING LIBRARIES =======================#
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
-
-set_target_properties(${TARGET_NAME} PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
-)
 
 target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Widgets)

@@ -58,3 +58,5 @@ git tag v1.0.0
 git push origin --tags
 git push origin v1.0.0
 ```
+
+Build Workflow are inspired from [melonDS](https://github.com/melonDS-emu/melonDS)
