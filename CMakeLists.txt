@@ -13,6 +13,7 @@ project(
 # Ignore warning : Manually-specified variables were not used by the project
 set(IGNORE_ME "${CMAKE_BUILD_TYPE}")
 
+# Release by default
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
@@ -24,13 +25,19 @@ if(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13")
 endif()
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-qt_standard_project_setup()
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
+if(CMAKE_VERSION VERSION_LESS "3.7.0")
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+endif()
 
 #=================== INCLUSION OF Project Files ====================#
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
@@ -68,4 +75,4 @@ set_target_properties(${TARGET_NAME} PROPERTIES
     MACOSX_BUNDLE ON
 )
 
-target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Widgets)
+target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Widgets)

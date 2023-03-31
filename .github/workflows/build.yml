@@ -1,104 +1,43 @@
-name: build
+name: CMake Build
 
 on:
   push:
     branches:
       - main
-    tags:
-      - "*"
   pull_request:
+    branches:
+      - main
+
+env:
+  BUILD_TYPE: Release
 
 jobs:
-  build-cmake:
+  build:
 
-    name: ${{ matrix.toolchain }}
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        toolchain:
-          - linux-gcc
-          - macos-clang
-          - windows-msvc
-
-        qt_version:
-          - "6.4.3"
-
-        include:
-          - toolchain: linux-gcc
-            os: ubuntu-20.04
-            compiler: gcc
-            artifact: SchottenTotten
-            name: SchottenTotten_linux_x64
-
-          - toolchain: macos-clang
-            os: macos-latest
-            compiler: clang
-            artifact: SchottenTotten
-            name: SchottenTotten_mac
-
-          - toolchain: windows-msvc
-            os: windows-latest
-            compiler: msvc
-            artifact: Release/SchottenTotten.exe
-            name: SchottenTotten_win_x64
-
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+    - uses: actions/checkout@v3
+    - uses: msys2/setup-msys2@v2
       with:
-        version: ${{ matrix.qt_version }}
+          msystem: MINGW64
+          update: true
 
-    - name: Setup (Linux)
-      if: startsWith (matrix.os, 'ubuntu')
-      run: sudo apt-get install libxkbcommon-dev
-
-    - name: Setup VS tools (Windows)
-      if: startsWith (matrix.os, 'windows')
-      uses: egor-tensin/vs-shell@v2
-      with:
-        arch: x64
+    - name: Install dependencies
+      run: pacman -Sq --noconfirm git pkgconf mingw-w64-x86_64-{cmake,qt5-static,toolchain}
 
     - name: Configure
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      working-directory: ${{runner.workspace}}
+      run: cmake -B build $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_STATIC=ON -DCMAKE_PREFIX_PATH=C:/tools/msys64/mingw64/qt5-static
 
-    - name: Build
-      run: cmake --build build --config Release
-
-    - name: Display structure of compiled files
-      run: ls -R
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: ${{ matrix.name }}
-        path: ${{ github.workspace }}/build/${{ matrix.artifact }}
+    - name: Make
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build .
 
     - uses: actions/upload-artifact@v3
-      if: startsWith (matrix.os, 'macos')
       with:
-        name: Build-MacOS
-        path: ${{ github.workspace }}/build
-
-  publish-release:
-
-    needs: build-cmake
-    name: Publish Release
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/download-artifact@v3
-      name: Download builded executables
-      with:
-        path: artifacts
-    - name: Zip executables
-      run: |
-        RELEASE_VERSION="${GITHUB_REF#refs/tags/v}"
-        zip "SchottenTotten_${RELEASE_VERSION}_mac" artifacts/SchottenTotten_mac/SchottenTotten
-        zip "SchottenTotten_${RELEASE_VERSION}_linux_x64" artifacts/SchottenTotten_linux_x64/SchottenTotten
-        zip "SchottenTotten_${RELEASE_VERSION}_win_x64" artifacts/SchottenTotten_win_x64/SchottenTotten.exe
-    - name: Display structure of downloaded files
-      run: ls -R
-      working-directory: artifacts
+        name: SchottenTotten_win_x64
+        path: ${{runner.workspace}}\build\SchottenTotten.exe

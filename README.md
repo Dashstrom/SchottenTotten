@@ -14,7 +14,8 @@ Gameplay in Schotten Totten resembles simultaneous play of nine separate hands o
 
 Install Visual Studio Build Tools 2019 from [visualstudio.microsoft.com](https://visualstudio.microsoft.com/fr/downloads/) Dont forget to add the "C++ Clang tools for Windows".
 
-Add `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\Llvm\x64\bin` to `PATH`
+1. Add `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\Llvm\x64\bin` to `PATH`
+2. Set `VCINSTALLDIR` to `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC`
 
 Download the Windows QT installer at [qt.io](https://www.qt.io/download)
 
