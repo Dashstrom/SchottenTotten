@@ -30,7 +30,11 @@ jobs:
       run: pacman -Sq --noconfirm git pkgconf mingw-w64-x86_64-{cmake,qt6-static,libslirp,libarchive,toolchain}
 
     - name: Display structure of compiled files
-      working-directory: C:/tools/msys64/mingw64
+      working-directory: C:/tools
+      run: ls -R
+
+    - name: Display structure of compiled files
+      working-directory: ${{runner.workspace}}
       run: ls -R
 
     - name: Configure
