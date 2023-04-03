@@ -1,5 +1,7 @@
 # https://cmake.org/Wiki/CMake_Cross_Compiling
 
+message(STATUS "Using Toolchain-cross-MinGW-w64-x86_64.cmake")
+
 # the name of the target operating system
 SET(CMAKE_SYSTEM_NAME Windows)
 
@@ -19,6 +21,6 @@ SET(CMAKE_FIND_ROOT_PATH /usr/${COMPILER_PREFIX}/sys-root/mingw)
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search
 # programs in the host environment
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
