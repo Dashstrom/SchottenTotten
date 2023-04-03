@@ -27,23 +27,7 @@ jobs:
           update: true
 
     - name: Install dependencies
-      run: pacman -Sq --noconfirm git pkgconf mingw-w64-x86_64-{cmake,qt6-static,libslirp,libarchive,toolchain}
-
-    - name: Display structure of C:/tools
-      working-directory: C:/tools
-      run: ls -R
-
-    - name: Display structure of C:/
-      working-directory: C:/
-      run: ls
-
-    - name: Display structure of ${{runner.temp}}
-      working-directory: ${{runner.temp}}
-      run: ls -R
-
-    - name: Display structure of ${{runner.workspace}}
-      working-directory: ${{runner.workspace}}
-      run: ls -R
+      run: pacman -Sq --noconfirm git pkgconf mingw-w64-x86_64-{cmake,SDL2,qt6-static,libslirp,libarchive,toolchain}
 
     - name: Configure
       working-directory: ${{runner.workspace}}
