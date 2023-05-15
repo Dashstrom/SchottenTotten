@@ -30,6 +30,32 @@ cmake --build build --config Release
 .\build\Release\SchottenTotten.exe
 ```
 
+## Build requirements on MacOS
+
+Note : CMakeLists.txt is currently configured for `arm64` only. You can change for `x86_64`.
+
+Install cmake and qt with [brew](https://formulae.brew.sh/) :
+
+```bash
+brew install cmake
+brew install qt
+```
+
+Add the following to ~/.zshrc :
+
+```bash
+export PATH="/opt/homebrew/opt/cmake/bin:$PATH"
+export PATH="/opt/homebrew/opt/qt6/bin:$PATH"
+```
+
+Build and run with :
+
+```ps
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+./build/SchottenTotten.app/Contents/MacOS/SchottenTotten
+```
+
 ## Completion requirements
 
 Just add `C:\Qt\6.4.3\msvc2019_64\include`, `C:\Qt\6.4.3\msvc2019_64\include\QtCore` and `C:\Qt\6.4.3\msvc2019_64\include\QtWidgets` to your include path in your favorite IDE.
