@@ -2,7 +2,6 @@
 
 class Game;
 
-#include "board.hpp"
 #include "game.hpp"
 #include <QAction>
 #include <QDialog>
@@ -28,6 +27,5 @@ private slots:
 
 private:
   QPushButton *startButton;
-  Board *board;
-  Game *currentGame;
+  Game *game;
 };

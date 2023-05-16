@@ -1,6 +1,6 @@
 #include "startModal.hpp"
 
-StartModal::StartModal(Game *game, QWidget *parent): QDialog(parent), currentGame(game) {
+StartModal::StartModal(Game *game, QWidget *parent): QDialog(parent), game(game) {
   setWindowTitle("Start Schotten Totten");
   setModal(true);
   setMinimumWidth(300);
@@ -19,8 +19,7 @@ StartModal::StartModal(Game *game, QWidget *parent): QDialog(parent), currentGam
 }
 
 void StartModal::onStartGameButtonClicked() {
-  Board *board = new Board();
-  board->show();
+  game->launch();
 
   this->accept(); // Close the start window
 }
