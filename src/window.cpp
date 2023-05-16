@@ -4,6 +4,8 @@
 #include <iostream>
 
 Tester::Tester(QWidget *parent) : QMainWindow(parent), mButtonPressedAmt(0) {
+  this->setWindowTitle("Schotten Totten");
+
   // Since this is a QMainWindow we cannot set a layout,
   // we can only set a central widget.
   auto centralWidget = new QWidget(this);
