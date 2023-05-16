@@ -7,14 +7,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
   QMenuBar *menu = new QMenuBar(widget);
 
-  // QHBoxLayout *L = new QHBoxLayout(widget);
-  // L->addWidget(s1);
-
   QMenu *game = new QMenu("&Jeu");
-  game->addMenu("Relancer partie");
-  game->addMenu("Fermer Schotten Totten");
+  QAction *restart = game->addAction("Relancer la partie");
+  QAction *quit = game->addAction("Fermer Schotten Totten");
 
   menu->addMenu(game);
 
   this->setCentralWidget(widget);
+
+  connect(restart, SIGNAL(triggered()), this, SLOT(onRestartActionTriggered()));
+  connect(quit, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));
+}
+
+void MainWindow::onRestartActionTriggered() {
+  qDebug() << "Restart action triggered!";
+}
+void MainWindow::onQuitActionTriggered() {
+  qDebug() << "Quit action triggered!";
+  close();
 }

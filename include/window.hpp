@@ -1,16 +1,22 @@
 #pragma once
 
-#include <QHBoxLayout>
-#include <QLabel>
+#include <QAction>
 #include <QMainWindow>
+#include <QMenu>
 #include <QMenuBar>
-#include <QPushButton>
-#include <QWidget>
 #include <iostream>
 
 class MainWindow : public QMainWindow {
+  Q_OBJECT
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  ~MainWindow() = default;
+
+private slots:
+  void onRestartActionTriggered();
+  void onQuitActionTriggered();
+
+private:
+  QMenuBar *menuBar;
+  QMenu *gameMenu;
 };
