@@ -1,46 +1,20 @@
 #include "window.hpp"
 
-#include <QVBoxLayout>
-#include <iostream>
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+  this->setWindowTitle("Schotten Totten");
 
-Tester::Tester(QWidget *parent) : QMainWindow(parent), mButtonPressedAmt(0) {
-  // Since this is a QMainWindow we cannot set a layout,
-  // we can only set a central widget.
-  auto centralWidget = new QWidget(this);
+  QWidget *widget = new QWidget(this);
 
-  this->mpLabel = new QLabel(centralWidget);
-  this->mpPushButton = new QPushButton("Press Me!", centralWidget);
+  QMenuBar *menu = new QMenuBar(widget);
 
-  // Make sure our label has the correct text
-  // starting out.
+  // QHBoxLayout *L = new QHBoxLayout(widget);
+  // L->addWidget(s1);
 
-  this->updateLabelText();
+  QMenu *game = new QMenu("&Jeu");
+  game->addMenu("Relancer partie");
+  game->addMenu("Fermer Schotten Totten");
 
-  // Since setting a layout on QMainWindow is not allowed,
-  // this layout is used in centralWidget instead.
-  auto mainLayout = new QVBoxLayout();
-  mainLayout->addWidget(this->mpLabel);
-  mainLayout->addSpacerItem(
-      new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Fixed));
-  mainLayout->addWidget(this->mpPushButton);
+  menu->addMenu(game);
 
-  centralWidget->setLayout(mainLayout);
-  this->setCentralWidget(centralWidget);
-
-  // Syntax to connect a Qt signal with a lambda.
-  QObject::connect(this->mpPushButton, &QPushButton::clicked, this, [this]() {
-    this->mButtonPressedAmt++;
-    this->updateLabelText();
-  });
-
-  // Syntax to connect a custom class signal with a lambda.
-  QObject::connect(this, &Tester::sigLabelTextUpdated, this,
-                   [](std::string_view val) { std::cout << val << std::endl; });
-}
-
-void Tester::updateLabelText() {
-  this->mpLabel->setText("Button was clicked: " +
-                         QString::number(this->mButtonPressedAmt) + " times.");
-
-  emit sigLabelTextUpdated(this->mpLabel->text().toStdString());
+  this->setCentralWidget(widget);
 }

@@ -1,23 +1,16 @@
 #pragma once
 
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMenuBar>
 #include <QPushButton>
+#include <QWidget>
+#include <iostream>
 
-class Tester : public QMainWindow {
-  Q_OBJECT
-
-  int32_t mButtonPressedAmt;
-
-  QLabel *mpLabel;
-  QPushButton *mpPushButton;
-
-  void updateLabelText();
+class MainWindow : public QMainWindow {
 
 public:
-  Tester(QWidget *parent = nullptr);
-  ~Tester() = default;
-
-signals:
-  void sigLabelTextUpdated(std::string_view);
+  MainWindow(QWidget *parent = nullptr);
+  ~MainWindow() = default;
 };
