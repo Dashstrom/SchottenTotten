@@ -1,7 +1,7 @@
-#include "window.hpp"
+#include "board.hpp"
 #include "border.hpp"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+Board::Board(QWidget *parent) : QMainWindow(parent) {
   this->setWindowTitle("Schotten Totten");
 
   QWidget *CentralWidget = new QWidget(this);
@@ -22,10 +22,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   connect(quit, SIGNAL(triggered()), this, SLOT(onQuitActionTriggered()));
 }
 
-void MainWindow::onRestartActionTriggered() {
+void Board::onRestartActionTriggered() {
   qDebug() << "Restart action triggered!";
 }
-void MainWindow::onQuitActionTriggered() {
+void Board::onQuitActionTriggered() {
   qDebug() << "Quit action triggered!";
   close();
 }

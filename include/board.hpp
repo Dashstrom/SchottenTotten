@@ -9,11 +9,11 @@
 #include <QPixmap>
 #include <iostream>
 
-class MainWindow : public QMainWindow {
+class Board : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(QWidget *parent = nullptr);
+  Board(QWidget *parent = nullptr);
 
 private slots:
   void onRestartActionTriggered();
