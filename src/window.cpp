@@ -8,9 +8,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
   // MENU
   QMenuBar *menu = new QMenuBar(CentralWidget);
-  QMenu *game = new QMenu("&Jeu");
-  QAction *restart = game->addAction("Relancer la partie");
-  QAction *quit = game->addAction("Fermer Schotten Totten");
+  QMenu *game = new QMenu("&Game");
+  QAction *restart = game->addAction("Restart game");
+  QAction *quit = game->addAction("Close Schotten Totten");
   menu->addMenu(game);
 
   // BORDER
