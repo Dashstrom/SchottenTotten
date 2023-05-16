@@ -41,12 +41,14 @@ brew install cmake
 brew install qt
 ```
 
-Add the following to ~/.zshrc :
+Add the following to ~/.zshrc (if using zsh) :
 
 ```bash
 export PATH="/opt/homebrew/opt/cmake/bin:$PATH"
 export PATH="/opt/homebrew/opt/qt6/bin:$PATH"
 ```
+
+reload terminal to apply changes or run `source ~/.zshrc`
 
 Build and run with :
 
