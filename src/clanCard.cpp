@@ -1,0 +1,1 @@
+#include "clanCard.hpp"

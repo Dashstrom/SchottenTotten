@@ -6,6 +6,7 @@ Border::Border(QWidget *parent) : QLabel(parent) {
   QHBoxLayout *L = new QHBoxLayout(parent);
 
   // compute responsive dimensions
+  // TODO: make it responsive with window resize
   QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
   int screenWidth = screenGeometry.width();
   int screenHeight = screenGeometry.height();
