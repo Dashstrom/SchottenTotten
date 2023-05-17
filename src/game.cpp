@@ -14,17 +14,17 @@ void Game::launch() {
   board = new Board(nullptr, this);
   board->show();
 
-  startTurn(player1);
+  startTurn();
 }
 
-void Game::startTurn(Player *player) {
-  if (turn % 2 == 0)
+void Game::startTurn() {
+  if (turn % 2 == 0) {
     QMessageBox::information(board, "Game started", "Player 1 : your turn !");
-  else
+    board->printHand(player1);
+  } else {
     QMessageBox::information(board, "Game started", "Player 2 : your turn !");
-
-  // display player 1 hand
-  board->printHand(player);
+    board->printHand(player2);
+  }
 }
 
 void Game::endTurn() {
@@ -34,10 +34,11 @@ void Game::endTurn() {
   // get the board ready for next turn
   board->resetCurrentTurn();
 
-  if (hasWinner())
-    return; // TODO end game / display winner
-  if (turn++ % 2 == 0)
-    startTurn(player1);
-  else
-    startTurn(player2);
+  if (!hasWinner()) {
+    turn++;
+    startTurn();
+    return;
+  }
+
+  // TODO end game / display winner
 }

@@ -40,19 +40,24 @@ void Board::onQuitActionTriggered() {
 }
 
 void Board::printHand(Player *player) {
-  qDebug() << "print hand" << player;
-
   ClanCard **hand = player->getHand();
 
-  QWidget *handContainer = new QWidget();
+  if (handContainer != nullptr) {
+    mainVerticalContainer->removeWidget(handContainer);
+    handContainer->hide(); // TODO: clean this and clean memory
+    handContainer = nullptr;
+  }
+  this->handContainer = new QWidget();
   // this->handContainer = handContainer; // TODO: fix !
 
   mainVerticalContainer->addWidget(handContainer);
-  qDebug() << "mainVerticalContainer is" << mainVerticalContainer;
-
-  QHBoxLayout *L = new QHBoxLayout(handContainer);
+  QHBoxLayout *L = new QHBoxLayout(this->handContainer);
 
   for (int i = 0; i < 6; i++) {
+    QHBoxLayout *cardLayout = new QHBoxLayout();
+    L->addLayout(cardLayout);
+
+    cardLayout->addWidget(hand[i]);
     L->addWidget(hand[i]);
 
     connect(hand[i], &ClanCard::clicked, this, &Board::onClanCardClicked);
@@ -85,21 +90,42 @@ void Board::placeACard(int turn) {
     // player 1
     border->getCurrentClickedStone()->getLayoutFormation1()->addWidget(
         currentClanCardClicked);
+    // remove current card from hand
+    for (int i = 0; i < 6; i++) {
+      if (game->getPlayer1()->getHand()[i] == currentClanCardClicked) {
+        game->getPlayer1()->getHand()[i] = nullptr;
+        // draw a new card from deck
+        game->getPlayer1()->getHand()[i] = game->getDeck()->draw();
+        break;
+      }
+    }
   } else {
     // player 2
     border->getCurrentClickedStone()->getLayoutFormation2()->addWidget(
         currentClanCardClicked);
-  }
 
-  // TODO
-  // remove current card from hand
-  // draw a new card from deck
+    // remove current card from hand
+    for (int i = 0; i < 6; i++) {
+      if (game->getPlayer2()->getHand()[i] == currentClanCardClicked) {
+        game->getPlayer2()->getHand()[i] = nullptr;
+        // draw a new card from deck
+        game->getPlayer2()->getHand()[i] = game->getDeck()->draw();
+        break;
+      }
+    }
+  }
 }
 
 void Board::resetCurrentTurn() {
+  currentClanCardClicked->setStyleSheet(
+      currentClanCardClicked->getBackgroundColor() + "border: 0px;");
+
   currentClanCardClicked = nullptr;
   border->resetCurrentClickedStone();
-  mainVerticalContainer->removeWidget(handContainer);
-  delete handContainer;
-  handContainer = nullptr;
+
+  if (handContainer != nullptr) {
+    mainVerticalContainer->removeWidget(handContainer);
+    handContainer->hide(); // TODO: clean this and clean memory
+    handContainer = nullptr;
+  }
 }

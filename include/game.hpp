@@ -9,7 +9,10 @@ class Game {
 public:
   Game();
   void launch();
-  void startTurn(Player *player);
+  Player *getPlayer1() { return player1; };
+  Player *getPlayer2() { return player2; };
+  Deck *getDeck() { return deck; };
+  void startTurn();
   void endTurn();
   bool hasWinner() {
     return false;

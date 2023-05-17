@@ -37,7 +37,7 @@ private:
   QMenu *gameMenu;
   Border *border;
   QVBoxLayout *mainVerticalContainer;
-  QWidget *handContainer = nullptr;
+  QWidget *handContainer;
   ClanCard *currentClanCardClicked = nullptr;
 
   void onClanCardClicked(ClanCard *clanCard);

@@ -14,7 +14,10 @@ class Border : public QLabel {
 public:
   Border(QWidget *parent = nullptr);
   Stone *getCurrentClickedStone() { return currentClickedStone; };
-  void resetCurrentClickedStone() { currentClickedStone = nullptr; };
+  void resetCurrentClickedStone() {
+    currentClickedStone->getStoneMain()->setStyleSheet("border: 0px;");
+    currentClickedStone = nullptr;
+  };
 
 private:
   Stone *currentClickedStone;
