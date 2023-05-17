@@ -13,6 +13,7 @@ class Border : public QLabel {
 
 public:
   Border(QWidget *parent = nullptr);
+  Stone *getCurrentClickedStone() { return currentClickedStone; };
 
 private:
   Stone *currentClickedStone;

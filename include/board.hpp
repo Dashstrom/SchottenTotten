@@ -19,6 +19,7 @@ class Board : public QMainWindow {
 public:
   Board(QWidget *parent = nullptr);
   void printHand(Player *player);
+  ClanCard *getCurrentClanCardClicked() { return currentClanCardClicked; };
 
 private slots:
   void onRestartActionTriggered();
@@ -29,4 +30,7 @@ private:
   QMenuBar *menuBar;
   QMenu *gameMenu;
   QVBoxLayout *mainVerticalContainer;
+  ClanCard *currentClanCardClicked;
+
+  void onClanCardClicked(ClanCard *clanCard);
 };

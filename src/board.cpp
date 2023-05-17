@@ -48,5 +48,20 @@ void Board::printHand(Player *player) {
 
   for (int i = 0; i < 6; i++) {
     L->addWidget(hand[i]);
+
+    connect(hand[i], &ClanCard::clicked, this, &Board::onClanCardClicked);
   }
+}
+
+void Board::onClanCardClicked(ClanCard *clanCard) {
+  qDebug() << "clan card clicked" << clanCard;
+
+  if (currentClanCardClicked) {
+
+    currentClanCardClicked->setStyleSheet(
+        currentClanCardClicked->getBackgroundColor() + "border: 0px;");
+  }
+  currentClanCardClicked = clanCard;
+  currentClanCardClicked->setStyleSheet(
+      currentClanCardClicked->getBackgroundColor() + "border: 2px solid red;");
 }

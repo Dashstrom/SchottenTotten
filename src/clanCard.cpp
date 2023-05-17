@@ -25,8 +25,8 @@ ClanCard::ClanCard(int s, ClanCardColor c)
     break;
   }
 
-  QString style = QString("background-color: %1;").arg(qcolor.name());
-  this->setStyleSheet(style);
+  backgroundColor = QString("background-color: %1;").arg(qcolor.name());
+  this->setStyleSheet(backgroundColor);
   this->setFixedSize(100, 100);
   this->setAlignment(Qt::AlignCenter);
 };
