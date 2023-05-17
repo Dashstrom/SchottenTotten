@@ -3,7 +3,7 @@
 Game::Game() {
   deck = new Deck();
   player1 = new Player(deck);
-  // player2 = new Player(deck);
+  player2 = new Player(deck);
 
   // start
   new StartModal(this);

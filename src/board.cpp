@@ -36,7 +36,8 @@ void Board::onQuitActionTriggered() {
 void Board::printHand(Player *player) {
   const ClanCard *hand = player->getHand();
 
-  QLabel *handLabel = new QLabel("Your hand :");
+  QLabel *handLabel = new QLabel("Click on a stone, then on a clan card, to "
+                                 "add it to a formation. Your hand is :");
   handLabel->setAlignment(Qt::AlignCenter);
   mainVerticalContainer->addWidget(handLabel);
 

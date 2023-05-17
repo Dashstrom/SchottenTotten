@@ -5,17 +5,26 @@ Border::Border(QWidget *parent) : QLabel(parent) {
 
   QHBoxLayout *L = new QHBoxLayout(parent);
 
-  // compute responsive dimensions
-  // TODO: make it responsive with window resize
-  QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
-  int screenWidth = screenGeometry.width();
-  int screenHeight = screenGeometry.height();
-
   // generate 9 stones
   for (int i = 0; i < 9; i++) {
-    QLabel *stoneLabel = new QLabel();
-    stoneLabel->setPixmap(image.scaled(screenWidth * 0.12, screenHeight * 0.08,
-                                       Qt::KeepAspectRatio));
-    L->addWidget(stoneLabel);
+    Stone *stone = new Stone();
+
+    // Connect the custom clicked signal of each stone to a slot in the Border
+    // class
+    connect(stone, &Stone::clicked, this, &Border::onStoneClicked);
+
+    L->addWidget(stone);
   }
+}
+
+void Border::onStoneClicked(Stone *stone) {
+  // Access the instance of the clicked stone here
+  // ...
+  qDebug() << "border stone clicked";
+
+  if (currentClickedStone) {
+    currentClickedStone->getStoneMain()->setStyleSheet("border: 0px;");
+  }
+  currentClickedStone = stone;
+  currentClickedStone->getStoneMain()->setStyleSheet("border: 2px solid red;");
 }
