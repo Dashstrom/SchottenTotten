@@ -13,6 +13,8 @@ public:
   Stone(QWidget *parent = nullptr);
 
   QLabel *getStoneMain() const { return stoneMain; }
+  QVBoxLayout *getLayoutFormation1() { return layoutFormation1; }
+  QVBoxLayout *getLayoutFormation2() { return layoutFormation2; }
 
 signals:
   void clicked(Stone *stone);
@@ -36,7 +38,7 @@ protected:
   //   }
 
 private:
-  QWidget *formation1;
+  QVBoxLayout *layoutFormation1;
   QLabel *stoneMain;
-  QWidget *formation2;
+  QVBoxLayout *layoutFormation2;
 };

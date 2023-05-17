@@ -5,8 +5,11 @@ Stone::Stone(QWidget *parent) : QWidget(parent) {
 
   QVBoxLayout *L = new QVBoxLayout(this);
 
-  formation1 = new QWidget();
-  formation2 = new QWidget();
+  QWidget *formation1 = new QWidget();
+  layoutFormation1 = new QVBoxLayout(formation1);
+
+  QWidget *formation2 = new QWidget();
+  layoutFormation2 = new QVBoxLayout(formation2);
 
   // compute responsive dimensions
   // TODO: make it responsive with window resize

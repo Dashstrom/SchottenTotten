@@ -1,10 +1,13 @@
 #pragma once
 
+class Game;
 #include "border.hpp"
 #include "clanCard.hpp"
+#include "game.hpp"
 #include "player.hpp"
 #include <QAction>
 #include <QColor>
+#include <QCoreApplication>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
@@ -17,20 +20,25 @@ class Board : public QMainWindow {
   Q_OBJECT
 
 public:
-  Board(QWidget *parent = nullptr);
+  Board(QWidget *parent = nullptr, Game *game = nullptr);
   void printHand(Player *player);
   ClanCard *getCurrentClanCardClicked() { return currentClanCardClicked; };
+  void placeACard(int turn);
+  void resetCurrentTurn();
 
 private slots:
   void onRestartActionTriggered();
   void onQuitActionTriggered();
 
 private:
+  Game *game;
   QWidget *centralWidget;
   QMenuBar *menuBar;
   QMenu *gameMenu;
+  Border *border;
   QVBoxLayout *mainVerticalContainer;
-  ClanCard *currentClanCardClicked;
+  QWidget *handContainer = nullptr;
+  ClanCard *currentClanCardClicked = nullptr;
 
   void onClanCardClicked(ClanCard *clanCard);
 };

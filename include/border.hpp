@@ -14,6 +14,7 @@ class Border : public QLabel {
 public:
   Border(QWidget *parent = nullptr);
   Stone *getCurrentClickedStone() { return currentClickedStone; };
+  void resetCurrentClickedStone() { currentClickedStone = nullptr; };
 
 private:
   Stone *currentClickedStone;

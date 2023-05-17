@@ -27,4 +27,6 @@ void Border::onStoneClicked(Stone *stone) {
   }
   currentClickedStone = stone;
   currentClickedStone->getStoneMain()->setStyleSheet("border: 2px solid red;");
+
+  // TODO if (currentClanCardClicked == nullptr) game->endTurn()
 }
