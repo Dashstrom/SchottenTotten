@@ -8,7 +8,7 @@ class Deck {
 public:
   Deck();
 
-  ClanCard draw() {
+  ClanCard *draw() {
     // Return the top card and remove it from the deck
     return cards[--top];
   }
@@ -16,6 +16,6 @@ public:
   bool isEmpty() const { return top == 0; }
 
 private:
-  ClanCard cards[54];
+  ClanCard *cards[54];
   int top{54}; // Index of the top card in the deck
 };

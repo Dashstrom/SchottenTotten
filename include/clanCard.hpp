@@ -1,11 +1,14 @@
 #pragma once
 
+#include <QColor>
+#include <QLabel>
+
 enum class ClanCardColor { Green, Blue, Red, Yellow, Purple, Brown };
 
-class ClanCard {
+class ClanCard : public QLabel {
 public:
-  ClanCard() : strength(0), color(ClanCardColor::Green){};
-  ClanCard(int s, ClanCardColor c) : strength(s), color(c){};
+  ClanCard(int s = 0, ClanCardColor c = ClanCardColor::Green);
+
   int getStrength() const { return strength; };
   ClanCardColor getColor() const { return color; };
 

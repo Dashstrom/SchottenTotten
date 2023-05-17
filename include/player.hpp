@@ -6,8 +6,8 @@
 class Player {
 public:
   Player(Deck *deck);
-  const ClanCard *getHand() const { return hand; };
+  ClanCard **getHand() { return hand; };
 
 private:
-  ClanCard hand[6];
+  ClanCard *hand[6];
 };

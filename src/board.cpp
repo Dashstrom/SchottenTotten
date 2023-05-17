@@ -34,7 +34,7 @@ void Board::onQuitActionTriggered() {
 }
 
 void Board::printHand(Player *player) {
-  const ClanCard *hand = player->getHand();
+  ClanCard **hand = player->getHand();
 
   QLabel *handLabel = new QLabel("Click on a stone, then on a clan card, to "
                                  "add it to a formation. Your hand is :");
@@ -47,35 +47,6 @@ void Board::printHand(Player *player) {
   QHBoxLayout *L = new QHBoxLayout(handContainer);
 
   for (int i = 0; i < 6; i++) {
-    QLabel *cardLabel = new QLabel(QString::number(hand[i].getStrength()));
-
-    QColor qcolor;
-    switch (hand[i].getColor()) {
-    case ClanCardColor::Green:
-      qcolor = QColor(Qt::green);
-      break;
-    case ClanCardColor::Blue:
-      qcolor = QColor(Qt::blue);
-      break;
-    case ClanCardColor::Red:
-      qcolor = QColor(Qt::red);
-      break;
-    case ClanCardColor::Yellow:
-      qcolor = QColor(Qt::yellow);
-      break;
-    case ClanCardColor::Purple:
-      qcolor = QColor(128, 0, 128); // purple color
-      break;
-    case ClanCardColor::Brown:
-      qcolor = QColor(165, 42, 42); // brown color
-      break;
-    }
-
-    QString style = QString("background-color: %1;").arg(qcolor.name());
-    cardLabel->setStyleSheet(style);
-    cardLabel->setFixedSize(100, 100);
-    cardLabel->setAlignment(Qt::AlignCenter);
-
-    L->addWidget(cardLabel);
+    L->addWidget(hand[i]);
   }
 }
