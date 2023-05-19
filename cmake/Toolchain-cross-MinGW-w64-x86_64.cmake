@@ -1,4 +1,4 @@
-# https://cmake.org/Wiki/CMake_Cross_Compiling
+# https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/CrossCompiling
 
 message(STATUS "Using Toolchain-cross-MinGW-w64-x86_64.cmake")
 

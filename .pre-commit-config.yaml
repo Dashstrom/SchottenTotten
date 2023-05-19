@@ -9,3 +9,10 @@ repos:
   rev: v14.0.6
   hooks:
   - id: clang-format
+    args: [--style=Google]
+- repo: https://github.com/pocc/pre-commit-hooks
+  rev: 336fdd7c3cab698ead0b1c95157b9e74d3906b62
+  hooks:
+  - id: cpplint
+    args:
+      - "--filter=-build/include_subdir"
