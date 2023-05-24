@@ -1,21 +1,27 @@
+/*
+Copyright 2023
+Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+*/
 #pragma once
 
+#include <QList>
 #include <QMetaEnum>
 #include <QObject>
-#include <QList>
 #include <algorithm>
 #include <random>
+
 #include "clan_card_model.hpp"
 
 class DeckModel : public QObject {
   Q_OBJECT
-public:
+
+ public:
   DeckModel() {
     // Initialize the deck with random cards
-    QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::ClanCardColor>();
+    QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::CardColor>();
     for (int i = 0; i < metaEnum.keyCount(); ++i) {
-      for (int strength = 1; strength <= 9; strength ++) {
-        auto color = static_cast<ClanCardModel::ClanCardColor>(metaEnum.value(i));
+      for (int strength = 1; strength <= 9; strength++) {
+        auto color = static_cast<ClanCardModel::CardColor>(metaEnum.value(i));
         cards.append(new ClanCardModel(strength, color));
       }
     }
@@ -24,7 +30,6 @@ public:
     std::random_device rd;
     std::mt19937 gen(rd());
     std::shuffle(cards.begin(), cards.end(), gen);
-
   }
 
   CardModel *draw() {
@@ -34,8 +39,6 @@ public:
 
   bool isEmpty() const { return cards.isEmpty(); }
 
-private:
+ private:
   QList<CardModel *> cards;
 };
-
-

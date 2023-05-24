@@ -6,21 +6,31 @@ Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
 
 #include <QGuiApplication>
 #include <QLabel>
+#include <QList>
 #include <QPixmap>
 #include <QScreen>
 #include <QVBoxLayout>
-#include <QList>
 
+#include "card_model.hpp"
 
 class StoneModel : public QObject {
   Q_OBJECT
-/*
+
  public:
-  QList<int> getPlayer1Deck() const { return player1Deck; };
-  QList<int> getPlayer2Deck() const { return player2Deck; };
+  void addPlayer1Card(CardModel *card) {
+    player1Combo.append(card);
+    emit player1ComboChanged(player1Combo);
+  }
+  void addPlayer2Card(CardModel *card) {
+    player2Combo.append(card);
+    emit player2ComboChanged(player2Combo);
+  }
 
  private:
-  QList<int> player1Deck;
-  QList<int> player2Deck;
-*/
+  QList<CardModel *> player1Combo;
+  QList<CardModel *> player2Combo;
+
+ signals:
+  void player1ComboChanged(const QList<CardModel *>);
+  void player2ComboChanged(const QList<CardModel *>);
 };
