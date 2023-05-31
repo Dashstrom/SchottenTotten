@@ -52,7 +52,7 @@ class StoneModel : public QObject {
     QList<CardModel *> enemyCards = m_formations[player->enemyId()];
 
     // TODO(Dashstrom) : predict if stone can't be claim
-    if (playerCards.count() == enemyCards.count() == m_size) return false;
+    if (playerCards.count() != enemyCards.count() || playerCards.count() != m_size) return false;
 
     for (Rule *rule : m_rules) {
       bool rulePlayer = rule->match(playerCards);
