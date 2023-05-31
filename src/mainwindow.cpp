@@ -1,7 +1,7 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
 #include "mainwindow.hpp"
 
 #include <QDebug>
@@ -15,7 +15,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   GameModel* gameModel = new GameModel();
   GameView* gameView = new GameView(gameModel, this);
   QIcon icon("resources/favicon.ico");
-  this->setWindowTitle("BLABLA");
+
+  this->setWindowTitle("Schotten totten");
   this->setCentralWidget(gameView);
   this->setMinimumHeight(256);
   this->setMinimumWidth(256);

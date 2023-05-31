@@ -1,69 +1,81 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
 #pragma once
 
+#include <QGridLayout>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QLineEdit>
+#include <QObject>
 #include <QPixmap>
+#include <QPushButton>
 #include <QString>
-#include <QVBoxLayout>
 #include <QWidget>
 
+#include "button_view.hpp"
 #include "card_model.hpp"
 #include "card_view.hpp"
+#include "formation_view.hpp"
+#include "player_model.hpp"
 #include "stone_model.hpp"
 
 class StoneView : public QWidget {
-  QWidget* formation1;
-  QWidget* formation2;
-  QVBoxLayout* layoutFormation1;
-  QVBoxLayout* layoutFormation2;
-  QVBoxLayout* layout;
-  QLabel* stoneImage;
+  Q_OBJECT
+
+  FormationView* formationView1;
+  FormationView* formationView2;
+  QGridLayout* layout;
+  ButtonView* stoneButton;
   StoneModel* stone;
 
  public:
-  explicit StoneView(StoneModel* model, QWidget* parent = nullptr)
+  enum StoneActionType { Formation1, Formation2, Stone };
+  Q_ENUM(StoneActionType)
+  explicit StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
+                     QWidget* parent = nullptr)
       : QWidget(parent) {
+    qDebug() << "Creating stone view";
     stone = model;
-    QPixmap image("resources/stone.jpg");
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout = new QGridLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
 
-    formation1 = new QWidget(this);
-    layoutFormation1 = new QVBoxLayout(formation1);
-
-    formation2 = new QWidget(this);
-    layoutFormation2 = new QVBoxLayout(formation2);
+    formationView1 = new FormationView(this);
+    formationView1->setCards(stone->getCards(player));
+    formationView2 = new FormationView(this);
+    formationView2->setCards(stone->getCards(enemy));
 
     // compute responsive dimensions
     // TODO(Marin Bouanchaud): make it responsive with window resize
-    QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
-    int screenWidth = screenGeometry.width();
-    int screenHeight = screenGeometry.height();
 
-    stoneImage = new QLabel();
-    stoneImage->setPixmap(image.scaled(screenWidth * 0.12, screenHeight * 0.08,
-                                       Qt::KeepAspectRatio));
+    stoneButton = new ButtonView("resources/stone.jpg", this);
 
-    layout->addWidget(formation1);
-    layout->addWidget(stoneImage);
-    layout->addWidget(formation2);
+    layout->addWidget(formationView2, 0, 0);
+    layout->addWidget(stoneButton, 1, 0);
+    layout->addWidget(formationView1, 2, 0);
 
-    connect(model, &StoneModel::player1ComboChanged, this,
-            [&](QList<CardModel*> cards) {
-              for (auto card : cards) {
-                layoutFormation1->addWidget(new CardView(card, formation1));
-              }
-            });
+    // define the relative proportions of the rows
+    layout->setRowStretch(0, 100);
+    layout->setRowStretch(1, 60);
+    layout->setRowStretch(2, 100);
 
-    connect(model, &StoneModel::player2ComboChanged, this,
-            [&](QList<CardModel*> cards) {
-              for (auto card : cards) {
-                layoutFormation1->addWidget(new CardView(card, formation2));
-              }
-            });
+    connect(stone, &StoneModel::changed, this, [this, player, enemy] {
+      this->formationView1->setCards(this->stone->getCards(player));
+      this->formationView2->setCards(this->stone->getCards(enemy));
+    });
+
+    connect(formationView1, &FormationView::clicked, this,
+            [&] { emit action(StoneView::Formation1); });
+    connect(stoneButton, &ButtonView::clicked, this,
+            [&] { emit action(StoneView::Stone); });
+    connect(formationView2, &FormationView::clicked, this,
+            [&] { emit action(StoneView::Formation2); });
   }
+  StoneModel* getStone() { return stone; }
+
+ signals:
+  void action(StoneActionType actionType);
 };

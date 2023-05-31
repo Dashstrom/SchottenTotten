@@ -1,7 +1,7 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
 #pragma once
 
 #include <QList>
@@ -19,6 +19,7 @@ class DeckModel : public QObject {
   DeckModel() {
     // Initialize the deck with random cards
     QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::CardColor>();
+
     for (int i = 0; i < metaEnum.keyCount(); ++i) {
       for (int strength = 1; strength <= 9; strength++) {
         auto color = static_cast<ClanCardModel::CardColor>(metaEnum.value(i));
@@ -32,7 +33,7 @@ class DeckModel : public QObject {
     std::shuffle(cards.begin(), cards.end(), gen);
   }
 
-  CardModel *draw() {
+  CardModel* draw() {
     // Return the top card and remove it from the deck
     return cards.takeFirst();
   }
@@ -40,5 +41,5 @@ class DeckModel : public QObject {
   bool isEmpty() const { return cards.isEmpty(); }
 
  private:
-  QList<CardModel *> cards;
+  QList<CardModel*> cards;
 };

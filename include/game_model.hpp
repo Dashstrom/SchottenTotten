@@ -1,7 +1,7 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
 #pragma once
 
 #include <QObject>
@@ -23,20 +23,35 @@ class GameModel : public QObject {
       stones.append(new StoneModel());
     }
     deck = new DeckModel();
-    player1 = new PlayerModel();
-    player2 = new PlayerModel();
+    players[0] = new PlayerModel(0);
+    players[1] = new PlayerModel(1);
+
     for (int cardsDrawn = 0; cardsDrawn < 6; cardsDrawn++) {
-      player1->getCards().append(deck->draw());
-      player2->getCards().append(deck->draw());
+      players[0]->pickCard(deck->draw());
+      players[1]->pickCard(deck->draw());
     }
   }
+
   void setTurn(size_t turn) {
     m_turn = turn;
     emit turnChanged(turn);
   }
+
+  void nextTurn() {
+    m_turn++;
+    emit turnChanged(m_turn);
+  }
+
   size_t turn() const { return m_turn; }
+
   QList<StoneModel*> getStones() const { return stones; }
+
   DeckModel* getDeck() const { return deck; }
+
+  PlayerModel* getPlayer() const { return players[m_turn & 1]; }
+
+  PlayerModel* getEnemy() const { return players[(m_turn + 1) & 1]; }
+
  signals:
   void turnChanged(size_t);
 
@@ -44,6 +59,5 @@ class GameModel : public QObject {
   size_t m_turn = 0;
   QList<StoneModel*> stones;
   DeckModel* deck;
-  PlayerModel* player1;
-  PlayerModel* player2;
+  PlayerModel* players[2];
 };
