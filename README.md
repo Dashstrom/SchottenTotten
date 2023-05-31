@@ -10,6 +10,12 @@
 
 Gameplay in Schotten Totten resembles simultaneous play of nine separate hands of poker, but where each hand has only three cards in it. There are nine "boundary" stones between players at the start of the game. Players vie to win five of the stones, or three adjacent ones, to win the game.
 
+## Download
+
+```bash
+git clone https://github.com/Dashstrom/SchottenTotten
+```
+
 ## Build requirements on Windows
 
 Install Visual Studio Build Tools 2019 from [visualstudio.microsoft.com](https://visualstudio.microsoft.com/fr/downloads/) Dont forget to add the "C++ Clang tools for Windows".
@@ -17,67 +23,56 @@ Install Visual Studio Build Tools 2019 from [visualstudio.microsoft.com](https:/
 1. Add `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\Llvm\x64\bin` to `PATH`
 2. Set `VCINSTALLDIR` to `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC`
 
-Download the Windows QT installer at [qt.io](https://www.qt.io/download)
+Download the Windows QT installer at [qt.io](https://www.qt.io/download-open-source)
 
-1. Make a personal installation and install Qt6 MSVC version and CMAKE.
-2. Add `C:\Qt\Tools\CMake_64\bin` and `C:\Qt\6.4.3\msvc2019_64\bin` to your `PATH`
+1. Make a personal installation and install `Qt6.5 MSVC` version and `CMAKE`.
+2. Add `C:\Qt\Tools\CMake_64\bin` and `C:\Qt\6.5.0\msvc2019_64\bin` to your `PATH`
 
 You can now build the project with :
 
-```ps
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release; cmake --build build --config Release
 .\build\Release\SchottenTotten.exe
 ```
 
+Completion requirements :
+
+Just add `C:\Qt\6.5.0\msvc2019_64\include`, `C:\Qt\6.5.0\msvc2019_64\include\QtCore` and `C:\Qt\6.5.0\msvc2019_64\include\QtWidgets` to your include path in your favorite IDE.
+
 ## Build requirements on MacOS
 
-Note : CMakeLists.txt is currently configured for `arm64` only. You can change for `x86_64`.
-
-Install cmake and qt with [brew](https://formulae.brew.sh/) :
+Install [brew](https://formulae.brew.sh/)
 
 ```bash
-brew install cmake
-brew install qt
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Add the following to ~/.zshrc (if using zsh) :
+Install `cmake` and `qt6` :
 
 ```bash
-export PATH="/opt/homebrew/opt/cmake/bin:$PATH"
-export PATH="/opt/homebrew/opt/qt6/bin:$PATH"
+brew install cmake qt6
 ```
 
-reload terminal to apply changes or run `source ~/.zshrc`
+Add the following to `~/.zshrc` or `~/.bashrc` :
+
+```bash
+export PATH="/opt/homebrew/opt/cmake/bin:/opt/homebrew/opt/qt6/bin:$PATH"
+```
 
 Build and run with :
 
-```ps
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release; cmake --build build --config Release
 ./build/SchottenTotten.app/Contents/MacOS/SchottenTotten
 ```
 
-## Completion requirements
+## Install commit requirements
 
-Just add `C:\Qt\6.4.3\msvc2019_64\include`, `C:\Qt\6.4.3\msvc2019_64\include\QtCore` and `C:\Qt\6.4.3\msvc2019_64\include\QtWidgets` to your include path in your favorite IDE.
-
-## Commit requirements
-
-For setup commits
+Setup precommit for autoformat.
 
 ```bash
-git clone https://github.com/Dashstrom/SchottenTotten
-pip install pre-commit
+pip install pre-commit cpplint clang-format
 pre-commit install
-```
-
-For each commit
-
-```bash
-git add .
-pre-commit run -a
-git commit -m "Hello !"
 ```
 
 ## Generate a release with binaries
