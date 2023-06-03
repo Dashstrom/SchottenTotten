@@ -39,6 +39,7 @@ class DeckModel : public QObject {
   }
 
   bool isEmpty() const { return cards.isEmpty(); }
+  int countCards() const { return cards.count(); }
 
  private:
   QList<CardModel*> cards;
