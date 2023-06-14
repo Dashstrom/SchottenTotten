@@ -12,6 +12,7 @@
 #include "stone_model.hpp"
 
 #define STONE_COUNT 9
+class PlayerRobotModel;
 
 class GameModel : public QObject {
   Q_OBJECT
@@ -52,6 +53,12 @@ class GameModel : public QObject {
 
   PlayerModel* getEnemy() const { return players[(m_turn + 1) & 1]; }
 
+  void setRobot(PlayerRobotModel* robot) {
+    players[1] = reinterpret_cast<PlayerModel*>(robot);
+    for (int cardsDrawn = 0; cardsDrawn < 6; cardsDrawn++) {
+      players[1]->pickCard(deck->draw());
+    }
+  }
  signals:
   void turnChanged(size_t);
 

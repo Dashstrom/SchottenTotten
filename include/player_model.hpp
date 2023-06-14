@@ -10,6 +10,7 @@
 
 #include "clan_card_model.hpp"
 #include "deck_model.hpp"
+class GameModel;
 
 class PlayerModel : public QObject {
   Q_OBJECT

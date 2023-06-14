@@ -2,7 +2,6 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
 
 #include "card_layout.hpp"
 

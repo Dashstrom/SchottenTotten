@@ -52,7 +52,9 @@ class StoneModel : public QObject {
     QList<CardModel *> enemyCards = m_formations[player->enemyId()];
 
     // TODO(Dashstrom) : predict if stone can't be claim
-    if (playerCards.count() != enemyCards.count() || playerCards.count() != m_size) return false;
+    if (playerCards.count() != enemyCards.count() ||
+        playerCards.count() != m_size)
+      return false;
 
     for (Rule *rule : m_rules) {
       bool rulePlayer = rule->match(playerCards);
@@ -73,7 +75,7 @@ class StoneModel : public QObject {
     return sumPlayer > sumEnemy;
   }
 
-  int claimed(PlayerModel *player) const { return m_claimed; }
+  int claimed(PlayerModel *player) const { return m_claimed == player->id(); }
 
   void addSize(int size) { m_size += size; }
 
