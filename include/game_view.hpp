@@ -15,7 +15,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPalette>
-#include <QPixmap>
 #include <QPushButton>
 #include <QRandomGenerator>
 #include <QSizePolicy>
@@ -49,8 +48,8 @@ class GameView : public QWidget {
 
   GameModel* game;
 
-  QPushButton* buttonFriend;
-  QPushButton* buttonComputer;
+  ButtonView* buttonFriend;
+  ButtonView* buttonComputer;
   int resizeFactor = 100;
 
  public:
@@ -61,23 +60,17 @@ class GameView : public QWidget {
     layout = new QGridLayout(this);
 
     // Button for player choice (friend = button1, robot = button 2)
-    buttonFriend = new QPushButton(this);
-    buttonComputer = new QPushButton(this);
-    QPixmap buttonImageFriend("resources/players/friend.jpg");
-    QPixmap buttonImageComputer("resources/players/computer.jpg");
-    buttonFriend->setIcon(buttonImageFriend);
-    buttonFriend->setIconSize(buttonImageFriend.size());
-    buttonComputer->setIcon(buttonImageComputer);
-    buttonComputer->setIconSize(buttonImageComputer.size());
+    buttonFriend = new ButtonView("resources/players/friend.jpg", this);
+    buttonComputer = new ButtonView("resources/players/computer.jpg", this);
 
     layout->addWidget(buttonFriend, 0, 0);
     layout->addWidget(buttonComputer, 0, 1);
 
     // connexion of buttons
-    connect(buttonFriend, &QPushButton::clicked, this,
+    connect(buttonFriend, &ButtonView::clicked, this,
             [this]() { handleButton1Clicked(); });
 
-    connect(buttonComputer, &QPushButton::clicked, this,
+    connect(buttonComputer, &ButtonView::clicked, this,
             [this]() { handleButton2Clicked(); });
   }
 
@@ -152,7 +145,8 @@ class GameView : public QWidget {
             qDebug() << stoneModel;
             qDebug() << actionType;
             if ((actionType == StoneView::Formation1 ||
-                 actionType == StoneView::Formation2) &&
+                 actionType == StoneView::Formation2 ||
+                 actionType == StoneView::Stone) &&
                 cardViewSelected != nullptr) {
               qDebug() << "playing";
               try {
@@ -207,7 +201,7 @@ class GameView : public QWidget {
   void paintEvent(QPaintEvent* e) override {
     QPainter painter(this);
     painter.drawPixmap(0, 0,
-                       QPixmap("resources/woods/wood.28.png").scaled(size()));
+                       QPixmap("resources/background.jpg").scaled(size()));
     QWidget::paintEvent(e);
   }
 
@@ -271,7 +265,7 @@ class GameView : public QWidget {
         "", Qt::FindDirectChildrenOnly));
     for (int i = 0; i < cards.count(); i++) {
       layoutEnemyHand->addWidget(
-          new ButtonView("resources/cards/hidden.png", widgetEnemyHand));
+          new ButtonView("resources/hidden.jpg", widgetEnemyHand));
     }
   }
 };

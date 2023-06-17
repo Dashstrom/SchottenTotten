@@ -16,21 +16,20 @@
 #include <QWidget>
 
 #include "card_model.hpp"
+#include "image_manager.hpp"
 
 class ButtonView : public QLabel {
   Q_OBJECT
 
  public:
-  QPixmap* image;
-
   explicit ButtonView(QString path, QWidget* parent = nullptr)
-      : QLabel(parent) {
+      : QLabel(parent), m_path(path) {
     qDebug() << "Loading" << path;
-    image = new QPixmap(path);
+    image = ImageManager::getImageAtSize(path, width(), height());
     resize();
   }
   void resize() {
-    setPixmap(image->scaled(width(), height(), Qt::KeepAspectRatio));
+    setPixmap(ImageManager::getImageAtSize(m_path, width(), height()));
   }
 
  signals:
@@ -46,9 +45,13 @@ class ButtonView : public QLabel {
   }
 
   void resizeEvent(QResizeEvent* event) override {
-    // Call the base class implementation
-    QLabel::resizeEvent(event);
     // set a scaled pixmap to a w x h window keeping its aspect ratio
     resize();
+    // Call the base class implementation
+    QLabel::resizeEvent(event);
   }
+
+ private:
+  QPixmap image;
+  QString m_path;
 };
