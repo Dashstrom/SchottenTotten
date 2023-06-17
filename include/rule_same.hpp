@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_RULE_SAME_HPP_
+#define INCLUDE_RULE_SAME_HPP_
 
 #include <QList>
 
@@ -23,3 +24,5 @@ class RuleSame : public Rule {
     return true;
   }
 };
+
+#endif  // INCLUDE_RULE_SAME_HPP_

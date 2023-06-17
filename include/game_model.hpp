@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_GAME_MODEL_HPP_
+#define INCLUDE_GAME_MODEL_HPP_
 
 #include <QObject>
 #include <QString>
@@ -98,3 +99,5 @@ class GameModel : public QObject {
   DeckModel* deck;
   PlayerModel* players[2];
 };
+
+#endif  // INCLUDE_GAME_MODEL_HPP_

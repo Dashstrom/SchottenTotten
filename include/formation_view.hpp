@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_FORMATION_VIEW_HPP_
+#define INCLUDE_FORMATION_VIEW_HPP_
 
 #include <QGuiApplication>
 #include <QLabel>
@@ -49,3 +50,5 @@ class FormationView : public QWidget {
     emit clicked();
   }
 };
+
+#endif  // INCLUDE_FORMATION_VIEW_HPP_

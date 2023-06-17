@@ -3,7 +3,8 @@
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
    insired from https://doc.qt.io/qt-6/layout.html
  */
-#pragma once
+#ifndef INCLUDE_CARD_LAYOUT_HPP_
+#define INCLUDE_CARD_LAYOUT_HPP_
 
 #include <QList>
 #include <QtWidgets>
@@ -32,3 +33,5 @@ class CardLayout : public QLayout {
   QList<QLayoutItem *> m_items;
   double m_radians;
 };
+
+#endif  // INCLUDE_CARD_LAYOUT_HPP_

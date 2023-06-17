@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_STONE_VIEW_HPP_
+#define INCLUDE_STONE_VIEW_HPP_
 
 #include <QGridLayout>
 #include <QGuiApplication>
@@ -98,3 +99,5 @@ class StoneView : public QWidget {
  signals:
   void action(StoneActionType actionType);
 };
+
+#endif  // INCLUDE_STONE_VIEW_HPP_

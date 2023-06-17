@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_BUTTON_VIEW_HPP_
+#define INCLUDE_BUTTON_VIEW_HPP_
 
 #include <QGraphicsDropShadowEffect>
 #include <QGuiApplication>
@@ -52,3 +53,5 @@ class ButtonView : public QLabel {
     resize();
   }
 };
+
+#endif  // INCLUDE_BUTTON_VIEW_HPP_

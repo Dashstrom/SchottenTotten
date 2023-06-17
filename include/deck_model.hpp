@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_DECK_MODEL_HPP_
+#define INCLUDE_DECK_MODEL_HPP_
 
 #include <QList>
 #include <QMetaEnum>
@@ -44,3 +45,5 @@ class DeckModel : public QObject {
  private:
   QList<CardModel*> cards;
 };
+
+#endif  // INCLUDE_DECK_MODEL_HPP_

@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_CLAN_CARD_MODEL_HPP_
+#define INCLUDE_CLAN_CARD_MODEL_HPP_
 
 #include <QColor>
 #include <QMetaEnum>
@@ -35,3 +36,5 @@ class ClanCardModel : public CardModel {
   int m_strength;
   CardModel::CardColor m_color;
 };
+
+#endif  // INCLUDE_CLAN_CARD_MODEL_HPP_

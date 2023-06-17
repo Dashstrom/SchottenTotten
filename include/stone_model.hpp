@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_STONE_MODEL_HPP_
+#define INCLUDE_STONE_MODEL_HPP_
 
 #include <QGuiApplication>
 #include <QLabel>
@@ -112,3 +113,5 @@ class StoneModel : public QObject {
   int m_size = 3;
   int m_claimed = -1;
 };
+
+#endif  // INCLUDE_STONE_MODEL_HPP_

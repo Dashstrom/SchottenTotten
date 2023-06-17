@@ -1,8 +1,10 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
-#pragma once
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
+#ifndef INCLUDE_PLAYER_ROBOT_MODEL_HPP_
+#define INCLUDE_PLAYER_ROBOT_MODEL_HPP_
+
 #include <QRandomGenerator>
 
 #include "player_model.hpp"
@@ -33,3 +35,5 @@ class PlayerRobotModel : public PlayerModel {
     randomStone->addCard(this, randomCard);
   }
 };
+
+#endif  // INCLUDE_PLAYER_ROBOT_MODEL_HPP_

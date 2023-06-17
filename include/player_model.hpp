@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_PLAYER_MODEL_HPP_
+#define INCLUDE_PLAYER_MODEL_HPP_
 
 #include <QList>
 #include <QObject>
@@ -40,3 +41,5 @@ class PlayerModel : public QObject {
   QList<CardModel *> m_cards;
   int m_playerId;
 };
+
+#endif  // INCLUDE_PLAYER_MODEL_HPP_

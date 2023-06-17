@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_CARD_VIEW_HPP_
+#define INCLUDE_CARD_VIEW_HPP_
 
 #include <QGraphicsDropShadowEffect>
 #include <QGuiApplication>
@@ -46,3 +47,5 @@ class CardView : public ButtonView {
 
   CardModel* getCard() const { return card; }
 };
+
+#endif  // INCLUDE_CARD_VIEW_HPP_

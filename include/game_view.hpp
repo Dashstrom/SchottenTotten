@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_GAME_VIEW_HPP_
+#define INCLUDE_GAME_VIEW_HPP_
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
@@ -275,3 +276,5 @@ class GameView : public QWidget {
     }
   }
 };
+
+#endif  // INCLUDE_GAME_VIEW_HPP_
