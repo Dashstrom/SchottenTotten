@@ -50,7 +50,11 @@ class GameModel : public QObject {
     emit turnChanged(m_turn);
   }
 
-  bool isEnd() { return isWinner(getPlayer()) || isWinner(getEnemy()); }
+  bool isEnd() {
+    return isWinner(getPlayer()) || isWinner(getEnemy()) ||
+           (getPlayer()->getCards().size() == 0 &&
+            getEnemy()->getCards().size() == 0);
+  }
 
   bool isWinner(PlayerModel* player) {
     int claimed = 0;
@@ -100,8 +104,11 @@ class GameModel : public QObject {
     if ((claimedPlayer > claimedEnemy) ||
         (claimedAdjacentPlayer > claimedAdjacentEnemy)) {
       return getPlayer()->id();
-    } else {
+    } else if ((claimedPlayer < claimedEnemy) ||
+               (claimedAdjacentPlayer < claimedAdjacentEnemy)) {
       return getEnemy()->id();
+    } else {
+      return -1;
     }
   }
 

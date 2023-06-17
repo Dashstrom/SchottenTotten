@@ -67,7 +67,7 @@ class GameView : public QWidget {
     // Buttons for player choice (friend = button1, robot = button 2)
     buttonFriend = new QPushButton(this);
     buttonComputer = new QPushButton(this);
-    QPixmap buttonImageFriend("resources/players/noOneWon.jpg");
+    QPixmap buttonImageFriend("resources/players/friend.jpg");
     QPixmap buttonImageComputer("resources/players/computer.jpg");
     buttonFriend->setIcon(buttonImageFriend);
     buttonFriend->setIconSize(buttonImageFriend.size());
@@ -102,36 +102,36 @@ class GameView : public QWidget {
   }
 
   void setFinalScreen(size_t playerId) {
+    /*QLayoutItem* child;
+    while ((child = layout->takeAt(0)) != 0) {
+      qDebug() << "Deleting" << child;
+      child->widget()->deleteLater();  // delete the widget
+      delete child;
+    }*/
+    // clearLayout(layout);
+
+    qDebug() << "gagnant :" << playerId;
     if (playerId == 0) {
-      QPixmap finalDisplay("resources/players/noOneWon.png");
+      QPixmap finalDisplay("resources/players/player1Wins.png");
       finalScreen->setPixmap(finalDisplay);
     } else if (playerId == 1) {
-      QPixmap finalDisplay("resources/players/noOneWon.png");
+      QPixmap finalDisplay("resources/players/player2Wins.png");
       finalScreen->setPixmap(finalDisplay);
     } else {
       QPixmap finalDisplay("resources/players/noOneWon.png");
       finalScreen->setPixmap(finalDisplay);
     }
+    qDebug() << "final screen";
 
-    finalScreen->setStyleSheet("background-color: transparent;");
-    finalScreen->raise();  // Pour superposer l'image sur les autres éléments
-    finalScreen->setAlignment(Qt::AlignCenter);
-    layout->addWidget(finalScreen, 0, 0);
+    finalScreen->raise();  // Superposition de l'image
+    // finalScreen->setAlignment();
+    layout->addWidget(finalScreen, 0, Qt::AlignCenter);
   }
 
   void syncPlayer() {
+    qDebug() << "INTO SYNC playerid:" << game->getPlayer()->id();
+    qDebug() << "INTO ELSE";
     // If Robot -> make the robot play
-    if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
-      PlayerRobotModel* robotPlayer =
-          dynamic_cast<PlayerRobotModel*>(game->getPlayer());
-
-      robotPlayer->playTurn(game->getStones());
-      if (!game->getDeck()->isEmpty()) {
-        robotPlayer->pickCard(game->getDeck()->draw());
-      }
-
-      game->nextTurn();
-    }
 
     qDebug() << "Change view of player";
     QLayoutItem* child;
@@ -164,52 +164,64 @@ class GameView : public QWidget {
     layout->setRowStretch(2, 1);
 
     qDebug() << "Create stones";
-    for (StoneModel* stoneModel : game->getStones()) {
-      StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
-                                       game->getEnemy(), widgetStones);
-      layoutStones->addWidget(stone);
-      connect(stone, &StoneView::action, this,
-              [this, stoneModel](StoneView::StoneActionType actionType) {
-                qDebug() << stoneModel;
-                qDebug() << actionType;
-                if ((actionType == StoneView::Formation1 ||
-                     actionType == StoneView::Formation2) &&
-                    cardViewSelected != nullptr) {
-                  qDebug() << "playing";
-                  try {
-                    if (!stoneModel->isFull(game->getPlayer())) {
-                      this->game->getPlayer()->removeCard(
-                          cardViewSelected->getCard());
-                      stoneModel->addCard(game->getPlayer(),
-                                          cardViewSelected->getCard());
-                      cardViewSelected = nullptr;
-                      if (!this->game->getDeck()->isEmpty()) {
-                        this->game->getPlayer()->pickCard(
-                            this->game->getDeck()->draw());
-                      }
+    if (this->game->isEnd()) {
+      qDebug() << "INTO ENDED";
+      qDebug() << "ended game";
+      setFinalScreen(this->game->getWinnerId());
+    } else if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
+      PlayerRobotModel* robotPlayer =
+          dynamic_cast<PlayerRobotModel*>(game->getPlayer());
 
-                      if (this->game->isEnd()) {
-                        setFinalScreen(this->game->getWinnerId());
-                      } else {
+      robotPlayer->playTurn(game->getStones());
+      if (!game->getDeck()->isEmpty()) {
+        robotPlayer->pickCard(game->getDeck()->draw());
+      }
+      game->nextTurn();
+    } else {
+      for (StoneModel* stoneModel : game->getStones()) {
+        StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
+                                         game->getEnemy(), widgetStones);
+        layoutStones->addWidget(stone);
+        connect(stone, &StoneView::action, this,
+                [this, stoneModel](StoneView::StoneActionType actionType) {
+                  qDebug() << stoneModel;
+                  qDebug() << actionType;
+                  if ((actionType == StoneView::Formation1 ||
+                       actionType == StoneView::Formation2) &&
+                      cardViewSelected != nullptr) {
+                    qDebug() << "playing";
+                    try {
+                      qDebug() << "still game";
+                      if (!stoneModel->isFull(game->getPlayer())) {
+                        this->game->getPlayer()->removeCard(
+                            cardViewSelected->getCard());
+                        stoneModel->addCard(game->getPlayer(),
+                                            cardViewSelected->getCard());
+                        cardViewSelected = nullptr;
+                        if (!this->game->getDeck()->isEmpty()) {
+                          this->game->getPlayer()->pickCard(
+                              this->game->getDeck()->draw());
+                        }
                         this->game->nextTurn();
                       }
+                    } catch (...) {
+                      qDebug() << "not in deck";
                     }
-                  } catch (...) {
-                    qDebug() << "not in deck";
                   }
-                }
-              });
+                });
+      }
     }
 
     // game->getStones()[0]->addPlayer1Card(game->getDeck()->draw());
-    syncHand(game->getPlayer()->getCards());
-    syncEnemyHand(game->getEnemy()->getCards());
+    if (!this->game->isEnd()) {
+      syncHand(game->getPlayer()->getCards());
+      syncEnemyHand(game->getEnemy()->getCards());
+    }
     // connect(game->getPlayer(), &PlayerModel::changedCards, this,
     // &GameView::syncHand); connect(game->getEnemy(),
     // &PlayerModel::changedCards, this, &GameView::syncEnemyHand);
 
     // layout->addWidget(widgetHand, 2, 0);
-
     qDebug() << "Created game view";
   }
 
