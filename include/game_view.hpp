@@ -3,6 +3,8 @@
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
 #pragma once
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 #include <QDialog>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -10,6 +12,7 @@
 #include <QObject>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QPalette>
 #include <QPixmap>
 #include <QPushButton>
 #include <QRandomGenerator>
@@ -31,11 +34,14 @@ class GameView : public QWidget {
   QHBoxLayout* layoutStones;
   QWidget* widgetStones;
 
-  CardLayout* layoutHand;
+  QHBoxLayout* layoutHand;
   QWidget* widgetHand;
 
-  CardLayout* layoutEnemyHand;
+  QHBoxLayout* layoutEnemyHand;
   QWidget* widgetEnemyHand;
+
+  QLabel* playerTurnLabel;
+  QLabel* deckCountLabel;
 
   CardView* cardViewSelected = nullptr;
 
@@ -43,6 +49,8 @@ class GameView : public QWidget {
 
   QPushButton* buttonFriend;
   QPushButton* buttonComputer;
+  int resizeFactor = 100;
+
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr)
@@ -110,18 +118,18 @@ class GameView : public QWidget {
       delete child;
     }
     qDebug() << "Create child";
-    this->setStyleSheet("border: 1px solid red");
+    // this->setStyleSheet("border: 1px solid red");
 
     widgetStones = new QWidget(this);
     layoutStones = new QHBoxLayout(widgetStones);
     layoutStones->setContentsMargins(0, 0, 0, 0);
-    layoutStones->setSpacing(0);
+    layoutStones->setSpacing(10);
 
     widgetHand = new QWidget(this);
-    layoutHand = new CardLayout(90, 0, widgetHand);
+    layoutHand = new QHBoxLayout(widgetHand);
 
     widgetEnemyHand = new QWidget(this);
-    layoutEnemyHand = new CardLayout(90, 0, widgetEnemyHand);
+    layoutEnemyHand = new QHBoxLayout(widgetEnemyHand);
 
     layout->addWidget(widgetEnemyHand, 0, 0);
     layout->addWidget(widgetStones, 1, 0);
@@ -178,12 +186,28 @@ class GameView : public QWidget {
     qDebug() << "Created game view";
   }
 
+  void resize() {
+    resizeFactor = (width() / 700.0) * 100;
+    deckCountLabel->setFont(
+        QFont("Impact", 10 * resizeFactor / 100, QFont::Normal));
+    playerTurnLabel->setFont(
+        QFont("Impact", 15 * resizeFactor / 100, QFont::Bold));
+  }
+
  protected:
-  void paintEvent(QPaintEvent* e) {
+  void paintEvent(QPaintEvent* e) override {
     QPainter painter(this);
     painter.drawPixmap(0, 0,
                        QPixmap("resources/woods/wood.28.png").scaled(size()));
     QWidget::paintEvent(e);
+  }
+
+  void resizeEvent(QResizeEvent* event) override {
+    qDebug() << "resizeEvent game view";
+    // Call the base class implementation
+    QWidget::resizeEvent(event);
+
+    resize();
   }
 
  private:
@@ -204,6 +228,33 @@ class GameView : public QWidget {
         cardViewSelected = cardView;
       });
     }
+
+    QWidget* playerTurn = new QWidget();
+    QVBoxLayout* layoutPlayerTurn = new QVBoxLayout(playerTurn);
+
+    playerTurnLabel = new QLabel(
+        QString("Tour du joueur %1").arg(game->getPlayer()->id() + 1));
+
+    QPalette playerTurnPalette = playerTurnLabel->palette();
+    playerTurnPalette.setColor(QPalette::WindowText, Qt::white);
+    playerTurnLabel->setPalette(playerTurnPalette);
+    playerTurnLabel->setFont(QFont("Impact", 15, QFont::Bold));
+    playerTurnLabel->setWordWrap(true);
+
+    layoutPlayerTurn->addWidget(playerTurnLabel);
+
+    deckCountLabel = new QLabel(QString("Cartes restantes dans la pioche : %1")
+                                    .arg(game->getDeck()->countCards()));
+
+    QPalette deckCountPalette = deckCountLabel->palette();
+    deckCountPalette.setColor(QPalette::WindowText, Qt::white);
+    deckCountLabel->setPalette(deckCountPalette);
+    deckCountLabel->setFont(QFont("Impact", 10, QFont::Normal));
+    deckCountLabel->setWordWrap(true);
+
+    layoutPlayerTurn->addWidget(deckCountLabel);
+
+    layoutHand->addWidget(playerTurn);
     qDebug() << "Synced hand";
   }
 

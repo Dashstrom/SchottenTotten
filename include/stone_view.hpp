@@ -51,7 +51,7 @@ class StoneView : public QWidget {
     // compute responsive dimensions
     // TODO(Marin Bouanchaud): make it responsive with window resize
 
-    stoneButton = new ButtonView("resources/stone.jpg", this);
+    stoneButton = new ButtonView("resources/stone.png", this);
 
     layout->addWidget(formationView2, 0, 0);
     layout->addWidget(stoneButton, 1, 0);
