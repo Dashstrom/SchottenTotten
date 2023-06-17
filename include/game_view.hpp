@@ -41,9 +41,8 @@ class GameView : public QWidget {
 
   GameModel* game;
 
-  // TEST
-  QPushButton* button1;
-  QPushButton* button2;
+  QPushButton* buttonFriend;
+  QPushButton* buttonComputer;
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr)
@@ -52,39 +51,39 @@ class GameView : public QWidget {
     game = model;
     layout = new QGridLayout(this);
 
-    // Button for player choice (friend, robot)
-    button1 = new QPushButton(this);
-    button2 = new QPushButton(this);
-    QPixmap buttonImage1("resources/players/easy.png");
-    QPixmap buttonImage2("resources/players/hard.png");
-    button1->setIcon(buttonImage1);
-    button1->setIconSize(buttonImage1.size());
-    button2->setIcon(buttonImage2);
-    button2->setIconSize(buttonImage2.size());
+    // Button for player choice (friend = button1, robot = button 2)
+    buttonFriend = new QPushButton(this);
+    buttonComputer = new QPushButton(this);
+    QPixmap buttonImageFriend("resources/players/friend.jpg");
+    QPixmap buttonImageComputer("resources/players/computer.jpg");
+    buttonFriend->setIcon(buttonImageFriend);
+    buttonFriend->setIconSize(buttonImageFriend.size());
+    buttonComputer->setIcon(buttonImageComputer);
+    buttonComputer->setIconSize(buttonImageComputer.size());
 
-    layout->addWidget(button1, 0, 0);
-    layout->addWidget(button2, 0, 1);
+    layout->addWidget(buttonFriend, 0, 0);
+    layout->addWidget(buttonComputer, 0, 1);
 
     // connexion of buttons
-    connect(button1, &QPushButton::clicked, this,
+    connect(buttonFriend, &QPushButton::clicked, this,
             [this]() { handleButton1Clicked(); });
 
-    connect(button2, &QPushButton::clicked, this,
+    connect(buttonComputer, &QPushButton::clicked, this,
             [this]() { handleButton2Clicked(); });
   }
 
   void handleButton1Clicked() {
-    button1->hide();
-    button2->hide();
-    PlayerRobotModel* robot = new PlayerRobotModel(1);
-
-    game->setRobot(robot);
+    buttonFriend->hide();
+    buttonComputer->hide();
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
   }
   void handleButton2Clicked() {
-    button1->hide();
-    button2->hide();
+    buttonFriend->hide();
+    buttonComputer->hide();
+    PlayerRobotModel* robot = new PlayerRobotModel(1);
+
+    game->setRobot(robot);
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
   }
