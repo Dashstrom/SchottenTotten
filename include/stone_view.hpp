@@ -67,8 +67,6 @@ class StoneView : public QWidget {
       stoneButtonTop = new ButtonView("resources/stone-empty.png", this);
       stoneButtonBot = new ButtonView("resources/stone-empty.png", this);
     }
-    stoneButtonTop->setStyleSheet("border: 1px solid blue");
-    stoneButtonBot->setStyleSheet("border: 1px solid green");
 
     layout->addWidget(stoneButtonTop, 0, 0);
     layout->addWidget(formationView2, 1, 0);

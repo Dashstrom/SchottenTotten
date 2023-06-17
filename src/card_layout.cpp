@@ -20,21 +20,17 @@ QLayoutItem* CardLayout::takeAt(int idx) {
   return idx >= 0 && idx < m_items.size() ? m_items.takeAt(idx) : 0;
 }
 
-void CardLayout::addItem(QLayoutItem* item) {
-  m_items.append(item);
-}
+void CardLayout::addItem(QLayoutItem* item) { m_items.append(item); }
 
 CardLayout::~CardLayout() {
   QLayoutItem* item;
-  while ((item = takeAt(0)))
-    delete item;
+  while ((item = takeAt(0))) delete item;
 }
 
 void CardLayout::setGeometry(const QRect& r) {
   QLayout::setGeometry(r);
 
-  if (m_items.size() == 0)
-    return;
+  if (m_items.size() == 0) return;
 
   int w = r.width() - (m_items.count() - 1) * spacingX();
   int h = r.height() - (m_items.count() - 1) * spacingY();
@@ -50,8 +46,7 @@ void CardLayout::setGeometry(const QRect& r) {
 QSize CardLayout::sizeHint() const {
   QSize s(0, 0);
   int n = m_items.count();
-  if (n > 0)
-    s = QSize(100, 70);  // start with a nice default size
+  if (n > 0) s = QSize(100, 70);  // start with a nice default size
   int i = 0;
   while (i < n) {
     QLayoutItem* o = m_items.at(i);

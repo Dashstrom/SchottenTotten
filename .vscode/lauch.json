@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C++ - Debug Multi File",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/SchottenTotten.app/Contents/MacOS/SchottenTotten",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "C++ - Debug Multi File"
+    }
+  ]
+}

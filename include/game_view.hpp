@@ -3,7 +3,9 @@
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
 #pragma once
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 
 #include <QDialog>
 #include <QHBoxLayout>
@@ -50,7 +52,6 @@ class GameView : public QWidget {
   QPushButton* buttonFriend;
   QPushButton* buttonComputer;
   int resizeFactor = 100;
-
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr)
@@ -189,11 +190,17 @@ class GameView : public QWidget {
   }
 
   void resize() {
+    qDebug() << "FONT";
+    // TODO(Dashstrom): crash here
+    /*
     resizeFactor = (width() / 700.0) * 100;
+    qDebug() << resizeFactor;
     deckCountLabel->setFont(
         QFont("Impact", 10 * resizeFactor / 100, QFont::Normal));
     playerTurnLabel->setFont(
         QFont("Impact", 15 * resizeFactor / 100, QFont::Bold));
+    */
+    qDebug() << "END";
   }
 
  protected:
@@ -208,7 +215,6 @@ class GameView : public QWidget {
     qDebug() << "resizeEvent game view";
     // Call the base class implementation
     QWidget::resizeEvent(event);
-
     resize();
   }
 
