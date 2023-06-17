@@ -18,15 +18,9 @@ class PlayerModel : public QObject {
  public:
   explicit PlayerModel(int playerId) { m_playerId = playerId; }
 
-  void removeCard(CardModel *card) {
-    if (!m_cards.removeOne(card)) throw 1;
-    emit changedCards(m_cards);
-  }
+  void removeCard(CardModel *card);
 
-  void pickCard(CardModel *card) {
-    m_cards.append(card);
-    emit changedCards(m_cards);
-  }
+  void pickCard(CardModel *card);
 
   int id() const { return m_playerId; }
 

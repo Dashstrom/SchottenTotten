@@ -20,58 +20,14 @@ class GameModel : public QObject {
   Q_PROPERTY(size_t turn READ turn WRITE turnChanged NOTIFY turnChanged)
 
  public:
-  GameModel() {
-    for (int i = 0; i < STONE_COUNT; i++) {
-      stones.append(new StoneModel());
-    }
-    deck = new DeckModel();
-    players[0] = new PlayerModel(0);
-    players[1] = new PlayerModel(1);
+  GameModel();
 
-    for (int cardsDrawn = 0; cardsDrawn < 6; cardsDrawn++) {
-      players[0]->pickCard(deck->draw());
-      players[1]->pickCard(deck->draw());
-    }
-  }
+  void setTurn(size_t turn);
 
-  void setTurn(size_t turn) {
-    m_turn = turn;
-    emit turnChanged(turn);
-  }
-
-  void nextTurn() {
-    m_turn++;
-    qDebug() << "Next turn";
-    for (StoneModel* stone : stones) {
-      if (!stone->isClaimed()) {
-        stone->claims(getPlayer());
-        stone->claims(getEnemy());
-      }
-    }
-    emit turnChanged(m_turn);
-  }
-
+  void nextTurn();
   bool isEnd() { return isWinner(getPlayer()) || isWinner(getEnemy()); }
 
-  bool isWinner(PlayerModel* player) {
-    int claimed = 0;
-    int claimedAdjacent = 0;
-    for (StoneModel* stone : stones) {
-      if (stone->isClaimedBy(player)) {
-        claimed += 1;
-        claimedAdjacent += 1;
-      } else {
-        claimedAdjacent = 0;
-      }
-      if (claimed >= 5 || claimedAdjacent >= 3) {
-        return true;
-      }
-    }
-    if (claimed >= 5 || claimedAdjacent >= 3) {
-      return true;
-    }
-    return false;
-  }
+  bool isWinner(PlayerModel* player);
 
   size_t turn() const { return m_turn; }
 
@@ -83,13 +39,7 @@ class GameModel : public QObject {
 
   PlayerModel* getEnemy() const { return players[(m_turn + 1) & 1]; }
 
-  void setRobot(PlayerModel* robot) {
-    QList<CardModel*> cards = players[1]->getCards();
-    for (CardModel* card : cards) {
-      robot->pickCard(card);
-    }
-    players[1] = robot;
-  }
+  void setRobot(PlayerModel* robot);
  signals:
   void turnChanged(size_t);
 

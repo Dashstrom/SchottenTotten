@@ -26,29 +26,15 @@ class FormationView : public QWidget {
   CardLayout* layout;
 
  public:
-  explicit FormationView(QWidget* parent = nullptr) : QWidget(parent) {
-    layout = new CardLayout(20, 90 * M_PI / 180, this);
-  }
+  explicit FormationView(QWidget* parent = nullptr);
 
-  void setCards(QList<CardModel*> cards) {
-    qDeleteAll(findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
-    for (CardModel* cardModel : cards) {
-      CardView* cardView = new CardView(cardModel, this);
-      layout->addWidget(cardView);
-    }
-  }
+  void setCards(QList<CardModel*> cards);
 
  signals:
   void clicked();
 
  protected:
-  void mousePressEvent(QMouseEvent* event) override {
-    // Call the base class implementation
-    QWidget::mousePressEvent(event);
-
-    // Emit the custom clicked signal
-    emit clicked();
-  }
+  void mousePressEvent(QMouseEvent* event) override;
 };
 
 #endif  // INCLUDE_FORMATION_VIEW_HPP_

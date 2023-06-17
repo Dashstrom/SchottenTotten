@@ -26,24 +26,9 @@ class CardView : public ButtonView {
   CardModel* card;
   QPixmap* image;
 
-  explicit CardView(CardModel* model, QWidget* parent = nullptr)
-      : ButtonView("resources/cards/" + model->name(), parent) {
-    qDebug() << "Creating CardView";
-    card = model;
-  }
+  explicit CardView(CardModel* model, QWidget* parent = nullptr);
 
-  void setSelected(bool selected) {
-    if (selected) {
-      QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect;
-      effect->setBlurRadius(5);
-      effect->setXOffset(5);
-      effect->setYOffset(5);
-      effect->setColor(Qt::black);
-      this->setGraphicsEffect(effect);
-    } else {
-      this->setGraphicsEffect(nullptr);
-    }
-  }
+  void setSelected(bool selected);
 
   CardModel* getCard() const { return card; }
 };
