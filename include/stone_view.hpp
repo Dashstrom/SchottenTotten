@@ -27,7 +27,9 @@ class StoneView : public QWidget {
   FormationView* formationView1;
   FormationView* formationView2;
   QGridLayout* layout;
+  ButtonView* stoneButtonTop;
   ButtonView* stoneButton;
+  ButtonView* stoneButtonBot;
   StoneModel* stone;
 
  public:
@@ -51,16 +53,35 @@ class StoneView : public QWidget {
     // compute responsive dimensions
     // TODO(Marin Bouanchaud): make it responsive with window resize
 
-    stoneButton = new ButtonView("resources/stone.jpg", this);
+    if (stone->isClaimed()) {
+      stoneButton = new ButtonView("resources/stone-empty.png", this);
+      if (stone->isClaimedBy(player)) {
+        stoneButtonTop = new ButtonView("resources/stone-empty.png", this);
+        stoneButtonBot = new ButtonView("resources/stone.png", this);
+      } else {
+        stoneButtonTop = new ButtonView("resources/stone.png", this);
+        stoneButtonBot = new ButtonView("resources/stone-empty.png", this);
+      }
+    } else {
+      stoneButton = new ButtonView("resources/stone.png", this);
+      stoneButtonTop = new ButtonView("resources/stone-empty.png", this);
+      stoneButtonBot = new ButtonView("resources/stone-empty.png", this);
+    }
+    stoneButtonTop->setStyleSheet("border: 1px solid blue");
+    stoneButtonBot->setStyleSheet("border: 1px solid green");
 
-    layout->addWidget(formationView2, 0, 0);
-    layout->addWidget(stoneButton, 1, 0);
-    layout->addWidget(formationView1, 2, 0);
+    layout->addWidget(stoneButtonTop, 0, 0);
+    layout->addWidget(formationView2, 1, 0);
+    layout->addWidget(stoneButton, 2, 0);
+    layout->addWidget(formationView1, 3, 0);
+    layout->addWidget(stoneButtonBot, 4, 0);
 
     // define the relative proportions of the rows
-    layout->setRowStretch(0, 100);
-    layout->setRowStretch(1, 60);
-    layout->setRowStretch(2, 100);
+    layout->setRowStretch(0, 60);
+    layout->setRowStretch(1, 100);
+    layout->setRowStretch(2, 60);
+    layout->setRowStretch(3, 100);
+    layout->setRowStretch(4, 60);
 
     connect(stone, &StoneModel::changed, this, [this, player, enemy] {
       this->formationView1->setCards(this->stone->getCards(player));

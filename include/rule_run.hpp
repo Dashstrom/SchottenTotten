@@ -12,6 +12,7 @@
 
 class RuleRun : public Rule {
  public:
+  RuleRun() : Rule("run") {}
   bool match(QList<CardModel*> cards) const override {
     /* Check if cards have successive strength */
     QList<CardModel*> cardsCopy = cards;

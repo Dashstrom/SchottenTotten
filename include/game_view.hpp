@@ -87,33 +87,35 @@ class GameView : public QWidget {
       StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
                                        game->getEnemy(), widgetStones);
       layoutStones->addWidget(stone);
-      connect(stone, &StoneView::action, this,
-              [this, stoneModel](StoneView::StoneActionType actionType) {
-                qDebug() << stoneModel;
-                qDebug() << actionType;
-                if ((actionType == StoneView::Formation1 ||
-                     actionType == StoneView::Formation2) &&
-                    cardViewSelected != nullptr) {
-                  qDebug() << "playing";
-                  try {
-                    if (!stoneModel->isFull(game->getPlayer())) {
-                      this->game->getPlayer()->removeCard(
-                          cardViewSelected->getCard());
-                      stoneModel->addCard(game->getPlayer(),
-                                          cardViewSelected->getCard());
-                      cardViewSelected = nullptr;
-                      if (!this->game->getDeck()->isEmpty()) {
-                        this->game->getPlayer()->pickCard(
-                            this->game->getDeck()->draw());
-                      }
-
-                      this->game->nextTurn();
-                    }
-                  } catch (...) {
-                    qDebug() << "not in deck";
+      connect(
+          stone, &StoneView::action, this,
+          [this, stoneModel](StoneView::StoneActionType actionType) {
+            qDebug() << stoneModel;
+            qDebug() << actionType;
+            if ((actionType == StoneView::Formation1 ||
+                 actionType == StoneView::Formation2) &&
+                cardViewSelected != nullptr) {
+              qDebug() << "playing";
+              try {
+                if (!stoneModel->isFull(game->getPlayer())) {
+                  this->game->getPlayer()->removeCard(
+                      cardViewSelected->getCard());
+                  stoneModel->addCard(game->getPlayer(),
+                                      cardViewSelected->getCard());
+                  cardViewSelected = nullptr;
+                  if (!this->game->getDeck()->isEmpty()) {
+                    this->game->getPlayer()->pickCard(
+                        this->game->getDeck()->draw());
                   }
+
+                  this->game->nextTurn();
+                  this->game->isEnd();  // TODO(Dashstrom) implement end screen
                 }
-              });
+              } catch (...) {
+                qDebug() << "not in deck";
+              }
+            }
+          });
     }
 
     // game->getStones()[0]->addPlayer1Card(game->getDeck()->draw());

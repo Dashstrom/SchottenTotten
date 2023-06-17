@@ -13,6 +13,7 @@
 
 class RuleColorRun : public Rule {
  public:
+  RuleColorRun() : Rule("color_run") {}
   bool match(QList<CardModel *> cards) const override {
     return ruleColor.match(cards) && ruleRun.match(cards);
   }
