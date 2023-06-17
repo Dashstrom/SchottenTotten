@@ -72,6 +72,39 @@ class GameModel : public QObject {
     return false;
   }
 
+  size_t getWinnerId() {
+    int claimedPlayer = 0;
+    int claimedAdjacentPlayer = 0;
+    int claimedEnemy = 0;
+    int claimedAdjacentEnemy = 0;
+    // Player1
+    for (StoneModel* stone : stones) {
+      if (stone->isClaimedBy(getPlayer())) {
+        claimedPlayer += 1;
+        claimedAdjacentPlayer += 1;
+      } else {
+        claimedAdjacentPlayer = 0;
+      }
+    }
+
+    // Player2
+    for (StoneModel* stone : stones) {
+      if (stone->isClaimedBy(getEnemy())) {
+        claimedEnemy += 1;
+        claimedAdjacentEnemy += 1;
+      } else {
+        claimedAdjacentEnemy = 0;
+      }
+    }
+
+    if ((claimedPlayer > claimedEnemy) ||
+        (claimedAdjacentPlayer > claimedAdjacentEnemy)) {
+      return getPlayer()->id();
+    } else {
+      return getEnemy()->id();
+    }
+  }
+
   size_t turn() const { return m_turn; }
 
   QList<StoneModel*> getStones() const { return stones; }

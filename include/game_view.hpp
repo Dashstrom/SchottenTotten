@@ -51,7 +51,9 @@ class GameView : public QWidget {
 
   QPushButton* buttonFriend;
   QPushButton* buttonComputer;
-  int resizeFactor = 100;
+  QLabel* finalScreen;
+
+  // int resizeFactor = 100;
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr)
@@ -60,10 +62,12 @@ class GameView : public QWidget {
     game = model;
     layout = new QGridLayout(this);
 
-    // Button for player choice (friend = button1, robot = button 2)
+    finalScreen = new QLabel(this);
+
+    // Buttons for player choice (friend = button1, robot = button 2)
     buttonFriend = new QPushButton(this);
     buttonComputer = new QPushButton(this);
-    QPixmap buttonImageFriend("resources/players/friend.jpg");
+    QPixmap buttonImageFriend("resources/players/noOneWon.jpg");
     QPixmap buttonImageComputer("resources/players/computer.jpg");
     buttonFriend->setIcon(buttonImageFriend);
     buttonFriend->setIconSize(buttonImageFriend.size());
@@ -95,6 +99,24 @@ class GameView : public QWidget {
     game->setRobot(robot);
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+  }
+
+  void setFinalScreen(size_t playerId) {
+    if (playerId == 0) {
+      QPixmap finalDisplay("resources/players/noOneWon.png");
+      finalScreen->setPixmap(finalDisplay);
+    } else if (playerId == 1) {
+      QPixmap finalDisplay("resources/players/noOneWon.png");
+      finalScreen->setPixmap(finalDisplay);
+    } else {
+      QPixmap finalDisplay("resources/players/noOneWon.png");
+      finalScreen->setPixmap(finalDisplay);
+    }
+
+    finalScreen->setStyleSheet("background-color: transparent;");
+    finalScreen->raise();  // Pour superposer l'image sur les autres éléments
+    finalScreen->setAlignment(Qt::AlignCenter);
+    layout->addWidget(finalScreen, 0, 0);
   }
 
   void syncPlayer() {
@@ -146,35 +168,37 @@ class GameView : public QWidget {
       StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
                                        game->getEnemy(), widgetStones);
       layoutStones->addWidget(stone);
-      connect(
-          stone, &StoneView::action, this,
-          [this, stoneModel](StoneView::StoneActionType actionType) {
-            qDebug() << stoneModel;
-            qDebug() << actionType;
-            if ((actionType == StoneView::Formation1 ||
-                 actionType == StoneView::Formation2) &&
-                cardViewSelected != nullptr) {
-              qDebug() << "playing";
-              try {
-                if (!stoneModel->isFull(game->getPlayer())) {
-                  this->game->getPlayer()->removeCard(
-                      cardViewSelected->getCard());
-                  stoneModel->addCard(game->getPlayer(),
-                                      cardViewSelected->getCard());
-                  cardViewSelected = nullptr;
-                  if (!this->game->getDeck()->isEmpty()) {
-                    this->game->getPlayer()->pickCard(
-                        this->game->getDeck()->draw());
-                  }
+      connect(stone, &StoneView::action, this,
+              [this, stoneModel](StoneView::StoneActionType actionType) {
+                qDebug() << stoneModel;
+                qDebug() << actionType;
+                if ((actionType == StoneView::Formation1 ||
+                     actionType == StoneView::Formation2) &&
+                    cardViewSelected != nullptr) {
+                  qDebug() << "playing";
+                  try {
+                    if (!stoneModel->isFull(game->getPlayer())) {
+                      this->game->getPlayer()->removeCard(
+                          cardViewSelected->getCard());
+                      stoneModel->addCard(game->getPlayer(),
+                                          cardViewSelected->getCard());
+                      cardViewSelected = nullptr;
+                      if (!this->game->getDeck()->isEmpty()) {
+                        this->game->getPlayer()->pickCard(
+                            this->game->getDeck()->draw());
+                      }
 
-                  this->game->nextTurn();
-                  this->game->isEnd();  // TODO(Dashstrom) implement end screen
+                      if (this->game->isEnd()) {
+                        setFinalScreen(this->game->getWinnerId());
+                      } else {
+                        this->game->nextTurn();
+                      }
+                    }
+                  } catch (...) {
+                    qDebug() << "not in deck";
+                  }
                 }
-              } catch (...) {
-                qDebug() << "not in deck";
-              }
-            }
-          });
+              });
     }
 
     // game->getStones()[0]->addPlayer1Card(game->getDeck()->draw());
