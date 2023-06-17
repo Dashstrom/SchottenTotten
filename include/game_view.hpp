@@ -15,6 +15,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPushButton>
+#include <QRandomGenerator>
 #include <QSizePolicy>
 #include <QString>
 #include <QVBoxLayout>
@@ -23,6 +24,7 @@
 #include "card_model.hpp"
 #include "card_view.hpp"
 #include "game_model.hpp"
+#include "player_robot_model.hpp"
 #include "stone_model.hpp"
 #include "stone_view.hpp"
 
@@ -45,20 +47,69 @@ class GameView : public QWidget {
 
   GameModel* game;
 
+  QPushButton* buttonFriend;
+  QPushButton* buttonComputer;
   int resizeFactor = 100;
+
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr)
       : QWidget(parent) {
     qDebug() << "Creating game view";
     game = model;
-
     layout = new QGridLayout(this);
+
+    // Button for player choice (friend = button1, robot = button 2)
+    buttonFriend = new QPushButton(this);
+    buttonComputer = new QPushButton(this);
+    QPixmap buttonImageFriend("resources/players/friend.jpg");
+    QPixmap buttonImageComputer("resources/players/computer.jpg");
+    buttonFriend->setIcon(buttonImageFriend);
+    buttonFriend->setIconSize(buttonImageFriend.size());
+    buttonComputer->setIcon(buttonImageComputer);
+    buttonComputer->setIconSize(buttonImageComputer.size());
+
+    layout->addWidget(buttonFriend, 0, 0);
+    layout->addWidget(buttonComputer, 0, 1);
+
+    // connexion of buttons
+    connect(buttonFriend, &QPushButton::clicked, this,
+            [this]() { handleButton1Clicked(); });
+
+    connect(buttonComputer, &QPushButton::clicked, this,
+            [this]() { handleButton2Clicked(); });
+  }
+
+  void handleButton1Clicked() {
+    buttonFriend->hide();
+    buttonComputer->hide();
+    syncPlayer();
+    connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+  }
+  void handleButton2Clicked() {
+    buttonFriend->hide();
+    buttonComputer->hide();
+    PlayerRobotModel* robot = new PlayerRobotModel(1);
+
+    game->setRobot(robot);
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
   }
 
   void syncPlayer() {
+    // If Robot -> make the robot play
+    if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
+      PlayerRobotModel* robotPlayer =
+          dynamic_cast<PlayerRobotModel*>(game->getPlayer());
+
+      robotPlayer->playTurn(game->getStones());
+      if (!game->getDeck()->isEmpty()) {
+        robotPlayer->pickCard(game->getDeck()->draw());
+      }
+
+      game->nextTurn();
+    }
+
     qDebug() << "Change view of player";
     QLayoutItem* child;
     while ((child = layout->takeAt(0)) != 0) {
@@ -129,6 +180,9 @@ class GameView : public QWidget {
     // connect(game->getPlayer(), &PlayerModel::changedCards, this,
     // &GameView::syncHand); connect(game->getEnemy(),
     // &PlayerModel::changedCards, this, &GameView::syncEnemyHand);
+
+    // layout->addWidget(widgetHand, 2, 0);
+
     qDebug() << "Created game view";
   }
 
@@ -207,7 +261,7 @@ class GameView : public QWidget {
   void syncEnemyHand(const QList<CardModel*> cards) {
     qDeleteAll(widgetEnemyHand->findChildren<QWidget*>(
         "", Qt::FindDirectChildrenOnly));
-    for (CardModel* cardModel : cards) {
+    for (int i = 0; i < cards.count(); i++) {
       layoutEnemyHand->addWidget(
           new ButtonView("resources/cards/hidden.png", widgetEnemyHand));
     }

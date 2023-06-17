@@ -77,7 +77,7 @@ class StoneModel : public QObject {
     return sumPlayer > sumEnemy;
   }
 
-  int claimed() const { return m_claimed; }
+  int claimed(PlayerModel *player) const { return m_claimed == player->id(); }
 
   void addSize(int size) { m_size += size; }
 
