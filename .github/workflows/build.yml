@@ -31,11 +31,6 @@ jobs:
     - name: Make
       run: cmake --build build --config ${{env.BUILD_TYPE}}
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: SchottenTotten_win_x64
-        path: build\Release\RealserSchottenTotten.exe
-
   linux-x86-64:
 
     runs-on: ubuntu-20.04
@@ -54,8 +49,3 @@ jobs:
 
     - name: Make
       run: cmake --build build --config ${{env.BUILD_TYPE}}
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: SchottenTotten_linux_x64
-        path: build/Release/SchottenTotten
