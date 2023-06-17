@@ -5,11 +5,14 @@
 #include "mainwindow.hpp"
 
 #include <QDebug>
+#include <QPixmapCache>
 
 #include "game_model.hpp"
 #include "game_view.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
+  // We need a big boy cache
+  QPixmapCache::setCacheLimit(500000000);
   // Since this is a QMainWindow we cannot set a layout,
   // we can only set a central widget.
   GameModel* gameModel = new GameModel();

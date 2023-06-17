@@ -26,7 +26,7 @@ class FormationView : public QWidget {
 
  public:
   explicit FormationView(QWidget* parent = nullptr) : QWidget(parent) {
-    layout = new CardLayout(20, 90 * M_PI / 180, this);
+    layout = new CardLayout(25, 90 * M_PI / 180, this);
   }
 
   void setCards(QList<CardModel*> cards) {

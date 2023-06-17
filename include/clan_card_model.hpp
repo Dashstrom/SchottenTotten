@@ -27,8 +27,8 @@ class ClanCardModel : public CardModel {
   QString name() const override {
     QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::CardColor>();
 
-    return QString(metaEnum.valueToKey(m_color)) + "-" +
-           QString::number(m_strength) + ".png";
+    return QString(metaEnum.valueToKey(m_color)).toLower() + "-" +
+           QString::number(m_strength) + ".jpg";
   }
 
  private:
