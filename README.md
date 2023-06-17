@@ -74,11 +74,3 @@ Setup precommit for autoformat.
 pip install pre-commit cpplint clang-format
 pre-commit install
 ```
-
-## Generate a release with binaries
-
-```bash
-git tag v1.0.0
-git push origin --tags
-git push origin v1.0.0
-```
