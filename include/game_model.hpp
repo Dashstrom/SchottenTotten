@@ -89,6 +89,9 @@ class GameModel : public QObject {
       } else {
         claimedAdjacentPlayer = 0;
       }
+      if (claimedPlayer >= 5 || claimedAdjacentPlayer >= 3) {
+        break;
+      }
     }
 
     // Player2
@@ -99,7 +102,16 @@ class GameModel : public QObject {
       } else {
         claimedAdjacentEnemy = 0;
       }
+      if (claimedEnemy >= 5 || claimedAdjacentEnemy >= 3) {
+        break;
+      }
     }
+    qDebug() << "claimedPlayer :" << claimedPlayer;
+    qDebug() << "claimedEnemy :" << claimedEnemy;
+    qDebug() << "claimedAdjacentPlayer :" << claimedAdjacentPlayer;
+    qDebug() << "claimedAdjacentEnemy :" << claimedAdjacentEnemy;
+    qDebug() << "player id :" << getPlayer()->id();
+    qDebug() << "ennemy id :" << getEnemy()->id();
 
     if ((claimedPlayer > claimedEnemy) ||
         (claimedAdjacentPlayer > claimedAdjacentEnemy)) {
