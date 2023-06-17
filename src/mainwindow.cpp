@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   this->setWindowTitle("Schotten Totten");
   this->setCentralWidget(gameView);
-  this->setMinimumHeight(256);
-  this->setMinimumWidth(256);
+  this->setMinimumHeight(700);
+  this->setMinimumWidth(700);
   this->setWindowIcon(icon);
 }

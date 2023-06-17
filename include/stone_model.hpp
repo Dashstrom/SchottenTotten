@@ -36,7 +36,7 @@ class StoneModel : public QObject {
     }
   }
 
-  const QList<CardModel *> getCards(PlayerModel *player) const {
+  const QList<CardModel*> getCards(PlayerModel* player) const {
     return m_formations[player->id()];
   }
 
@@ -47,11 +47,11 @@ class StoneModel : public QObject {
     m_formations[player->id()].append(card);
   }
 
-  void removeCard(PlayerModel *player, CardModel *card) {
+  void removeCard(PlayerModel* player, CardModel* card) {
     m_formations[player->id()].removeOne(card);
   }
 
-  bool isFull(PlayerModel *player) const {
+  bool isFull(PlayerModel* player) const {
     return getCards(player).count() >= m_size;
   }
 
@@ -63,8 +63,11 @@ class StoneModel : public QObject {
     if (playerCards.count() != enemyCards.count() ||
         playerCards.count() != m_size)
       return false;
+    if (playerCards.count() != enemyCards.count() ||
+        playerCards.count() != m_size)
+      return false;
 
-    for (Rule *rule : m_rules) {
+    for (Rule* rule : m_rules) {
       bool rulePlayer = rule->match(playerCards);
       bool ruleEnemy = rule->match(enemyCards);
       if (rulePlayer ^ ruleEnemy) {  // rulePlayer xor ruleEnemy
@@ -75,7 +78,8 @@ class StoneModel : public QObject {
       }
     }
     int sumPlayer = 0;
-    for (auto card : playerCards) sumPlayer += card->strength();
+    for (auto card : playerCards)
+      sumPlayer += card->strength();
     int sumEnemy = 0;
     for (auto card : enemyCards) sumEnemy += card->strength();
     if (sumPlayer == sumEnemy) return m_firstPlayerId == player->id();

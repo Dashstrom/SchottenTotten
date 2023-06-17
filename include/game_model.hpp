@@ -9,6 +9,7 @@
 
 #include "deck_model.hpp"
 #include "player_model.hpp"
+#include "player_robot_model.hpp"
 #include "stone_model.hpp"
 
 #define STONE_COUNT 9
@@ -81,6 +82,13 @@ class GameModel : public QObject {
 
   PlayerModel* getEnemy() const { return players[(m_turn + 1) & 1]; }
 
+  void setRobot(PlayerModel* robot) {
+    QList<CardModel*> cards = players[1]->getCards();
+    for (CardModel* card : cards) {
+      robot->pickCard(card);
+    }
+    players[1] = robot;
+  }
  signals:
   void turnChanged(size_t);
 

@@ -44,11 +44,11 @@ class ButtonView : public QLabel {
     // Emit the custom clicked signal
     emit clicked();
   }
-  /*
+
   void resizeEvent(QResizeEvent* event) override {
     // Call the base class implementation
     QLabel::resizeEvent(event);
     // set a scaled pixmap to a w x h window keeping its aspect ratio
     resize();
-  }*/
+  }
 };
