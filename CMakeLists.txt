@@ -55,10 +55,22 @@ else()
   add_executable(${TARGET_NAME} ${SOURCES})
 endif()
 
-if(MSVC)
-  target_compile_options(${TARGET_NAME} PRIVATE /W3 /WX)
-else()
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  # using Clang
   target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
+  else()
+    target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror -Wredundant-decls -Wformat-security -Wformat-signedness -Wshadow -Wdouble-promotion -Wfloat-equal -pedantic-errors -fverbose-asm -gdwarf -fsanitize=leak)
+  endif()
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+  target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
+  target_compile_options(${TARGET_NAME} PRIVATE /W3 /WX)
 endif()
 
 # Add the target includes
