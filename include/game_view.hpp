@@ -76,23 +76,31 @@ class GameView : public QWidget {
   void handleButton1Clicked() {
     button1->hide();
     button2->hide();
-    game->setRobot(new PlayerRobotModel(1, 1));
+    PlayerRobotModel* robot = new PlayerRobotModel(1);
+
+    game->setRobot(robot);
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
   }
   void handleButton2Clicked() {
     button1->hide();
     button2->hide();
-    game->setRobot(new PlayerRobotModel(1, 2));
     syncPlayer();
     connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
   }
 
   void syncPlayer() {
+    // If Robot -> make the robot play
     if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
       PlayerRobotModel* robotPlayer =
           dynamic_cast<PlayerRobotModel*>(game->getPlayer());
-      robotPlayer->playTurn(game);
+
+      robotPlayer->playTurn(game->getStones());
+      if (!game->getDeck()->isEmpty()) {
+        robotPlayer->pickCard(game->getDeck()->draw());
+      }
+
+      game->nextTurn();
     }
 
     qDebug() << "Change view of player";
