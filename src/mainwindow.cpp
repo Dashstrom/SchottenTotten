@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   GameView* gameView = new GameView(gameModel, this);
   QIcon icon("resources/favicon.ico");
 
-  this->setWindowTitle("Schotten totten");
+  this->setWindowTitle("Schotten Totten");
   this->setCentralWidget(gameView);
-  this->setMinimumHeight(700);
-  this->setMinimumWidth(700);
+  this->setMinimumHeight(600);
+  this->setMinimumWidth(600);
   this->setWindowIcon(icon);
 }

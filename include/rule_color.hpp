@@ -11,6 +11,7 @@
 
 class RuleColor : public Rule {
  public:
+  RuleColor() : Rule("color") {}
   bool match(QList<CardModel*> cards) const override {
     /* Check if cards have the same color */
     CardModel* previous = nullptr;
