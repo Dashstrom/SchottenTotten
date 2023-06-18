@@ -89,8 +89,8 @@ You can watch a demo [here](https://raw.githubusercontent.com/Dashstrom/Schotten
 
 ## Explanations
 
-We chose to create GameModel and GameRobot Model because it is the view that makes the player play. GameRobotModel plays instead of view.
+We chose to create GameModel and GameRobot Model because it is the view that makes the player play. GameRobotModel plays instead of view and implements an basic random IA.
 
 We created rules on the stones to be able to possibly remove rules later, as could have been the case in the tactical variant.
 
-We chose to make an abstract class for the maps in anticipation of the tactical variant.
+We chose to make an abstract class for the cards in anticipation of the tactical variant.
