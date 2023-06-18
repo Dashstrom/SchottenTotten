@@ -121,8 +121,8 @@ class GameView : public QWidget {
     buttonComputer->setIconSize(buttonImageComputer.size());
     qDebug() << "Play Again :";
 
-    layout->addWidget(buttonFriend, 0, 0);
-    layout->addWidget(buttonComputer, 0, 1);
+    layout->addWidget(buttonFriend, 1, 0);
+    layout->addWidget(buttonComputer, 1, 1);
 
     // connexion of buttons
     connect(buttonFriend, &QPushButton::clicked, this,
@@ -153,8 +153,10 @@ class GameView : public QWidget {
       buttonPlayAgain->setIcon(buttonImageFriend);
       buttonPlayAgain->setIconSize(buttonImageFriend.size());
     }
-    connect(buttonPlayAgain, &QPushButton::clicked, this,
-            [this]() { playAgain(); });
+    connect(buttonPlayAgain, &QPushButton::clicked, this, [this, newWindow]() {
+      newWindow->close();
+      playAgain();
+    });
 
     newWindow->setCentralWidget(buttonPlayAgain);
     newWindow->show();
@@ -251,15 +253,9 @@ class GameView : public QWidget {
         if (!game->getDeck()->isEmpty()) {
           robotPlayer->pickCard(game->getDeck()->draw());
         }
-        if (this->game->isEnd()) {
-          qDebug() << "INTO ENDED robot";
-          qDebug() << "ended game robot";
-          if (reorganizeEndGame()) {
-            setFinalScreen(this->game->getWinnerId());
-          }
-        } else {
-          this->game->nextTurn();
-        }
+
+        this->game->nextTurn();
+
       } else {
         for (StoneModel* stoneModel : game->getStones()) {
           StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
@@ -288,14 +284,8 @@ class GameView : public QWidget {
                               this->game->getPlayer()->pickCard(
                                   this->game->getDeck()->draw());
                             }
-                            if (this->game->isEnd()) {
-                              qDebug() << "INTO ENDED player";
-                              qDebug() << "ended game player";
-                              reorganizeEndGame();
-                              setFinalScreen(this->game->getWinnerId());
-                            } else {
-                              this->game->nextTurn();
-                            }
+
+                            this->game->nextTurn();
                           }
                         } catch (...) {
                           qDebug() << "not in deck";

@@ -77,47 +77,9 @@ class GameModel : public QObject {
   }
 
   size_t getWinnerId() {
-    int claimedPlayer = 0;
-    int claimedAdjacentPlayer = 0;
-    int claimedEnemy = 0;
-    int claimedAdjacentEnemy = 0;
-    // Player1
-    for (StoneModel* stone : stones) {
-      if (stone->isClaimedBy(getPlayer())) {
-        claimedPlayer += 1;
-        claimedAdjacentPlayer += 1;
-      } else {
-        claimedAdjacentPlayer = 0;
-      }
-      if (claimedPlayer >= 5 || claimedAdjacentPlayer >= 3) {
-        break;
-      }
-    }
-
-    // Player2
-    for (StoneModel* stone : stones) {
-      if (stone->isClaimedBy(getEnemy())) {
-        claimedEnemy += 1;
-        claimedAdjacentEnemy += 1;
-      } else {
-        claimedAdjacentEnemy = 0;
-      }
-      if (claimedEnemy >= 5 || claimedAdjacentEnemy >= 3) {
-        break;
-      }
-    }
-    qDebug() << "claimedPlayer :" << claimedPlayer;
-    qDebug() << "claimedEnemy :" << claimedEnemy;
-    qDebug() << "claimedAdjacentPlayer :" << claimedAdjacentPlayer;
-    qDebug() << "claimedAdjacentEnemy :" << claimedAdjacentEnemy;
-    qDebug() << "player id :" << getPlayer()->id();
-    qDebug() << "ennemy id :" << getEnemy()->id();
-
-    if ((claimedPlayer > claimedEnemy) ||
-        (claimedAdjacentPlayer > claimedAdjacentEnemy)) {
+    if (isWinner(getPlayer())) {
       return getPlayer()->id();
-    } else if ((claimedPlayer < claimedEnemy) ||
-               (claimedAdjacentPlayer < claimedAdjacentEnemy)) {
+    } else if (isWinner(getEnemy())) {
       return getEnemy()->id();
     } else {
       return -1;
