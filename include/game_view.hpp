@@ -177,7 +177,7 @@ class GameView : public QWidget {
       buttonPlayAgain->setIconSize(buttonImageFriend.size());
     } else if (playerId == 1) {
       if (game->againstRobot()) {
-        QPixmap buttonImageFriend("resources/players/player2Wins.png");
+        QPixmap buttonImageFriend("resources/players/robotWins.png");
         buttonPlayAgain->setIcon(buttonImageFriend);
         buttonPlayAgain->setIconSize(buttonImageFriend.size());
       } else {
