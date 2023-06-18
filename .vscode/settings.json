@@ -97,7 +97,15 @@
     "xlocinfo": "cpp",
     "xmemory": "cpp",
     "xstddef": "cpp",
-    "xtr1common": "cpp"
+    "xtr1common": "cpp",
+    "qdebug": "cpp",
+    "qmainwindow": "cpp",
+    "qmouseevent": "cpp",
+    "qsize": "cpp",
+    "qresizeevent": "cpp",
+    "qpalette": "cpp",
+    "qlineedit": "cpp",
+    "qrandomgenerator": "cpp"
   },
 
   "[python]": {

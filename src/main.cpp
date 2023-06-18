@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
 
   window.show();
 
-  qDebug() << "Start execution";
+  qDebug() << "Start application";
   app.exec();
-  qDebug() << "End execution";
+  qDebug() << "Stop application";
   return 0;
 }

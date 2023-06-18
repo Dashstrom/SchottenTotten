@@ -8,7 +8,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build:
+  windows:
 
     runs-on: windows-latest
 
@@ -26,14 +26,26 @@ jobs:
       run: pacman -Sq --noconfirm git pkgconf mingw-w64-x86_64-{cmake,SDL2,qt6-static,libslirp,libarchive,toolchain}
 
     - name: Configure
-      working-directory: ${{runner.workspace}}
       run: cmake -B build $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_STATIC=ON -DCMAKE_PREFIX_PATH=$RUNNER_TEMP/msys64/mingw64/qt6-static
 
     - name: Make
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build .
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
 
-    - uses: actions/upload-artifact@v3
+  linux-x86-64:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
       with:
-        name: SchottenTotten_win_x64
-        path: ${{runner.workspace}}\build\SchottenTotten.exe
+        version: "6.4.3"
+
+    - name: Configure
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}};
+
+    - name: Make
+      run: cmake --build build --config ${{env.BUILD_TYPE}}

@@ -79,12 +79,6 @@ Run the next command and follow the inscrutions.
 ./docs/build.sh
 ```
 
-## Valgrind (Linux only)
-
-```bash
-sudo apt install valgrind
-```
-
 ## UML
 
-[![UML](./docs/classes.png)](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)
+[![UML](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)
