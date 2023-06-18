@@ -21,16 +21,16 @@ StoneModel::StoneModel() {
   m_rules.append(new RuleSame());
 }
 
-void StoneModel::addCard(PlayerModel *player, CardModel *card) {
+void StoneModel::addCard(PlayerModel &player, CardModel *card) {
   if (m_firstPlayerId == -1) {
-    m_firstPlayerId = player->id();
+    m_firstPlayerId = player.id();
   }
-  m_formations[player->id()].append(card);
+  m_formations[player.id()].append(card);
 }
 
-bool StoneModel::claimable(PlayerModel *player) {
-  QList<CardModel *> playerCards = m_formations[player->id()];
-  QList<CardModel *> enemyCards = m_formations[player->enemyId()];
+bool StoneModel::claimable(PlayerModel &player) {
+  QList<CardModel *> playerCards = m_formations[player.id()];
+  QList<CardModel *> enemyCards = m_formations[player.enemyId()];
   qDebug() << "Start analizing";
 
   // TODO(Dashstrom) : predict if stone can't be claim
@@ -58,14 +58,14 @@ bool StoneModel::claimable(PlayerModel *player) {
   int sumEnemy = 0;
   for (auto card : enemyCards) sumEnemy += card->strength();
   qDebug() << "SUM" << QString::number(sumPlayer) << QString::number(sumEnemy);
-  if (sumPlayer == sumEnemy) return m_firstPlayerId == player->id();
+  if (sumPlayer == sumEnemy) return m_firstPlayerId == player.id();
   return sumPlayer > sumEnemy;
 }
 
-bool StoneModel::claims(PlayerModel *player) {
+bool StoneModel::claims(PlayerModel &player) {
   if (isClaimed()) return false;
   if (claimable(player)) {
-    m_claimed = player->id();
+    m_claimed = player.id();
     return true;
   }
   return false;

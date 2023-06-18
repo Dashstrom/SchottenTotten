@@ -24,31 +24,31 @@ class StoneModel : public QObject {
  public:
   StoneModel();
   ~StoneModel() {
-    for (Rule *rule : m_rules) {
+    for (Rule* rule : m_rules) {
       delete rule;
     }
   }
 
-  const QList<CardModel *> getCards(PlayerModel *player) const {
-    return m_formations[player->id()];
+  const QList<CardModel*> getCards(PlayerModel& player) const {
+    return m_formations[player.id()];
   }
 
-  void addCard(PlayerModel *player, CardModel *card);
+  void addCard(PlayerModel& player, CardModel* card);
 
-  void removeCard(PlayerModel *player, CardModel *card) {
-    m_formations[player->id()].removeOne(card);
+  void removeCard(PlayerModel& player, CardModel* card) {
+    m_formations[player.id()].removeOne(card);
   }
 
-  bool isFull(PlayerModel *player) const {
+  bool isFull(PlayerModel& player) const {
     return getCards(player).count() >= m_size;
   }
 
-  bool claimable(PlayerModel *player);
+  bool claimable(PlayerModel& player);
 
-  bool claims(PlayerModel *player);
+  bool claims(PlayerModel& player);
 
-  int isClaimedBy(PlayerModel *player) const {
-    return m_claimed == player->id();
+  int isClaimedBy(PlayerModel& player) const {
+    return m_claimed == player.id();
   }
 
   int isClaimed() const { return m_claimed != -1; }
@@ -59,8 +59,8 @@ class StoneModel : public QObject {
   void changed();
 
  private:
-  QList<CardModel *> m_formations[2];
-  QList<Rule *> m_rules;
+  QList<CardModel*> m_formations[2];
+  QList<Rule*> m_rules;
   int m_firstPlayerId = -1;
   int m_size = 3;
   int m_claimed = -1;

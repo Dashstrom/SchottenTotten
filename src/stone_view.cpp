@@ -13,29 +13,28 @@
 #include "player_model.hpp"
 #include "stone_model.hpp"
 
-StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
-                     int skin, QWidget* parent)
-    : QWidget(parent), m_skin(skin) {
+StoneView::StoneView(StoneModel& model, PlayerModel& player, PlayerModel& enemy,
+                     size_t skin, QWidget* parent)
+    : QWidget(parent), m_skin(skin), stone(model) {
   qDebug() << "Creating stone view";
-  stone = model;
 
   layout = new QGridLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
   layout->setSpacing(0);
 
   formationView1 = new FormationView(this);
-  formationView1->setCards(stone->getCards(player));
+  formationView1->setCards(stone.getCards(player));
   formationView2 = new FormationView(this);
-  formationView2->setCards(stone->getCards(enemy));
+  formationView2->setCards(stone.getCards(enemy));
 
   QString stonePath("resources/stones/" + QString::number(m_skin % 9) +
                     "_.jpg");
   QString emptyPath("resources/stones/empty.png");
 
   // compute responsive dimensions
-  if (stone->isClaimed()) {
+  if (stone.isClaimed()) {
     stoneButton = new ButtonView(emptyPath, this);
-    if (stone->isClaimedBy(player)) {
+    if (stone.isClaimedBy(player)) {
       stoneButtonTop = new ButtonView(emptyPath, this);
       stoneButtonBot = new ButtonView(stonePath, this);
     } else {
@@ -61,9 +60,9 @@ StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
   layout->setRowStretch(3, 100);
   layout->setRowStretch(4, 60);
 
-  connect(stone, &StoneModel::changed, this, [this, player, enemy] {
-    this->formationView1->setCards(this->stone->getCards(player));
-    this->formationView2->setCards(this->stone->getCards(enemy));
+  connect(&stone, &StoneModel::changed, this, [this, &player, &enemy] {
+    this->formationView1->setCards(this->stone.getCards(player));
+    this->formationView2->setCards(this->stone.getCards(enemy));
   });
 
   connect(formationView1, &FormationView::clicked, this,

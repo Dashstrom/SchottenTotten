@@ -19,7 +19,6 @@
 #include "card_model.hpp"
 #include "card_view.hpp"
 #include "game_model.hpp"
-#include "player_robot_model.hpp"
 #include "stone_model.hpp"
 #include "stone_view.hpp"
 
@@ -32,7 +31,7 @@ class GameView : public QWidget {
   void setFinalScreen(size_t playerId);
   void handleButton1Clicked();
   void handleButton2Clicked();
-  void handleStoneAction(StoneModel* stone, StoneView::StoneActionType action);
+  void handleStoneAction(StoneModel& stone, StoneView::StoneActionType action);
   void syncPlayer();
 
  protected:
@@ -53,6 +52,7 @@ class GameView : public QWidget {
   ButtonView* buttonFriend;
   ButtonView* buttonComputer;
   ButtonView* buttonTransition;
+  bool againstRobot;
   void syncHand(const QList<CardModel*> cards);
   void syncEnemyHand(const QList<CardModel*> cards);
 };
