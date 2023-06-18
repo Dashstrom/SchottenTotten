@@ -16,7 +16,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPalette>
-#include <QPixmap>
 #include <QPushButton>
 #include <QRandomGenerator>
 #include <QSizePolicy>
@@ -52,6 +51,8 @@ class GameView : public QWidget {
 
   ButtonView* buttonFriend;
   ButtonView* buttonComputer;
+
+  int resizeFactor = 100;
 
   QPushButton* buttonPlayAgain;
   ButtonView* buttonTransition;
@@ -281,11 +282,11 @@ class GameView : public QWidget {
                       qDebug() << stoneModel;
                       qDebug() << actionType;
                       if ((actionType == StoneView::Formation1 ||
-                           actionType == StoneView::Formation2) &&
+                           actionType == StoneView::Formation2 ||
+                           actionType == StoneView::Stone)) &&
                           cardViewSelected != nullptr) {
                         qDebug() << "playing";
                         try {
-                          qDebug() << "still game";
                           if (!stoneModel->isFull(game->getPlayer())) {
                             this->game->getPlayer()->removeCard(
                                 cardViewSelected->getCard());
@@ -337,7 +338,7 @@ class GameView : public QWidget {
   void paintEvent(QPaintEvent* e) override {
     QPainter painter(this);
     painter.drawPixmap(0, 0,
-                       QPixmap("resources/woods/wood.28.png").scaled(size()));
+                       QPixmap("resources/background.jpg").scaled(size()));
     QWidget::paintEvent(e);
   }
 
@@ -401,7 +402,7 @@ class GameView : public QWidget {
         "", Qt::FindDirectChildrenOnly));
     for (int i = 0; i < cards.count(); i++) {
       layoutEnemyHand->addWidget(
-          new ButtonView("resources/cards/hidden.png", widgetEnemyHand));
+          new ButtonView("resources/hidden.jpg", widgetEnemyHand));
     }
   }
 };

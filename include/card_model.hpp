@@ -11,7 +11,7 @@ class CardModel : public QObject {
   Q_OBJECT
 
  public:
-  enum CardColor { Green, Blue, Red, Yellow, Purple, Brown };
+  enum CardColor { Green, Blue, Red, Yellow, Purple, Orange };
   Q_ENUM(CardColor)
   virtual QString name() const = 0;
   virtual int strength() const = 0;
