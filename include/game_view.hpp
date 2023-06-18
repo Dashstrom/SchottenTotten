@@ -134,39 +134,38 @@ class GameView : public QWidget {
             [this]() { handleButton2Clicked(); });
   }
 
+  // Display who's turn to play
   void transition() {
     if (!game->againstRobot()) {
-      qDebug() << "Tour : " << game->turn();
-
       QLayoutItem* child;
       while ((child = layout->takeAt(0)) != 0) {
         qDebug() << "Deleting" << child;
         child->widget()->deleteLater();  // delete the widget
         delete child;
       }
+
       buttonTransition = new QPushButton(this);
 
       if (game->turn() % 2 == 0) {
-        QPixmap buttonImageTransition("resources/players/player1Wins.png");
+        QPixmap buttonImageTransition("resources/players/player1Turn.png");
         buttonTransition->setIcon(buttonImageTransition);
         buttonTransition->setIconSize(buttonImageTransition.size());
       } else {
-        QPixmap buttonImageTransition("resources/players/player1Wins.png");
+        QPixmap buttonImageTransition("resources/players/player2Turn.png");
         buttonTransition->setIcon(buttonImageTransition);
         buttonTransition->setIconSize(buttonImageTransition.size());
       }
 
-      layout->addWidget(buttonTransition, 0, 0);
+      layout->addWidget(buttonTransition, 1, 0);
 
-      // connexion of buttons
       connect(buttonTransition, &QPushButton::clicked, this,
               [this]() { syncPlayer(); });
+    } else {
+      syncPlayer();
     }
   }
 
   void setFinalScreen(size_t playerId) {
-    qDebug() << "gagnant :" << playerId;
-
     // Création d'une nouvelle fenêtre
     QMainWindow* newWindow = new QMainWindow();
 
@@ -198,13 +197,9 @@ class GameView : public QWidget {
 
     newWindow->setCentralWidget(buttonPlayAgain);
     newWindow->show();
-
-    qDebug() << "final screen";
   }
 
   bool reorganizeEndGame() {
-    qDebug() << "tour" << game->turn();
-    qDebug() << "Change view of player";
     QLayoutItem* child;
     while ((child = layout->takeAt(0)) != 0) {
       qDebug() << "Deleting" << child;
@@ -240,18 +235,10 @@ class GameView : public QWidget {
   }
 
   void syncPlayer() {
-    qDebug() << "INTO SYNC playerid:" << game->getPlayer()->id();
     if (this->game->isEnd()) {
-      qDebug() << "INTO ENDED";
-      qDebug() << "ended game";
-      qDebug() << "tour" << game->turn();
-
       reorganizeEndGame();
       setFinalScreen(this->game->getWinnerId());
     } else {
-      qDebug() << "INTO ELSE";
-      // If Robot -> make the robot play
-
       qDebug() << "Change view of player";
       QLayoutItem* child;
       while ((child = layout->takeAt(0)) != 0) {
@@ -283,6 +270,8 @@ class GameView : public QWidget {
       layout->setRowStretch(2, 1);
 
       qDebug() << "Create stones";
+
+      // If Robot -> make the robot play
       if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
         PlayerRobotModel* robotPlayer =
             dynamic_cast<PlayerRobotModel*>(game->getPlayer());
@@ -291,9 +280,7 @@ class GameView : public QWidget {
         if (!game->getDeck()->isEmpty()) {
           robotPlayer->pickCard(game->getDeck()->draw());
         }
-
         this->game->nextTurn();
-
       } else {
         for (StoneModel* stoneModel : game->getStones()) {
           StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
