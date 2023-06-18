@@ -39,7 +39,9 @@ void GameModel::nextTurn() {
       stone->claims(getEnemy());
     }
   }
-  m_turn++;
+  if (!isEnd()) {
+    m_turn++;
+  }
   emit turnChanged(m_turn);
 }
 

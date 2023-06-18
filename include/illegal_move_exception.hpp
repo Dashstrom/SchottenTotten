@@ -13,7 +13,7 @@ class IllegalMoveException : public std::exception {
   QString message;
 
  public:
-  explicit IllegalMoveException(const QString& msg) : message(msg) {}
+  explicit IllegalMoveException(const QString& msg = "unkown") : message(msg) {}
 
   virtual const char* what() const throw() {
     return message.toStdString().c_str();
