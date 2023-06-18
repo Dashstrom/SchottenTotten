@@ -2,10 +2,6 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-
 #include "game_view.hpp"
 
 #include <QHBoxLayout>
@@ -255,8 +251,8 @@ void GameView::setFinalScreen(size_t playerId) {
   dialog->setMaximumWidth(800);
   dialog->setMinimumWidth(800);
   dialog->setWindowIcon(icon);
-  QVBoxLayout* m_layout = new QVBoxLayout(dialog);
-  m_layout->setContentsMargins(0, 0, 0, 0);
+  QVBoxLayout* layout = new QVBoxLayout(dialog);
+  layout->setContentsMargins(0, 0, 0, 0);
 
   QString path("resources/players/noOneWon.png");
   if (playerId == 0) {
@@ -272,8 +268,15 @@ void GameView::setFinalScreen(size_t playerId) {
 
   connect(buttonPlayAgain, &ButtonView::clicked, this,
           [this, dialog]() { dialog->accept(); });
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
   connect(dialog, &QDialog::finished, this,
           [this, dialog](int result) { playAgain(); });
-  m_layout->addWidget(buttonPlayAgain);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+  layout->addWidget(buttonPlayAgain);
   dialog->show();
 }
