@@ -19,7 +19,7 @@ class FormationView : public QWidget {
   explicit FormationView(QWidget* parent = nullptr);
   void setCards(QList<CardModel*> cards);
 
-  CardLayout* layout;
+  CardLayout* m_layout;
 
  signals:
   void clicked();

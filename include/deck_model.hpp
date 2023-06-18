@@ -14,16 +14,18 @@ class DeckModel : public QObject {
   Q_OBJECT
 
  public:
-  DeckModel();
+  DeckModel() {}
   CardModel* draw() {
     // Return the top card and remove it from the deck
-    return cards.takeFirst();
+    return m_cards.takeFirst();
   }
-  bool isEmpty() const { return cards.isEmpty(); }
-  int countCards() const { return cards.count(); }
+  bool isEmpty() const { return m_cards.isEmpty(); }
+  int countCards() const { return m_cards.count(); }
+  void addCard(CardModel* card) { m_cards.append(card); }
+  void shuffle();
 
  private:
-  QList<CardModel*> cards;
+  QList<CardModel*> m_cards;
 };
 
 #endif  // INCLUDE_DECK_MODEL_HPP_

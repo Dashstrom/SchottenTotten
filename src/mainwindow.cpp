@@ -18,8 +18,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   QPixmapCache::setCacheLimit(500000000);
   // Since this is a QMainWindow we cannot set a layout,
   // we can only set a central widget.
-  GameModel* gameModel = new GameModel();
-  GameView* gameView = new GameView(gameModel, this);
+  GameView* gameView = new GameView(this);
   QIcon icon("resources/favicon.ico");
 
   this->setWindowTitle("Schotten Totten");

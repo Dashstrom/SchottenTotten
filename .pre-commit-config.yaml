@@ -15,4 +15,4 @@ repos:
   hooks:
   - id: cpplint
     args:
-      - "--filter=-build/include_subdir"
+      - "--filter=-build/include_subdir,-runtime/references"

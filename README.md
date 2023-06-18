@@ -81,4 +81,12 @@ Run the next command and follow the inscrutions.
 
 ## UML
 
-[![UML](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)
+[![UML](./docs/classes.png)](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)
+
+## Explanations
+
+We chose to create GameModel and GameRobot Model because it is the view that makes the player play. GameRobotModel plays instead of view.
+
+We created rules on the stones to be able to possibly remove rules later, as could have been the case in the tactical variant.
+
+We chose to make an abstract class for the maps in anticipation of the tactical variant.
