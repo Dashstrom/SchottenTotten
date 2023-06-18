@@ -4,6 +4,15 @@
  */
 #include "stone_view.hpp"
 
+#include <QDebug>
+#include <QGridLayout>
+#include <QWidget>
+
+#include "button_view.hpp"
+#include "formation_view.hpp"
+#include "player_model.hpp"
+#include "stone_model.hpp"
+
 StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
                      QWidget* parent)
     : QWidget(parent) {
@@ -20,8 +29,6 @@ StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
   formationView2->setCards(stone->getCards(enemy));
 
   // compute responsive dimensions
-  // TODO(Marin Bouanchaud): make it responsive with window resize
-
   if (stone->isClaimed()) {
     stoneButton = new ButtonView("resources/stone-empty.png", this);
     if (stone->isClaimedBy(player)) {

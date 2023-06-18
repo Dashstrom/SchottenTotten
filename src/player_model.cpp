@@ -4,6 +4,8 @@
  */
 #include "player_model.hpp"
 
+#include "card_model.hpp"
+
 void PlayerModel::removeCard(CardModel *card) {
   if (!m_cards.removeOne(card)) throw 1;
   emit changedCards(m_cards);

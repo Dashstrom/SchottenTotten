@@ -4,6 +4,10 @@
  */
 #include "rule_same.hpp"
 
+#include <QList>
+
+#include "card_model.hpp"
+
 bool RuleSame::match(QList<CardModel*> cards) const {
   /* Check if cards have the same strength */
   CardModel* previous = nullptr;

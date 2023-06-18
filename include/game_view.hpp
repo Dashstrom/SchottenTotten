@@ -8,20 +8,10 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 
-#include <QDialog>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QObject>
 #include <QPaintEvent>
-#include <QPainter>
-#include <QPalette>
-#include <QPixmap>
-#include <QPushButton>
-#include <QRandomGenerator>
-#include <QSizePolicy>
-#include <QString>
-#include <QVBoxLayout>
 #include <QWidget>
 
 #include "card_model.hpp"
@@ -50,8 +40,8 @@ class GameView : public QWidget {
 
   GameModel* game;
 
-  QPushButton* buttonFriend;
-  QPushButton* buttonComputer;
+  ButtonView* buttonFriend;
+  ButtonView* buttonComputer;
   int resizeFactor = 100;
 
  public:

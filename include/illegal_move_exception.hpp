@@ -6,6 +6,7 @@
 #define INCLUDE_ILLEGAL_MOVE_EXCEPTION_HPP_
 
 #include <QString>
+#include <exception>
 
 class IllegalMoveException : public std::exception {
  private:

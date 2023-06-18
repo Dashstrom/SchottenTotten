@@ -5,8 +5,6 @@
 #ifndef INCLUDE_CLAN_CARD_MODEL_HPP_
 #define INCLUDE_CLAN_CARD_MODEL_HPP_
 
-#include <QColor>
-#include <QMetaEnum>
 #include <QObject>
 
 #include "card_model.hpp"
@@ -16,11 +14,8 @@ class ClanCardModel : public CardModel {
 
  public:
   ClanCardModel(int strength, CardModel::CardColor color);
-
   int strength() const override { return m_strength; }
-
   CardModel::CardColor color() const override { return m_color; }
-
   QString name() const override;
 
  private:

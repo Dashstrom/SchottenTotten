@@ -5,9 +5,9 @@
 #ifndef INCLUDE_MAINWINDOW_HPP_
 #define INCLUDE_MAINWINDOW_HPP_
 
-#include <QLabel>
 #include <QMainWindow>
-#include <QPushButton>
+#include <QObject>
+#include <QWidget>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT

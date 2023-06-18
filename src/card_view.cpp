@@ -4,9 +4,13 @@
  */
 #include "card_view.hpp"
 
+#include <QDebug>
+#include <QGraphicsDropShadowEffect>
+
+#include "button_view.hpp"
+
 CardView::CardView(CardModel* model, QWidget* parent)
     : ButtonView("resources/cards/" + model->name(), parent) {
-  qDebug() << "Creating CardView";
   card = model;
 }
 

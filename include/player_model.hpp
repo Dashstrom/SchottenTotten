@@ -7,7 +7,6 @@
 
 #include <QList>
 #include <QObject>
-#include <stdexcept>
 
 #include "clan_card_model.hpp"
 #include "deck_model.hpp"

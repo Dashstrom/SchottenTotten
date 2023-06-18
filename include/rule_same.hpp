@@ -13,7 +13,7 @@
 class RuleSame : public Rule {
  public:
   RuleSame() : Rule("same") {}
-  bool match(QList<CardModel*> cards) const;
+  bool match(QList<CardModel*> cards) const override;
 };
 
 #endif  // INCLUDE_RULE_SAME_HPP_

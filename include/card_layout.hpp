@@ -18,7 +18,6 @@ class CardLayout : public QLayout {
     setSpacing(spacing);
   }
   ~CardLayout();
-
   void addItem(QLayoutItem *item) override;
   QSize sizeHint() const override;
   QSize minimumSize() const override;

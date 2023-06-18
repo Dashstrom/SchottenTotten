@@ -5,11 +5,8 @@
 #ifndef INCLUDE_STONE_MODEL_HPP_
 #define INCLUDE_STONE_MODEL_HPP_
 
-#include <QGuiApplication>
-#include <QLabel>
 #include <QList>
-#include <QPixmap>
-#include <QVBoxLayout>
+#include <QObject>
 
 class PlayerModel;
 

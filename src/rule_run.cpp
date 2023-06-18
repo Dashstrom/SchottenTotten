@@ -4,6 +4,10 @@
  */
 #include "rule_run.hpp"
 
+#include <QList>
+
+#include "card_model.hpp"
+
 bool RuleRun::match(QList<CardModel*> cards) const {
   /* Check if cards have successive strength */
   QList<CardModel*> cardsCopy = cards;

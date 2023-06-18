@@ -4,6 +4,11 @@
  */
 #include "card_layout.hpp"
 
+#include <QLayout>
+#include <QLayoutItem>
+#include <QRect>
+#include <QSize>
+
 int CardLayout::count() const {
   // QList::size() returns the number of QLayoutItems in m_items
   return m_items.size();

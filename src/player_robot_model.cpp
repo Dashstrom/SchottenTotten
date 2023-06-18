@@ -4,6 +4,11 @@
  */
 #include "player_robot_model.hpp"
 
+#include <QList>
+#include <QRandomGenerator>
+
+#include "stone_model.hpp"
+
 void PlayerRobotModel::playTurn(QList<StoneModel*> stones) {
   QList<CardModel*> robotCards = getCards();
   QRandomGenerator* generator = QRandomGenerator::global();

@@ -4,6 +4,14 @@
  */
 #include "game_model.hpp"
 
+#include <QDebug>
+#include <QList>
+
+#include "card_model.hpp"
+#include "deck_model.hpp"
+#include "player_model.hpp"
+#include "stone_model.hpp"
+
 GameModel::GameModel() {
   for (int i = 0; i < STONE_COUNT; i++) {
     stones.append(new StoneModel());

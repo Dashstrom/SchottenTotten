@@ -4,6 +4,15 @@
  */
 #include "stone_model.hpp"
 
+#include <QList>
+
+#include "card_model.hpp"
+#include "player_model.hpp"
+#include "rule.hpp"
+#include "rule_color.hpp"
+#include "rule_run.hpp"
+#include "rule_same.hpp"
+
 StoneModel::StoneModel() {
   m_rules.append(new RuleColorRun());
   m_rules.append(new RuleColor());

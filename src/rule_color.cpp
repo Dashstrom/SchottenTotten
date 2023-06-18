@@ -4,6 +4,10 @@
  */
 #include "rule_color.hpp"
 
+#include <QList>
+
+#include "card_model.hpp"
+
 bool RuleColor::match(QList<CardModel*> cards) const {
   /* Check if cards have the same color */
   CardModel* previous = nullptr;

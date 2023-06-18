@@ -6,13 +6,7 @@
 #define INCLUDE_STONE_VIEW_HPP_
 
 #include <QGridLayout>
-#include <QGuiApplication>
-#include <QLabel>
-#include <QLineEdit>
 #include <QObject>
-#include <QPixmap>
-#include <QPushButton>
-#include <QString>
 #include <QWidget>
 
 #include "button_view.hpp"

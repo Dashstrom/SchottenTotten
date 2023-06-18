@@ -4,6 +4,12 @@
  */
 #include "deck_model.hpp"
 
+#include <QMetaEnum>
+#include <algorithm>
+#include <random>
+
+#include "clan_card_model.hpp"
+
 DeckModel::DeckModel() {
   // Initialize the deck with random cards
   QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::CardColor>();

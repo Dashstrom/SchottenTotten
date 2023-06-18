@@ -6,10 +6,7 @@
 #define INCLUDE_DECK_MODEL_HPP_
 
 #include <QList>
-#include <QMetaEnum>
 #include <QObject>
-#include <algorithm>
-#include <random>
 
 #include "clan_card_model.hpp"
 
@@ -18,12 +15,10 @@ class DeckModel : public QObject {
 
  public:
   DeckModel();
-
   CardModel* draw() {
     // Return the top card and remove it from the deck
     return cards.takeFirst();
   }
-
   bool isEmpty() const { return cards.isEmpty(); }
   int countCards() const { return cards.count(); }
 

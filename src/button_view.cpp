@@ -4,14 +4,14 @@
  */
 #include "button_view.hpp"
 
-ButtonView::ButtonView(QString path, QWidget* parent) : QLabel(parent) {
-  qDebug() << "Loading" << path;
-  image = new QPixmap(path);
-  resize();
-}
+#include <QLabel>
+#include <QString>
+#include <QWidget>
 
-void ButtonView::resize() {
-  setPixmap(image->scaled(width(), height(), Qt::KeepAspectRatio));
+#include "image_manager.hpp"
+
+void ButtonView::resizeImage() {
+  setPixmap(ImageManager::getImageAtSize(m_path, width(), height()));
 }
 
 void ButtonView::mousePressEvent(QMouseEvent* event) {
@@ -25,6 +25,7 @@ void ButtonView::mousePressEvent(QMouseEvent* event) {
 void ButtonView::resizeEvent(QResizeEvent* event) {
   // Call the base class implementation
   QLabel::resizeEvent(event);
+
   // set a scaled pixmap to a w x h window keeping its aspect ratio
-  resize();
+  resizeImage();
 }

@@ -4,8 +4,17 @@
  */
 #include "formation_view.hpp"
 
+#include <QMouseEvent>
+#include <QWidget>
+#include <Qt>
+#include <QtAlgorithms>  // qDeleteAll
+
+#include "card_layout.hpp"
+#include "card_model.hpp"
+#include "card_view.hpp"
+
 FormationView::FormationView(QWidget* parent) : QWidget(parent) {
-  layout = new CardLayout(20, 90 * M_PI / 180, this);
+  layout = new CardLayout(25, 90 * M_PI / 180, this);
 }
 
 void FormationView::setCards(QList<CardModel*> cards) {
