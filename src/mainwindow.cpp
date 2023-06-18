@@ -5,7 +5,10 @@
 #include "mainwindow.hpp"
 
 #include <QDebug>
+#include <QIcon>
+#include <QMainWindow>
 #include <QPixmapCache>
+#include <QWidget>
 
 #include "game_model.hpp"
 #include "game_view.hpp"

@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_RULE_COLOR_RUN_HPP_
+#define INCLUDE_RULE_COLOR_RUN_HPP_
 
 #include <QList>
 
@@ -22,3 +23,5 @@ class RuleColorRun : public Rule {
   RuleColor ruleColor;
   RuleRun ruleRun;
 };
+
+#endif  // INCLUDE_RULE_COLOR_RUN_HPP_

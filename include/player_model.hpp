@@ -2,11 +2,11 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_PLAYER_MODEL_HPP_
+#define INCLUDE_PLAYER_MODEL_HPP_
 
 #include <QList>
 #include <QObject>
-#include <stdexcept>
 
 #include "clan_card_model.hpp"
 #include "deck_model.hpp"
@@ -17,15 +17,9 @@ class PlayerModel : public QObject {
  public:
   explicit PlayerModel(int playerId) { m_playerId = playerId; }
 
-  void removeCard(CardModel *card) {
-    if (!m_cards.removeOne(card)) throw 1;
-    emit changedCards(m_cards);
-  }
+  void removeCard(CardModel *card);
 
-  void pickCard(CardModel *card) {
-    m_cards.append(card);
-    emit changedCards(m_cards);
-  }
+  void pickCard(CardModel *card);
 
   int id() const { return m_playerId; }
 
@@ -40,3 +34,5 @@ class PlayerModel : public QObject {
   QList<CardModel *> m_cards;
   int m_playerId;
 };
+
+#endif  // INCLUDE_PLAYER_MODEL_HPP_

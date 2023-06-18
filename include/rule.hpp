@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_RULE_HPP_
+#define INCLUDE_RULE_HPP_
 
 #include <QList>
 #include <QString>
@@ -19,3 +20,5 @@ class Rule {
  private:
   QString m_name;
 };
+
+#endif  // INCLUDE_RULE_HPP_
