@@ -4,9 +4,6 @@
  */
 #ifndef INCLUDE_GAME_VIEW_HPP_
 #define INCLUDE_GAME_VIEW_HPP_
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
 
 #include <QHBoxLayout>
 #include <QLabel>

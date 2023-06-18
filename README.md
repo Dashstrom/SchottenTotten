@@ -73,11 +73,15 @@ pre-commit install
 
 ## Build README.md as PDF (Linux only)
 
-Run the next command and follow the inscrutions.
+Run the next command and follow the instructions.
 
 ```bash
 ./docs/build.sh
 ```
+
+## Demo video
+
+You can watch a demo [here](./docs/demo.mp4).
 
 ## UML
 

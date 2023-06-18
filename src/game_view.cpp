@@ -2,6 +2,9 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 
 #include "game_view.hpp"
 
