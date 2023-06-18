@@ -47,15 +47,10 @@ class GameView : public QWidget {
 
   QPushButton* buttonPlayAgain;
   ButtonView* buttonTransition;
+
  public:
   void playAgain() {
-    QLayoutItem* child;
-    while ((child = layout->takeAt(0)) != 0) {
-      qDebug() << "Deleting" << child;
-      child->widget()->deleteLater();  // delete the widget
-      delete child;
-    }
-
+    clearBoard();
     game = new GameModel();
 
     // Buttons for player choice (friend = button1, robot = button 2)
@@ -82,26 +77,35 @@ class GameView : public QWidget {
   // Display who's turn to play
   void transition() {
     if (!game->againstRobot()) {
-      QLayoutItem* child;
-      while ((child = layout->takeAt(0)) != 0) {
-        qDebug() << "Deleting" << child;
-        child->widget()->deleteLater();  // delete the widget
-        delete child;
-      }
+      clearBoard();
 
       if (game->turn() % 2 == 0) {
-        buttonTransition = new ButtonView("resources/players/player1Turn.png");
+        buttonTransition =
+            new ButtonView("resources/players/player1Turn.png", this, false);
       } else {
-        buttonTransition = new ButtonView("resources/players/player2Turn.png");
+        buttonTransition =
+            new ButtonView("resources/players/player2Turn.png", this, false);
       }
 
-      layout->addWidget(buttonTransition, 1, 0);
+      layout->addWidget(buttonTransition, 0, 0);
+      layout->setRowStretch(0, 100);
 
       connect(buttonTransition, &ButtonView::clicked, this,
               [this]() { syncPlayer(); });
     } else {
       syncPlayer();
     }
+  }
+
+  void clearBoard() {
+    qDebug() << "Change view of player";
+    QLayoutItem* child;
+    while ((child = layout->takeAt(0)) != 0) {
+      qDebug() << "Deleting" << child;
+      child->widget()->deleteLater();  // delete the widget
+      delete child;
+    }
+    qDebug() << "Create child";
   }
 
   void setFinalScreen(size_t playerId) {
@@ -138,14 +142,8 @@ class GameView : public QWidget {
     newWindow->show();
   }
 
-  bool reorganizeEndGame() {
-    QLayoutItem* child;
-    while ((child = layout->takeAt(0)) != 0) {
-      qDebug() << "Deleting" << child;
-      child->widget()->deleteLater();  // delete the widget
-      delete child;
-    }
-    qDebug() << "Create child";
+  void reorganizeEndGame() {
+    clearBoard();
     widgetStones = new QWidget(this);
     layoutStones = new QHBoxLayout(widgetStones);
     layoutStones->setContentsMargins(0, 0, 0, 0);
@@ -165,19 +163,18 @@ class GameView : public QWidget {
     layout->setRowStretch(0, 1);
     layout->setRowStretch(1, 3);
     layout->setRowStretch(2, 1);
+    int i = 0;
     for (StoneModel* stoneModel : game->getStones()) {
       StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
-                                       game->getEnemy(), widgetStones);
+                                       game->getEnemy(), i++, widgetStones);
       layoutStones->addWidget(stone);
     }
-    return true;
   }
 
   explicit GameView(GameModel* model, QWidget* parent = nullptr);
   void handleButton1Clicked();
   void handleButton2Clicked();
   void syncPlayer();
-
 
  protected:
   void paintEvent(QPaintEvent* e) override;

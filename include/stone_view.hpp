@@ -26,12 +26,13 @@ class StoneView : public QWidget {
   ButtonView* stoneButton;
   ButtonView* stoneButtonBot;
   StoneModel* stone;
+  int m_skin;
 
  public:
   enum StoneActionType { Formation1, Formation2, Stone };
   Q_ENUM(StoneActionType)
   explicit StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
-                     QWidget* parent = nullptr);
+                     int skin, QWidget* parent = nullptr);
   StoneModel* getStone() { return stone; }
 
  signals:

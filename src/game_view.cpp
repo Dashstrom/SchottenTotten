@@ -37,8 +37,6 @@ GameView::GameView(GameModel* model, QWidget* parent) : QWidget(parent) {
           [this]() { handleButton2Clicked(); });
 }
 
-
-
 void GameView::handleButton1Clicked() {
   buttonFriend->hide();
   buttonComputer->hide();
@@ -55,20 +53,12 @@ void GameView::handleButton2Clicked() {
   connect(game, &GameModel::turnChanged, this, &GameView::transition);
 }
 
-
 void GameView::syncPlayer() {
   if (this->game->isEnd()) {
     reorganizeEndGame();
     setFinalScreen(this->game->getWinnerId());
   } else {
-    qDebug() << "Change view of player";
-    QLayoutItem* child;
-    while ((child = layout->takeAt(0)) != 0) {
-      qDebug() << "Deleting" << child;
-      child->widget()->deleteLater();  // delete the widget
-      delete child;
-    }
-    qDebug() << "Create child";
+    clearBoard();
     // this->setStyleSheet("border: 1px solid red");
 
     widgetStones = new QWidget(this);
@@ -104,9 +94,10 @@ void GameView::syncPlayer() {
       }
       this->game->nextTurn();
     } else {
+      int i = 0;
       for (StoneModel* stoneModel : game->getStones()) {
         StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
-                                          game->getEnemy(), widgetStones);
+                                         game->getEnemy(), i++, widgetStones);
 
         layoutStones->addWidget(stone);
 
@@ -116,8 +107,8 @@ void GameView::syncPlayer() {
                     qDebug() << stoneModel;
                     qDebug() << actionType;
                     if ((actionType == StoneView::Formation1 ||
-                          actionType == StoneView::Formation2 ||
-                          actionType == StoneView::Stone) &&
+                         actionType == StoneView::Formation2 ||
+                         actionType == StoneView::Stone) &&
                         cardViewSelected != nullptr) {
                       qDebug() << "playing";
                       try {
@@ -142,6 +133,10 @@ void GameView::syncPlayer() {
       }
     }
   }
+
+  syncHand(game->getPlayer()->getCards());
+  syncEnemyHand(game->getEnemy()->getCards());
+  qDebug() << "Created game view";
 }
 
 void GameView::paintEvent(QPaintEvent* e) {

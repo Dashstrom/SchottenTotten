@@ -25,8 +25,9 @@ class ButtonView : public QLabel {
   Q_OBJECT
 
  public:
-  explicit ButtonView(QString path, QWidget* parent = nullptr)
-      : QLabel(parent), m_path(path) {
+  explicit ButtonView(QString path, QWidget* parent = nullptr,
+                      bool keepRatio = true)
+      : QLabel(parent), m_path(path), m_keepRatio(keepRatio) {
     resizeImage();
   }
 
@@ -39,6 +40,7 @@ class ButtonView : public QLabel {
 
  private:
   QString m_path;
+  bool m_keepRatio = 0;
   void resizeImage();
 };
 #endif  // INCLUDE_BUTTON_VIEW_HPP_

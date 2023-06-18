@@ -14,8 +14,8 @@
 #include "stone_model.hpp"
 
 StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
-                     QWidget* parent)
-    : QWidget(parent) {
+                     int skin, QWidget* parent)
+    : QWidget(parent), m_skin(skin) {
   qDebug() << "Creating stone view";
   stone = model;
 
@@ -28,20 +28,24 @@ StoneView::StoneView(StoneModel* model, PlayerModel* player, PlayerModel* enemy,
   formationView2 = new FormationView(this);
   formationView2->setCards(stone->getCards(enemy));
 
+  QString stonePath("resources/stones/" + QString::number(m_skin % 9) +
+                    "_.jpg");
+  QString emptyPath("resources/stones/empty.png");
+
   // compute responsive dimensions
   if (stone->isClaimed()) {
-    stoneButton = new ButtonView("resources/stone-empty.png", this);
+    stoneButton = new ButtonView(emptyPath, this);
     if (stone->isClaimedBy(player)) {
-      stoneButtonTop = new ButtonView("resources/stone-empty.png", this);
-      stoneButtonBot = new ButtonView("resources/stone.png", this);
+      stoneButtonTop = new ButtonView(emptyPath, this);
+      stoneButtonBot = new ButtonView(stonePath, this);
     } else {
-      stoneButtonTop = new ButtonView("resources/stone.png", this);
-      stoneButtonBot = new ButtonView("resources/stone-empty.png", this);
+      stoneButtonTop = new ButtonView(stonePath, this);
+      stoneButtonBot = new ButtonView(emptyPath, this);
     }
   } else {
-    stoneButton = new ButtonView("resources/stone.png", this);
-    stoneButtonTop = new ButtonView("resources/stone-empty.png", this);
-    stoneButtonBot = new ButtonView("resources/stone-empty.png", this);
+    stoneButton = new ButtonView(stonePath, this);
+    stoneButtonTop = new ButtonView(emptyPath, this);
+    stoneButtonBot = new ButtonView(emptyPath, this);
   }
 
   layout->addWidget(stoneButtonTop, 0, 0);
