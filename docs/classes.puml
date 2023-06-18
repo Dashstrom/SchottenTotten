@@ -1,0 +1,48 @@
+@startuml classes
+
+skinparam linetype polyline
+skinparam linetype ortho
+
+class GameModel {
+}
+class DeckModel {
+}
+class PlayerModel {
+}
+class StoneModel {
+}
+class PlayerRobotModel {
+}
+abstract class CardModel {
+}
+abstract class Rule {
+}
+class RuleSame {
+}
+class RuleColorRun {
+}
+class RuleColor {
+}
+class RuleRun {
+}
+class ClanCardModel {
+}
+
+GameModel "1" *-- "1" DeckModel : a un >
+DeckModel "0..1" -- "0..54" CardModel : possède >
+GameModel "1" *-- "0..54" CardModel : possède >
+GameModel "1" *-- "2" PlayerModel : < est jouer par
+GameModel "1" *-- "9" StoneModel
+PlayerModel "0..1" -- "0..6" CardModel : < est jouer par
+StoneModel "0..1" -- "0..3" CardModel : enemy
+StoneModel "0..1" -- "0..3" CardModel : ally
+StoneModel "1" -- "0..n" Rule
+
+Rule <|-- RuleSame
+Rule <|-- RuleColorRun
+Rule <|-- RuleColor
+Rule <|-- RuleRun
+PlayerModel <|-- PlayerRobotModel
+CardModel <|-- ClanCardModel
+
+@enduml

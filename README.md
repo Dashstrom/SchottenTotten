@@ -4,10 +4,6 @@
 [![Linting result](https://github.com/Dashstrom/SchottenTotten/actions/workflows/lint.yml/badge.svg)](https://github.com/Dashstrom/SchottenTotten/actions/workflows/lint.yml)
 [![Repo size](https://img.shields.io/github/repo-size/Dashstrom/SchottenTotten)](https://github.com/Dashstrom/SchottenTotten)
 
-[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
-[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
-[![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
-
 Gameplay in Schotten Totten resembles simultaneous play of nine separate hands of poker, but where each hand has only three cards in it. There are nine "boundary" stones between players at the start of the game. Players vie to win five of the stones, or three adjacent ones, to win the game.
 
 ## Download
@@ -74,3 +70,15 @@ Setup precommit for autoformat.
 pip install pre-commit cpplint clang-format
 pre-commit install
 ```
+
+## Build README.md as PDF (Linux only)
+
+Run the next command and follow the inscrutions.
+
+```bash
+./docs/build.sh
+```
+
+## UML
+
+[![UML](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/classes.png)

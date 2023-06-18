@@ -22,7 +22,7 @@ end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{md,txt,rst,cpp,hpp}]
+[*.{md,txt,rst,cpp,hpp,sh}]
 insert_final_newline = true
 trim_trailing_whitespace = false
 
