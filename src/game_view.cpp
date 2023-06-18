@@ -40,107 +40,102 @@ GameView::GameView(GameModel* model, QWidget* parent) : QWidget(parent) {
 void GameView::handleButton1Clicked() {
   buttonFriend->hide();
   buttonComputer->hide();
-  syncPlayer();
-  connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+  transition();
+  connect(game, &GameModel::turnChanged, this, &GameView::transition);
 }
-
 void GameView::handleButton2Clicked() {
   buttonFriend->hide();
   buttonComputer->hide();
   PlayerRobotModel* robot = new PlayerRobotModel(1);
 
   game->setRobot(robot);
-  syncPlayer();
-  connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+  transition();
+  connect(game, &GameModel::turnChanged, this, &GameView::transition);
 }
 
 void GameView::syncPlayer() {
-  // If Robot -> make the robot play
-  if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
-    PlayerRobotModel* robotPlayer =
-        dynamic_cast<PlayerRobotModel*>(game->getPlayer());
+  if (this->game->isEnd()) {
+    reorganizeEndGame();
+    setFinalScreen(this->game->getWinnerId());
+  } else {
+    clearBoard();
+    // this->setStyleSheet("border: 1px solid red");
 
-    robotPlayer->playTurn(game->getStones());
-    if (!game->getDeck()->isEmpty()) {
-      robotPlayer->pickCard(game->getDeck()->draw());
+    widgetStones = new QWidget(this);
+    layoutStones = new QHBoxLayout(widgetStones);
+    layoutStones->setContentsMargins(0, 0, 0, 0);
+    layoutStones->setSpacing(10);
+
+    widgetHand = new QWidget(this);
+    layoutHand = new QHBoxLayout(widgetHand);
+
+    widgetEnemyHand = new QWidget(this);
+    layoutEnemyHand = new QHBoxLayout(widgetEnemyHand);
+
+    layout->addWidget(widgetEnemyHand, 0, 0);
+    layout->addWidget(widgetStones, 1, 0);
+    layout->addWidget(widgetHand, 2, 0);
+
+    // define the relative proportions of the rows
+    layout->setRowStretch(0, 1);
+    layout->setRowStretch(1, 3);
+    layout->setRowStretch(2, 1);
+
+    qDebug() << "Create stones";
+
+    // If Robot -> make the robot play
+    if (dynamic_cast<PlayerRobotModel*>(game->getPlayer()) != nullptr) {
+      PlayerRobotModel* robotPlayer =
+          dynamic_cast<PlayerRobotModel*>(game->getPlayer());
+
+      robotPlayer->playTurn(game->getStones());
+      if (!game->getDeck()->isEmpty()) {
+        robotPlayer->pickCard(game->getDeck()->draw());
+      }
+      this->game->nextTurn();
+    } else {
+      int i = 0;
+      for (StoneModel* stoneModel : game->getStones()) {
+        StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
+                                         game->getEnemy(), i++, widgetStones);
+
+        layoutStones->addWidget(stone);
+
+        if (!this->game->isEnd()) {
+          connect(stone, &StoneView::action, this,
+                  [this, stoneModel](StoneView::StoneActionType actionType) {
+                    qDebug() << stoneModel;
+                    qDebug() << actionType;
+                    if ((actionType == StoneView::Formation1 ||
+                         actionType == StoneView::Formation2 ||
+                         actionType == StoneView::Stone) &&
+                        cardViewSelected != nullptr) {
+                      qDebug() << "playing";
+                      try {
+                        if (!stoneModel->isFull(game->getPlayer())) {
+                          this->game->getPlayer()->removeCard(
+                              cardViewSelected->getCard());
+                          stoneModel->addCard(game->getPlayer(),
+                                              cardViewSelected->getCard());
+                          cardViewSelected = nullptr;
+                          if (!this->game->getDeck()->isEmpty()) {
+                            this->game->getPlayer()->pickCard(
+                                this->game->getDeck()->draw());
+                          }
+                          this->game->nextTurn();
+                        }
+                      } catch (...) {
+                        qDebug() << "not in deck";
+                      }
+                    }
+                  });
+        }
+      }
     }
-
-    game->nextTurn();
   }
 
-  qDebug() << "Change view of player";
-  QLayoutItem* child;
-  while ((child = layout->takeAt(0)) != 0) {
-    qDebug() << "Deleting" << child;
-    child->widget()->deleteLater();  // delete the widget
-    delete child;
-  }
-  widgetStones = new QWidget(this);
-  layoutStones = new QHBoxLayout(widgetStones);
-  layoutStones->setContentsMargins(0, 0, 0, 0);
-  layoutStones->setSpacing(10);
-
-  widgetHand = new QWidget(this);
-  layoutHand = new QHBoxLayout(widgetHand);
-
-  widgetEnemyHand = new QWidget(this);
-  layoutEnemyHand = new QHBoxLayout(widgetEnemyHand);
-
-  layout->addWidget(widgetEnemyHand, 0, 0);
-  layout->addWidget(widgetStones, 1, 0);
-  layout->addWidget(widgetHand, 2, 0);
-
-  // define the relative proportions of the rows
-  layout->setRowStretch(0, 1);
-  layout->setRowStretch(1, 3);
-  layout->setRowStretch(2, 1);
-
-  qDebug() << "Create stones";
-  for (StoneModel* stoneModel : game->getStones()) {
-    StoneView* stone = new StoneView(stoneModel, game->getPlayer(),
-                                     game->getEnemy(), widgetStones);
-    layoutStones->addWidget(stone);
-    connect(
-        stone, &StoneView::action, this,
-        [this, stoneModel](StoneView::StoneActionType actionType) {
-          qDebug() << stoneModel;
-          qDebug() << actionType;
-          if ((actionType == StoneView::Formation1 ||
-               actionType == StoneView::Formation2 ||
-               actionType == StoneView::Stone) &&
-              cardViewSelected != nullptr) {
-            qDebug() << "playing";
-            try {
-              if (!stoneModel->isFull(game->getPlayer())) {
-                this->game->getPlayer()->removeCard(
-                    cardViewSelected->getCard());
-                stoneModel->addCard(game->getPlayer(),
-                                    cardViewSelected->getCard());
-                cardViewSelected = nullptr;
-                if (!this->game->getDeck()->isEmpty()) {
-                  this->game->getPlayer()->pickCard(
-                      this->game->getDeck()->draw());
-                }
-
-                this->game->nextTurn();
-                this->game->isEnd();  // TODO(Dashstrom) implement end screen
-              }
-            } catch (...) {
-              qDebug() << "not in deck";
-            }
-          }
-        });
-  }
-
-  // game->getStones()[0]->addPlayer1Card(game->getDeck()->draw());
   syncHand(game->getPlayer()->getCards());
   syncEnemyHand(game->getEnemy()->getCards());
-  // connect(game->getPlayer(), &PlayerModel::changedCards, this,
-  // &GameView::syncHand); connect(game->getEnemy(),
-  // &PlayerModel::changedCards, this, &GameView::syncEnemyHand);
-
-  // layout->addWidget(widgetHand, 2, 0);
-
   qDebug() << "Created game view";
 }
 

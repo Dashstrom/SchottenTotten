@@ -32,7 +32,6 @@ void GameModel::setTurn(size_t turn) {
 }
 
 void GameModel::nextTurn() {
-  m_turn++;
   qDebug() << "Next turn";
   for (StoneModel* stone : stones) {
     if (!stone->isClaimed()) {
@@ -40,6 +39,7 @@ void GameModel::nextTurn() {
       stone->claims(getEnemy());
     }
   }
+  m_turn++;
   emit turnChanged(m_turn);
 }
 
@@ -63,10 +63,24 @@ bool GameModel::isWinner(PlayerModel* player) {
   return false;
 }
 
+size_t GameModel::getWinnerId() {
+  if (isWinner(getPlayer())) {
+    return getPlayer()->id();
+  } else if (isWinner(getEnemy())) {
+    return getEnemy()->id();
+  } else {
+    return -1;
+  }
+}
+
 void GameModel::setRobot(PlayerModel* robot) {
   QList<CardModel*> cards = players[1]->getCards();
   for (CardModel* card : cards) {
     robot->pickCard(card);
   }
   players[1] = robot;
+}
+
+bool GameModel::againstRobot() {
+  return (dynamic_cast<PlayerRobotModel*>(players[1]) != nullptr);
 }

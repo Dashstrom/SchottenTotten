@@ -11,7 +11,8 @@
 #include "image_manager.hpp"
 
 void ButtonView::resizeImage() {
-  setPixmap(ImageManager::getImageAtSize(m_path, width(), height()));
+  setPixmap(
+      ImageManager::getImageAtSize(m_path, width(), height(), m_keepRatio));
 }
 
 void ButtonView::mousePressEvent(QMouseEvent* event) {

@@ -4,6 +4,7 @@
  */
 #include "stone_model.hpp"
 
+#include <QDebug>
 #include <QList>
 
 #include "card_model.hpp"
@@ -30,6 +31,7 @@ void StoneModel::addCard(PlayerModel *player, CardModel *card) {
 bool StoneModel::claimable(PlayerModel *player) {
   QList<CardModel *> playerCards = m_formations[player->id()];
   QList<CardModel *> enemyCards = m_formations[player->enemyId()];
+  qDebug() << "Start analizing";
 
   // TODO(Dashstrom) : predict if stone can't be claim
   if (playerCards.count() != enemyCards.count() ||
@@ -42,17 +44,20 @@ bool StoneModel::claimable(PlayerModel *player) {
   for (Rule *rule : m_rules) {
     bool rulePlayer = rule->match(playerCards);
     bool ruleEnemy = rule->match(enemyCards);
-    if (rulePlayer ^ ruleEnemy) {  // rulePlayer xor ruleEnemy
-      if (rulePlayer) {            // only work if rule player
+    qDebug() << rule->name() << QString::number(rulePlayer)
+             << QString::number(ruleEnemy);
+    if (rulePlayer || ruleEnemy) {
+      if (rulePlayer && !ruleEnemy) {
         return true;
       }
-      break;
+      { return false; }
     }
   }
   int sumPlayer = 0;
   for (auto card : playerCards) sumPlayer += card->strength();
   int sumEnemy = 0;
   for (auto card : enemyCards) sumEnemy += card->strength();
+  qDebug() << "SUM" << QString::number(sumPlayer) << QString::number(sumEnemy);
   if (sumPlayer == sumEnemy) return m_firstPlayerId == player->id();
   return sumPlayer > sumEnemy;
 }

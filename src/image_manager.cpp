@@ -21,12 +21,14 @@ QPixmap ImageManager::getImage(QString path) {
   return image;
 }
 
-QPixmap ImageManager::getImageAtSize(QString path, int width, int height) {
-  QString key =
-      path + ";" + QString::number(width) + ";" + QString::number(height);
+QPixmap ImageManager::getImageAtSize(QString path, int width, int height,
+                                     bool keepRatio) {
+  QString key = path + ";" + QString::number(width) + ";" +
+                QString::number(height) + ";" + QString::number(keepRatio);
   QPixmap image;
   if (!QPixmapCache::find(key, &image)) {
-    image = getImage(path).scaled(width, height, Qt::KeepAspectRatio);
+    image = getImage(path).scaled(
+        width, height, keepRatio ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio);
     QPixmapCache::insert(key, image);
   }
   return image;

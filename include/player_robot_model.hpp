@@ -15,7 +15,6 @@ class PlayerRobotModel : public PlayerModel {
 
  public:
   explicit PlayerRobotModel(int playerId) : PlayerModel(playerId) {}
-
   void playTurn(QList<StoneModel*> stones);
 };
 

@@ -11,7 +11,8 @@
 class ImageManager {
  public:
   static QPixmap getImage(QString path);
-  static QPixmap getImageAtSize(QString path, int width, int height);
+  static QPixmap getImageAtSize(QString path, int width, int height,
+                                bool keepRatio);
 };
 
 #endif  // INCLUDE_IMAGE_MANAGER_HPP_

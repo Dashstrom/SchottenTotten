@@ -17,8 +17,9 @@ bool RuleRun::match(QList<CardModel*> cards) const {
             });
   CardModel* previous = nullptr;
   for (auto card : cards) {
-    if (previous != nullptr && card->strength() != previous->strength() + 1)
+    if (previous != nullptr && previous->strength() != card->strength() - 1)
       return false;
+    previous = card;
   }
   return true;
 }

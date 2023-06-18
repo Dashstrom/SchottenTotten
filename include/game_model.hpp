@@ -25,13 +25,14 @@ class GameModel : public QObject {
   void nextTurn();
   bool isEnd() { return isWinner(getPlayer()) || isWinner(getEnemy()); }
   bool isWinner(PlayerModel* player);
+  size_t getWinnerId();
   size_t turn() const { return m_turn; }
   QList<StoneModel*> getStones() const { return stones; }
   DeckModel* getDeck() const { return deck; }
   PlayerModel* getPlayer() const { return players[m_turn & 1]; }
   PlayerModel* getEnemy() const { return players[(m_turn + 1) & 1]; }
   void setRobot(PlayerModel* robot);
-
+  bool againstRobot();
  signals:
   void turnChanged(size_t);
 
