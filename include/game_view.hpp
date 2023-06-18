@@ -50,11 +50,11 @@ class GameView : public QWidget {
 
   GameModel* game;
 
-  QPushButton* buttonFriend;
-  QPushButton* buttonComputer;
+  ButtonView* buttonFriend;
+  ButtonView* buttonComputer;
 
   QPushButton* buttonPlayAgain;
-  QPushButton* buttonTransition;
+  ButtonView* buttonTransition;
 
   // int resizeFactor = 100;
   // QMainWindow* parentWindow;
@@ -65,24 +65,18 @@ class GameView : public QWidget {
     game = model;
     layout = new QGridLayout(this);
 
-    // Buttons for player choice (friend = button1, robot = button 2)
-    buttonFriend = new QPushButton(this);
-    buttonComputer = new QPushButton(this);
-    QPixmap buttonImageFriend("resources/players/friend.jpg");
-    QPixmap buttonImageComputer("resources/players/computer.jpg");
-    buttonFriend->setIcon(buttonImageFriend);
-    buttonFriend->setIconSize(buttonImageFriend.size());
-    buttonComputer->setIcon(buttonImageComputer);
-    buttonComputer->setIconSize(buttonImageComputer.size());
+    // Button for player choice (friend = button1, robot = button 2)
+    buttonFriend = new ButtonView("resources/players/friend.jpg", this);
+    buttonComputer = new ButtonView("resources/players/computer.jpg", this);
 
     layout->addWidget(buttonFriend, 0, 0);
     layout->addWidget(buttonComputer, 0, 1);
 
     // connexion of buttons
-    connect(buttonFriend, &QPushButton::clicked, this,
+    connect(buttonFriend, &ButtonView::clicked, this,
             [this]() { handleButton1Clicked(); });
 
-    connect(buttonComputer, &QPushButton::clicked, this,
+    connect(buttonComputer, &ButtonView::clicked, this,
             [this]() { handleButton2Clicked(); });
   }
 
@@ -113,24 +107,23 @@ class GameView : public QWidget {
     game = new GameModel();
 
     // Buttons for player choice (friend = button1, robot = button 2)
-    buttonFriend = new QPushButton(this);
-    buttonComputer = new QPushButton(this);
-    QPixmap buttonImageFriend("resources/players/friend.jpg");
-    QPixmap buttonImageComputer("resources/players/computer.jpg");
-    buttonFriend->setIcon(buttonImageFriend);
-    buttonFriend->setIconSize(buttonImageFriend.size());
-    buttonComputer->setIcon(buttonImageComputer);
-    buttonComputer->setIconSize(buttonImageComputer.size());
+    buttonFriend = new ButtonView("resources/players/friend.jpg", this);
+    buttonComputer = new ButtonView("resources/players/computer.jpg", this);
+    QPixmap friendPixmap("resources/players/friend.jpg");
+    QPixmap computerPixmap("resources/players/computer.jpg");
+    QSize imageSize = friendPixmap.size().boundedTo(computerPixmap.size());
+    buttonFriend->setFixedSize(imageSize);
+    buttonComputer->setFixedSize(imageSize);
     qDebug() << "Play Again :";
 
     layout->addWidget(buttonFriend, 1, 0);
     layout->addWidget(buttonComputer, 1, 1);
 
     // connexion of buttons
-    connect(buttonFriend, &QPushButton::clicked, this,
+    connect(buttonFriend, &ButtonView::clicked, this,
             [this]() { handleButton1Clicked(); });
 
-    connect(buttonComputer, &QPushButton::clicked, this,
+    connect(buttonComputer, &ButtonView::clicked, this,
             [this]() { handleButton2Clicked(); });
   }
 
@@ -144,21 +137,15 @@ class GameView : public QWidget {
         delete child;
       }
 
-      buttonTransition = new QPushButton(this);
-
       if (game->turn() % 2 == 0) {
-        QPixmap buttonImageTransition("resources/players/player1Turn.png");
-        buttonTransition->setIcon(buttonImageTransition);
-        buttonTransition->setIconSize(buttonImageTransition.size());
+        buttonTransition = new ButtonView("resources/players/player1Turn.png");
       } else {
-        QPixmap buttonImageTransition("resources/players/player2Turn.png");
-        buttonTransition->setIcon(buttonImageTransition);
-        buttonTransition->setIconSize(buttonImageTransition.size());
+        buttonTransition = new ButtonView("resources/players/player2Turn.png");
       }
 
       layout->addWidget(buttonTransition, 1, 0);
 
-      connect(buttonTransition, &QPushButton::clicked, this,
+      connect(buttonTransition, &ButtonView::clicked, this,
               [this]() { syncPlayer(); });
     } else {
       syncPlayer();
