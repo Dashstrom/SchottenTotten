@@ -50,6 +50,9 @@ bool StoneModel::claimable(PlayerModel &player) {
       if (rulePlayer && !ruleEnemy) {
         return true;
       }
+      if (ruleEnemy && !rulePlayer) {
+        return false;
+      }
       break;
     }
   }

@@ -4,36 +4,127 @@ skinparam linetype polyline
 skinparam linetype ortho
 
 class GameModel {
-}
-class DeckModel {
-}
-class PlayerModel {
-}
-class StoneModel {
-}
-class PlayerRobotModel {
-}
-abstract class CardModel {
-}
-abstract class Rule {
-}
-class RuleSame {
-}
-class RuleColorRun {
-}
-class RuleColor {
-}
-class RuleRun {
-}
-class ClanCardModel {
+  - m_turn: size_t
+  - m_stones: StoneModel[9]
+  - m_deck: DeckModel
+  - m_players: PlayerModel[2]
+  - m_cards: QList<CardModel*>
+
+  + GameModel()
+  + ~GameModel()
+  + nextTurn(): void
+  + isEnd(): bool
+  + isWinner(player: PlayerModel&): bool
+  + getWinnerId(): size_t
+  + turn(): size_t
+  + getStones(): StoneModel*
+  + getDeck(): DeckModel&
+  + getPlayer(): PlayerModel&
+  + getEnemy(): PlayerModel&
 }
 
-GameModel "1" *-- "1" DeckModel : a un >
-DeckModel "0..1" -- "0..54" CardModel : possède >
-GameModel "1" *-- "0..54" CardModel : possède >
-GameModel "1" *-- "2" PlayerModel : < est jouer par
+class GameRobotModel {
+  +nextTurn()
+}
+class DeckModel {
+  - m_cards: QList<CardModel*>
+
+  + DeckModel()
+  + draw(): CardModel*
+  + isEmpty(): bool
+  + countCards(): int
+  + addCard(card: CardModel*): void
+  + shuffle(): void
+}
+class PlayerModel {
+  - m_cards: QList<CardModel*>
+  - m_playerId: int
+
+  + PlayerModel(playerId: int)
+  + removeCard(card: CardModel*): void
+  + pickCard(card: CardModel*): void
+  + id(): int
+  + enemyId(): int
+  + getCards(): const QList<CardModel*>
+  + changedCards(cards: const QList<CardModel*>): void
+}
+class StoneModel {
+  - m_formations: QList<CardModel*>[2]
+  - m_rules: QList<Rule*>
+  - m_firstPlayerId: int
+  - m_size: int
+  - m_claimed: int
+
+  + StoneModel()
+  + ~StoneModel()
+  + getCards(player: PlayerModel&): const QList<CardModel*>
+  + addCard(player: PlayerModel&, card: CardModel*): void
+  + removeCard(player: PlayerModel&, card: CardModel*): void
+  + isFull(player: PlayerModel&): bool
+  + claimable(player: PlayerModel&): bool
+  + claims(player: PlayerModel&): bool
+  + isClaimedBy(player: PlayerModel&): int
+  + isClaimed(): int
+  + addSize(size: int): void
+  + changed(): void
+}
+enum CardColor {
+  Green
+  Blue
+  Red
+  Yellow
+  Purple
+  Orange
+}
+
+abstract class CardModel {
+  +name(): QString
+  +strength(): int
+  +color(): CardColor
+}
+abstract class Rule {
+  - m_name: QString
+
+  + Rule(name: QString)
+  + ~Rule()
+  + match(cards: QList<CardModel*>): bool
+  + name(): const QString
+}
+class RuleSame {
+  + RuleSame()
+  + match(cards: QList<CardModel*>): bool
+}
+class RuleColorRun {
+  - m_ruleColor: RuleColor
+  - m_ruleRun: RuleRun
+
+  + RuleColorRun()
+  + match(cards: QList<CardModel*>): bool
+}
+class RuleColor {
+  + RuleColor()
+  + match(cards: QList<CardModel*>): bool
+}
+class RuleRun {
+  + RuleRun()
+  + match(cards: QList<CardModel*>): bool
+}
+class ClanCardModel {
+  - m_strength: int
+  - m_color: CardModel::CardColor
+
+  + ClanCardModel(strength: int, color: CardModel::CardColor)
+  + strength(): int
+  + color(): CardModel::CardColor
+  + name(): QString
+}
+
+GameModel "1" *-- "1" DeckModel
+DeckModel "0..1" -- "0.n" CardModel
+GameModel "1" *-- "0..n" CardModel
+GameModel "1" *-- "2" PlayerModel
 GameModel "1" *-- "9" StoneModel
-PlayerModel "0..1" -- "0..6" CardModel : < est jouer par
+PlayerModel "0..1" -- "0..6" CardModel
 StoneModel "0..1" -- "0..3" CardModel : enemy
 StoneModel "0..1" -- "0..3" CardModel : ally
 StoneModel "1" -- "0..n" Rule
@@ -42,7 +133,7 @@ Rule <|-- RuleSame
 Rule <|-- RuleColorRun
 Rule <|-- RuleColor
 Rule <|-- RuleRun
-PlayerModel <|-- PlayerRobotModel
 CardModel <|-- ClanCardModel
+GameModel <|-- GameRobotModel
 
 @enduml
