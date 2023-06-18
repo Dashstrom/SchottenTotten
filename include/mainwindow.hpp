@@ -2,11 +2,12 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_MAINWINDOW_HPP_
+#define INCLUDE_MAINWINDOW_HPP_
 
-#include <QLabel>
 #include <QMainWindow>
-#include <QPushButton>
+#include <QObject>
+#include <QWidget>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -15,3 +16,5 @@ class MainWindow : public QMainWindow {
   explicit MainWindow(QWidget* parent = nullptr);
   ~MainWindow() = default;
 };
+
+#endif  // INCLUDE_MAINWINDOW_HPP_

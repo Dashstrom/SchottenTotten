@@ -2,7 +2,8 @@
    Copyright 2023
    Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
  */
-#pragma once
+#ifndef INCLUDE_CARD_MODEL_HPP_
+#define INCLUDE_CARD_MODEL_HPP_
 
 #include <QObject>
 #include <QString>
@@ -12,8 +13,10 @@ class CardModel : public QObject {
 
  public:
   enum CardColor { Green, Blue, Red, Yellow, Purple, Orange };
-  Q_ENUM(CardColor)
+  Q_ENUM(CardColor);
   virtual QString name() const = 0;
   virtual int strength() const = 0;
   virtual CardColor color() const = 0;
 };
+
+#endif  // INCLUDE_CARD_MODEL_HPP_

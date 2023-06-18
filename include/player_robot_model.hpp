@@ -1,8 +1,10 @@
 /*
-Copyright 2023
-Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
-*/
-#pragma once
+   Copyright 2023
+   Dashstrom, Marin Bouanchaud, ericluo-lab, Soudarsane TILLAI, Baptiste Buvron
+ */
+#ifndef INCLUDE_PLAYER_ROBOT_MODEL_HPP_
+#define INCLUDE_PLAYER_ROBOT_MODEL_HPP_
+
 #include <QRandomGenerator>
 
 #include "player_model.hpp"
@@ -13,25 +15,7 @@ class PlayerRobotModel : public PlayerModel {
 
  public:
   explicit PlayerRobotModel(int playerId) : PlayerModel(playerId) {}
-
-  void playTurn(QList<StoneModel*> stones) {
-    QList<CardModel*> robotCards = getCards();
-    QRandomGenerator* generator = QRandomGenerator::global();
-    if (robotCards.size() != 0) {
-      int randomIndex = generator->bounded(robotCards.size());
-      CardModel* randomCard = robotCards[randomIndex];
-
-      QList<StoneModel*> availableStones;
-      for (StoneModel* stoneModel : stones) {
-        if (!stoneModel->isFull(this)) {
-          availableStones.append(stoneModel);
-        }
-      }
-      int randomStoneIndex = generator->bounded(availableStones.size());
-      StoneModel* randomStone = availableStones[randomStoneIndex];
-
-      removeCard(randomCard);
-      randomStone->addCard(this, randomCard);
-    }
-  }
+  void playTurn(QList<StoneModel*> stones);
 };
+
+#endif  // INCLUDE_PLAYER_ROBOT_MODEL_HPP_
