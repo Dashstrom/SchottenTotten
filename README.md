@@ -81,7 +81,7 @@ Run the next command and follow the instructions.
 
 ## Demo video
 
-You can watch a demo [here](./docs/demo.mp4).
+You can watch a demo [here](https://raw.githubusercontent.com/Dashstrom/SchottenTotten/main/docs/demo.mp4).
 
 ## UML
 

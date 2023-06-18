@@ -15,7 +15,7 @@
 
 StoneView::StoneView(StoneModel& model, PlayerModel& player, PlayerModel& enemy,
                      size_t skin, QWidget* parent)
-    : QWidget(parent), m_skin(skin), m_stone(model) {
+    : QWidget(parent), m_stone(model), m_skin(skin) {
   qDebug() << "Creating stone view";
 
   m_layout = new QGridLayout(this);
