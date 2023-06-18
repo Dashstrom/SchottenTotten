@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QObject>
 #include <QPaintEvent>
 #include <QPainter>
@@ -53,6 +54,7 @@ class GameView : public QWidget {
   QPushButton* buttonComputer;
 
   QPushButton* buttonPlayAgain;
+  QPushButton* buttonTransition;
 
   // int resizeFactor = 100;
   // QMainWindow* parentWindow;
@@ -87,8 +89,8 @@ class GameView : public QWidget {
   void handleButton1Clicked() {
     buttonFriend->hide();
     buttonComputer->hide();
-    syncPlayer();
-    connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+    transition();
+    connect(game, &GameModel::turnChanged, this, &GameView::transition);
   }
   void handleButton2Clicked() {
     buttonFriend->hide();
@@ -96,8 +98,8 @@ class GameView : public QWidget {
     PlayerRobotModel* robot = new PlayerRobotModel(1);
 
     game->setRobot(robot);
-    syncPlayer();
-    connect(game, &GameModel::turnChanged, this, &GameView::syncPlayer);
+    transition();
+    connect(game, &GameModel::turnChanged, this, &GameView::transition);
   }
 
   void playAgain() {
@@ -132,6 +134,36 @@ class GameView : public QWidget {
             [this]() { handleButton2Clicked(); });
   }
 
+  void transition() {
+    if (!game->againstRobot()) {
+      qDebug() << "Tour : " << game->turn();
+
+      QLayoutItem* child;
+      while ((child = layout->takeAt(0)) != 0) {
+        qDebug() << "Deleting" << child;
+        child->widget()->deleteLater();  // delete the widget
+        delete child;
+      }
+      buttonTransition = new QPushButton(this);
+
+      if (game->turn() % 2 == 0) {
+        QPixmap buttonImageTransition("resources/players/player1Wins.png");
+        buttonTransition->setIcon(buttonImageTransition);
+        buttonTransition->setIconSize(buttonImageTransition.size());
+      } else {
+        QPixmap buttonImageTransition("resources/players/player1Wins.png");
+        buttonTransition->setIcon(buttonImageTransition);
+        buttonTransition->setIconSize(buttonImageTransition.size());
+      }
+
+      layout->addWidget(buttonTransition, 0, 0);
+
+      // connexion of buttons
+      connect(buttonTransition, &QPushButton::clicked, this,
+              [this]() { syncPlayer(); });
+    }
+  }
+
   void setFinalScreen(size_t playerId) {
     qDebug() << "gagnant :" << playerId;
 
@@ -145,9 +177,15 @@ class GameView : public QWidget {
       buttonPlayAgain->setIcon(buttonImageFriend);
       buttonPlayAgain->setIconSize(buttonImageFriend.size());
     } else if (playerId == 1) {
-      QPixmap buttonImageFriend("resources/players/player2Wins.png");
-      buttonPlayAgain->setIcon(buttonImageFriend);
-      buttonPlayAgain->setIconSize(buttonImageFriend.size());
+      if (game->againstRobot()) {
+        QPixmap buttonImageFriend("resources/players/player2Wins.png");
+        buttonPlayAgain->setIcon(buttonImageFriend);
+        buttonPlayAgain->setIconSize(buttonImageFriend.size());
+      } else {
+        QPixmap buttonImageFriend("resources/players/player2Wins.png");
+        buttonPlayAgain->setIcon(buttonImageFriend);
+        buttonPlayAgain->setIconSize(buttonImageFriend.size());
+      }
     } else {
       QPixmap buttonImageFriend("resources/players/noOneWon.png");
       buttonPlayAgain->setIcon(buttonImageFriend);
@@ -284,7 +322,6 @@ class GameView : public QWidget {
                               this->game->getPlayer()->pickCard(
                                   this->game->getDeck()->draw());
                             }
-
                             this->game->nextTurn();
                           }
                         } catch (...) {

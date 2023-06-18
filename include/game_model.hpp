@@ -103,6 +103,11 @@ class GameModel : public QObject {
     }
     players[1] = robot;
   }
+
+  bool againstRobot() {
+    return (dynamic_cast<PlayerRobotModel*>(players[1]) != nullptr);
+  }
+
  signals:
   void turnChanged(size_t);
 
