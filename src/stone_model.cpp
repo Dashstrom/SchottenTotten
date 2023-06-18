@@ -50,7 +50,7 @@ bool StoneModel::claimable(PlayerModel &player) {
       if (rulePlayer && !ruleEnemy) {
         return true;
       }
-      { return false; }
+      break;
     }
   }
   int sumPlayer = 0;
