@@ -75,9 +75,6 @@ void GameView::syncPlayer() {
     child->widget()->deleteLater();  // delete the widget
     delete child;
   }
-  qDebug() << "Create child";
-  // this->setStyleSheet("border: 1px solid red");
-
   widgetStones = new QWidget(this);
   layoutStones = new QHBoxLayout(widgetStones);
   layoutStones->setContentsMargins(0, 0, 0, 0);
@@ -147,31 +144,10 @@ void GameView::syncPlayer() {
   qDebug() << "Created game view";
 }
 
-void GameView::resize() {
-  qDebug() << "FONT";
-  // TODO(Dashstrom): crash here
-  /*
-  resizeFactor = (width() / 700.0) * 100;
-  qDebug() << resizeFactor;
-  deckCountLabel->setFont(
-      QFont("Impact", 10 * resizeFactor / 100, QFont::Normal));
-  playerTurnLabel->setFont(
-      QFont("Impact", 15 * resizeFactor / 100, QFont::Bold));
-  */
-  qDebug() << "END";
-}
-
 void GameView::paintEvent(QPaintEvent* e) {
   QPainter painter(this);
   painter.drawPixmap(0, 0, QPixmap("resources/background.jpg").scaled(size()));
   QWidget::paintEvent(e);
-}
-
-void GameView::resizeEvent(QResizeEvent* event) {
-  qDebug() << "resizeEvent game view";
-  // Call the base class implementation
-  QWidget::resizeEvent(event);
-  resize();
 }
 
 void GameView::syncHand(const QList<CardModel*> cards) {

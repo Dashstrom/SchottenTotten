@@ -4,6 +4,7 @@
  */
 #include "image_manager.hpp"
 
+#include <QDebug>
 #include <QPixmap>
 #include <QPixmapCache>
 #include <QString>

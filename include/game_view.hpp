@@ -46,23 +46,15 @@ class GameView : public QWidget {
 
  public:
   explicit GameView(GameModel* model, QWidget* parent = nullptr);
-
   void handleButton1Clicked();
-
   void handleButton2Clicked();
-
   void syncPlayer();
-
-  void resize();
 
  protected:
   void paintEvent(QPaintEvent* e) override;
 
-  void resizeEvent(QResizeEvent* event) override;
-
  private:
   void syncHand(const QList<CardModel*> cards);
-
   void syncEnemyHand(const QList<CardModel*> cards);
 };
 
