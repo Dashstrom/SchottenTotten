@@ -11,7 +11,7 @@
 
 CardView::CardView(CardModel* model, QWidget* parent)
     : ButtonView("resources/cards/" + model->name(), parent) {
-  card = model;
+  m_card = model;
 }
 
 void CardView::setSelected(bool selected) {

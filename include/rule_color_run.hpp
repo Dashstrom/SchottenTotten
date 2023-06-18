@@ -16,12 +16,12 @@ class RuleColorRun : public Rule {
  public:
   RuleColorRun() : Rule("color_run") {}
   bool match(QList<CardModel *> cards) const override {
-    return ruleColor.match(cards) && ruleRun.match(cards);
+    return m_ruleColor.match(cards) && m_ruleRun.match(cards);
   }
 
  private:
-  RuleColor ruleColor;
-  RuleRun ruleRun;
+  RuleColor m_ruleColor;
+  RuleRun m_ruleRun;
 };
 
 #endif  // INCLUDE_RULE_COLOR_RUN_HPP_

@@ -25,17 +25,17 @@ class GameModel : public QObject {
   bool isWinner(PlayerModel& player);
   size_t getWinnerId();
   size_t turn() const { return m_turn; }
-  StoneModel* getStones() { return stones; }
-  DeckModel& getDeck() { return deck; }
-  PlayerModel& getPlayer() { return players[m_turn & 1]; }
-  PlayerModel& getEnemy() { return players[(m_turn + 1) & 1]; }
+  StoneModel* getStones() { return m_stones; }
+  DeckModel& getDeck() { return m_deck; }
+  PlayerModel& getPlayer() { return m_players[m_turn & 1]; }
+  PlayerModel& getEnemy() { return m_players[(m_turn + 1) & 1]; }
 
  protected:
   size_t m_turn = 0;
-  StoneModel stones[STONE_COUNT];
-  DeckModel deck;
-  PlayerModel players[2];
-  QList<CardModel*> cards;
+  StoneModel m_stones[STONE_COUNT];
+  DeckModel m_deck;
+  PlayerModel m_players[2];
+  QList<CardModel*> m_cards;
 };
 
 #endif  // INCLUDE_GAME_MODEL_HPP_

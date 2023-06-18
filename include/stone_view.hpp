@@ -19,24 +19,25 @@
 class StoneView : public QWidget {
   Q_OBJECT
 
-  FormationView* formationView1;
-  FormationView* formationView2;
-  QGridLayout* layout;
-  ButtonView* stoneButtonTop;
-  ButtonView* stoneButton;
-  ButtonView* stoneButtonBot;
-  StoneModel& stone;
-  size_t m_skin;
-
  public:
   enum StoneActionType { Formation1, Formation2, Stone };
   Q_ENUM(StoneActionType)
   explicit StoneView(StoneModel& model, PlayerModel& player, PlayerModel& enemy,
                      size_t skin, QWidget* parent = nullptr);
-  StoneModel& getStone() { return stone; }
+  StoneModel& getStone() { return m_stone; }
 
  signals:
   void action(StoneActionType actionType);
+
+ private:
+  FormationView* m_formationView1;
+  FormationView* m_formationView2;
+  QGridLayout* m_layout;
+  ButtonView* m_stoneButtonTop;
+  ButtonView* m_stoneButton;
+  ButtonView* m_stoneButtonBot;
+  StoneModel& m_stone;
+  size_t m_skin;
 };
 
 #endif  // INCLUDE_STONE_VIEW_HPP_

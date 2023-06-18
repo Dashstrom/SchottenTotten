@@ -13,36 +13,36 @@
 #include "player_model.hpp"
 #include "stone_model.hpp"
 
-GameModel::GameModel() : players{PlayerModel(0), PlayerModel(1)} {
+GameModel::GameModel() : m_players{PlayerModel(0), PlayerModel(1)} {
   // Initialize the deccardsk with random cards
   QMetaEnum metaEnum = QMetaEnum::fromType<ClanCardModel::CardColor>();
   for (int i = 0; i < metaEnum.keyCount(); ++i) {
     for (int strength = 1; strength <= 9; strength++) {
       auto color = static_cast<ClanCardModel::CardColor>(metaEnum.value(i));
       CardModel* card = new ClanCardModel(strength, color);
-      cards.append(card);
-      deck.addCard(card);
+      m_cards.append(card);
+      m_deck.addCard(card);
     }
   }
-  deck.shuffle();
+  m_deck.shuffle();
   for (int cardsDrawn = 0; cardsDrawn < 6; cardsDrawn++) {
-    players[0].pickCard(deck.draw());
-    players[1].pickCard(deck.draw());
+    m_players[0].pickCard(m_deck.draw());
+    m_players[1].pickCard(m_deck.draw());
   }
 }
 
 GameModel::~GameModel() {
-  while (!cards.isEmpty()) {
-    delete cards.takeAt(0);
+  while (!m_cards.isEmpty()) {
+    delete m_cards.takeAt(0);
   }
 }
 
 void GameModel::nextTurn() {
   qDebug() << "Next turn";
   for (size_t i = 0; i < STONE_COUNT; i++) {
-    if (!stones[i].isClaimed()) {
-      stones[i].claims(getPlayer());
-      stones[i].claims(getEnemy());
+    if (!m_stones[i].isClaimed()) {
+      m_stones[i].claims(getPlayer());
+      m_stones[i].claims(getEnemy());
     }
   }
   if (!isEnd()) {
@@ -54,7 +54,7 @@ bool GameModel::isWinner(PlayerModel& player) {
   int claimed = 0;
   int claimedAdjacent = 0;
   for (size_t i = 0; i < STONE_COUNT; i++) {
-    if (stones[i].isClaimedBy(player)) {
+    if (m_stones[i].isClaimedBy(player)) {
       claimed += 1;
       claimedAdjacent += 1;
     } else {

@@ -16,12 +16,12 @@ class CardView : public ButtonView {
   Q_OBJECT
 
  public:
-  CardModel* card;
-  QPixmap* image;
+  CardModel* m_card;
+  QPixmap* m_image;
 
   explicit CardView(CardModel* model, QWidget* parent = nullptr);
   void setSelected(bool selected);
-  CardModel* getCard() const { return card; }
+  CardModel* getCard() const { return m_card; }
 };
 
 #endif  // INCLUDE_CARD_VIEW_HPP_

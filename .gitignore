@@ -33,3 +33,7 @@
 
 # Cmake
 build
+
+# Project file
+.vs
+out

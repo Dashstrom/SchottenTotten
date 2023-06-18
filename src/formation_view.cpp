@@ -14,14 +14,14 @@
 #include "card_view.hpp"
 
 FormationView::FormationView(QWidget* parent) : QWidget(parent) {
-  layout = new CardLayout(25, 90 * M_PI / 180, this);
+  m_layout = new CardLayout(25, 90 * M_PI / 180, this);
 }
 
 void FormationView::setCards(QList<CardModel*> cards) {
   qDeleteAll(findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
   for (CardModel* cardModel : cards) {
     CardView* cardView = new CardView(cardModel, this);
-    layout->addWidget(cardView);
+    m_layout->addWidget(cardView);
   }
 }
 

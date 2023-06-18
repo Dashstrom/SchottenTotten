@@ -16,4 +16,3 @@ class GameRobotModel : public GameModel {
 };
 
 #endif  // INCLUDE_GAME_ROBOT_MODEL_HPP_
-
